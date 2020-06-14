@@ -1,0 +1,523 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Booking_details extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->load->model('Booking_model');
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        if (!$this->session->userdata('logged_in_admin')) {
+            redirect(base_url());
+        }
+    }
+
+    public function view_bookingdetails() {
+        $cid = $this->uri->segment(3);
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $template['page'] = "Bookingdetails/view-booking-details";
+        $template['page_title'] = "View Booking Details";
+        $template['data'] = $this->Booking_model->get_bookindetails($cid);
+        $this->load->view('template', $template);
+    }
+
+    public function view_bookingpopup() {
+        $id = $_POST['bookingdetailsget'];
+        $template['data'] = $this->Booking_model->view_popup_booking($id);
+        $this->load->view('Bookingdetails/view-booking-popup', $template);
+    }
+
+    public function add_bookingdetails() {
+        $template['angularmodule']   = base_url() . "assets/js/app-book.js";
+        $template['page']            = 'Bookingdetails/add-booking';
+        $template['page_title']      = 'Add Booking Details';
+        $this->load->view('template', $template);
+    }
+
+    public function get_busboardroutes() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $template['results'] = $this->Booking_model->get_busboardroutes();
+        print_r(json_encode($template['results']));
+    }
+
+    public function get_busdroproutes() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $template['results'] = $this->Booking_model->get_busdroproutes();
+        print_r(json_encode($template['results']));
+    }
+
+    public function edit_bookingdetails() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $template['page'] = 'Bookingdetails/edit-booking';
+        $template['page_title'] = 'Edit Booking Details';
+
+        $this->load->view('template', $template);
+    }
+
+    public function get_single_booking() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+
+        $id = $this->input->get('bid');
+        if (isset($id)) {
+            $template['data'] = $this->Booking_model->get_single_booking($id);
+        }
+        print_r(json_encode($template['data']));
+    }
+
+    public function delete_bookingdetails() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $request = $this->input->get('bid');
+        $result = $this->Booking_model->bookingdetails_delete($request);
+
+        if ($result) {
+            /* Set success message */
+            $this->session->set_flashdata('message', array('message' => 'Deleted Booking Details successfully', 'class' => 'success'));
+        } else if (strpos($result, 'Error') !== false) {
+            /* Set error message */
+            $this->session->set_flashdata('message', array('message' => 'Error:' . $result, 'class' => 'error'));
+        }
+        redirect(base_url() . 'Booking_details/view_bookingdetails');
+    }
+
+    // public function send_sms($data) {
+    //     try {
+    //         // $data = $this->input->post();
+    //         if ($data) {
+    //             $this->load->library('curl');
+    //             // Booking Details
+    //             $text = "Your ticket is confirmed for bus," . $data[0]['bus_name'] . ", Seat No:" . $data[0]['seat_no'];
+    //             $text .= " Pickup point:" . $data[0]['pickup_point'] . ", Pickup time:" . $data[0]['pickup_time'] . " Drop point:" . $data[0]['stoping_point'] . "Drop time:" . $data[0]['drop_time'] . " Date:" . $data[0]['booking_date'] . " Wish you a happy journey!";
+    //             $args = http_build_query(array(
+    //                 'token' => 'enoNbVIUGjnz6wG4M3gD',
+    //                 'from' => 'InfoSMS',
+    //                 'to' => implode(',', explode('<#>', explode('<=>', $data[0]['customer'])[3])),
+    //                 'text' => $text));
+
+    //             $url = "http://api.sparrowsms.com/v2/sms/";
+
+    //             # Make the call using API.
+    //             $ch = curl_init();
+    //             curl_setopt($ch, CURLOPT_URL, $url);
+    //             curl_setopt($ch, CURLOPT_POST, 1);
+    //             curl_setopt($ch, CURLOPT_POSTFIELDS, $args);
+    //             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    //             // Response
+    //             $response = curl_exec($ch);
+    //             $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    //             $send = array('status' => 'success', 'message' => $response, 'code' => $status_code);
+    //             curl_close($ch);
+    //             if ($status_code == 200) {
+    //                 $result = $this->Booking_model->updatecommunication($data[0]['bid'], 'sms');
+    //                 if ($result) {
+    //                     $send = array('status' => 'success', 'message' => "SMS sent for booking id " . $data[0]['bid']);
+    //                 } else {
+    //                     $send = array('status' => 'error', 'message' => "SMS sent record could not be updated.", 'code' => $status_code);
+    //                 }
+    //             } else {
+    //                 $send = array('status' => 'error', 'message' => "SMS could not be sent.", 'code' => $status_code);
+    //             }
+    //         }
+    //     } catch (Exception $e) {
+    //         $send = array('status' => 'error', 'message' => $e->getMessage());
+    //     }
+    //     $result = $send;
+    //     return $result;
+    // }
+
+    // public function booking_details($data) {
+
+    //     try {
+    //         $finresult = get_settings_details(1);
+    //         $from = $finresult->smtp_host;
+    //         $name = $finresult->title;
+    //         $s = base_url();
+    //         $sub = "BusKoTicket Booking Details";
+    //         $email = $data[0]['email'];
+    //         $template['data'] = $data;
+    //         if ($dataR !== null) {
+    //             $template['dataR'] = $dataR;
+    //         }
+    //         $message = $this->load->view('Email/booking_detail', $template, true);
+
+    //         $pass = $finresult->smtp_password;
+
+    //         $headers .= "MIME-Version: 1.0\r\n";
+    //         $headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
+    //         $headers .= "X-Priority: 3\r\n";
+    //         $headers .= "X-Mailer: PHP" . phpversion() . "\r\n";
+
+
+    //         // More headers
+    //         $headers .= 'From: BusKoTicket <' . $from . '>' . "\r\n";
+    //         $send = mail($email, $sub, $message, $headers);
+
+    //         if ($send) {
+    //             $result = $this->Booking_model->updatecommunication($data[0]['bid'], 'mail');
+
+    //             if ($result) {
+    //                 $send_status = array(
+    //                     'status' => 'success', 
+    //                     'message' => "Mail sent for booking id " . $data[0]['bid']
+    //                 );
+    //             } else {
+    //                 $send_status = array(
+    //                     'status' => 'error', 
+    //                     'message' => "Email could not be sent. Please go back and try again!"
+    //                 );
+    //             }
+    //         } else {
+    //             $send_status = array(
+    //                 'status' => 'error', 
+    //                 'message' => "Email could not be sent. Please go back and try again!"
+    //             );
+    //         }
+    //     } catch (Exception $e) {
+    //         $send_status = array(
+    //             'status' => 'error', 
+    //             'message' => $e->getMessage()
+    //         );
+    //     }
+    //     return $send_status;
+    // }
+
+    public function insert_bookingdetails() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $data = file_get_contents("php://input");
+        $admintype = $this->session->userdata('admin');
+        $request = json_decode($data);
+        if ($request) {
+            if ($admintype === 3 || $admintype === 5) {
+                $request->booked_by = $this->session->userdata('id');
+            }
+            $request->bookedbyrole = $admintype;
+            $result = $this->Booking_model->bookingdetails_add($request);
+            $class = 'success';
+            $result = array(
+                "status"    => 'success', 
+                'message'   => 'Booking Success', 
+                'class'     => $class, 
+                "uniqueid"  => $result['uniqueid'], 
+                "bid"       => $result['bid']
+            );
+        } else {
+            $class  = 'error';
+            $result = array(
+                "status"    => 'failed', 
+                'message'   => 'Request error. Try again!!', 
+                'class'     => $class
+            );
+        }
+        print_r(json_encode($result));exit;
+    }
+
+    public function email_notification() {
+        try {
+            $request = file_get_contents("php://input");
+            $data = json_decode($request);
+            $result = array();
+            if (!empty($data)) {
+                $finresult = get_settings_details(1);
+                $sub = "BusKoTicket Booking Details";
+                // Template details
+                //Oneway
+                $onewayDetails = $this->Booking_model->mail_details_bookingID($data->uniqueid);
+                $result = $onewayDetails;
+                if ($onewayDetails[0]['status'] == 'success') {
+                    $this->session->set_flashdata('message', array(
+                        'message' => 'Booked tickets successfully. Mail and SMS send to the respective details!!', 
+                        'class' => 'success'
+                    ));
+                } else if ($onewayDetails[0]['status'] == 'failed') {
+                    $this->session->set_flashdata('message', array(
+                        'message' => $onewayDetails[0]['message'], 
+                        'class' => 'error'));
+                }
+            } else {
+                $result = array(
+                    'status' => 'failed', 
+                    'message' => 'Request not found!', 
+                    'code' => 'error'
+                );
+                $this->session->set_flashdata('message', array(
+                    'message' => 'Request not found!', 
+                    'class' => 'error'
+                ));
+            }
+        } catch (Exception $e) {
+            $result = array(
+                'status' => 'failed', 
+                'message' => $e->getMessage(), 
+                'code' => 'error'
+            );
+            $this->session->set_flashdata('message', array(
+                'message' => $e->getMessage(), 
+                'class' => 'error'));
+        }
+        print_r(json_encode($result));
+    }
+
+    public function get_busesforroute() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $data = json_decode(file_get_contents('php://input'));
+
+        if ($data) {
+            $result = $this->Booking_model->get_buses_selected_route($data);
+           // echo '<pre>';print_r($result);
+           // die;
+            $i = 0;
+            $droppointw = "";
+            $droppointD = "";
+            $existseat4 = '';
+            $points = '';
+            $singlep = '';
+            $new_result = array();
+            if ($result !== 'No Results Found') {
+                foreach ($result as $results) {
+                    $gallery = array();
+                    $amenitie = array();
+                    $singlep = array();
+                    $droppointw = array();
+                    $droppointD = array();
+                    $existseat2 = array();
+
+                    if (!empty($results)) {
+                        $layout     = (isset($results->layout)) ? json_decode(stripslashes($results->layout)): array();
+                        $length     = sizeof($layout);
+                        $new_array  = array();
+                        $single     = array();
+                        // this call appears to be uhnnessary
+                        // $seatexisting = $this->Booking_model->select_booking_seat($results['bus_id'],$results['route_id'],$data->dates);
+
+                        if (isset($results['existseat'])) {
+                            $existseat = explode('<=>', $results['existseat']);
+                            $results['exists'] = implode(',', $existseat);
+
+                            $existseat2 = explode(',', $results['exists']);
+                        }
+
+                        $results['existseat'] = implode(',', $existseat2);
+
+                        if ($layout) {
+                            foreach ($layout as $layouts) {
+                                foreach ($layouts as $row) {
+                                    if ($existseat2 != null && in_array($row['seat_name'], $existseat2)) {
+                                        $row['status'] = 'true';
+                                    } else {
+                                        $row['status'] = 'false';
+                                    }
+                                    array_push($single, $row);
+                                }
+                                array_push($new_array, $layouts);
+                            }
+                        }
+
+                        if ($results['cancel_time_before_board_time'] != null) {
+                            $hour = $results['cancel_time_before_board_time'];
+                            $board_time = $results['board_time'];
+                            $timestamp = strtotime($board_time) - 60 * 60 * $hour;
+                            $time = date(' H:i', $timestamp);
+                            $canceltime = date("g:i a", strtotime($time));
+                        } else {
+                            $canceltime = '0';
+                        }
+
+                        $droptime = strtotime($results['drop_time']);
+                        $pickuptime = strtotime($results['board_time']);
+                        $duration = ($droptime - $pickuptime) / 3600;
+
+                        if ($results['points'] != null) {
+                            $poin = array_map('trim', explode('<=>', $results['points']));
+                            $points = [];
+
+                            foreach ($poin as $rs) {
+                                if (!empty($rs)) {
+                                    $roww = array_map('trim', explode('<#>', $rs));
+//                                    print_r($roww);
+//                                    echo $roww[1] . " " . $roww[2] . " " . $roww[3] . " " . $roww[4];
+//                                    die;
+                                $points[] = array(
+                                    'time' => $roww[1], 
+                                    'dplace' => $roww[0], 
+                                    'landmark' => $roww[2], 
+                                    'address' => $roww[3], 
+                                    'board_id' => $roww[4]
+                                ); //
+
+                                $singlep [] = $roww[0];
+                                }
+                            }
+                        }
+
+                        if ($results['droppoints'] != null) {
+                            $stop = array_map('trim', explode('<=>', $results['droppoints']));
+
+                            foreach ($stop as $stops) {
+
+                                if (!empty($stops)) {
+                                    $rowss = array_map('trim', explode('<#>', $stops));
+                                    $droppointw[] = array('time' => $rowss[1], 'dpoints' => $rowss[0], 'landmark' => $rowss[2], 'address' => $rowss[3], 'drop_id' => $rowss[4]);
+                                    $droppointD [] = $rowss[0];
+                                }
+                            }
+                        }
+
+                        if ($results['gallery'] != null) {
+                            $gallery = array_map('trim', explode('<=>', $results['gallery']));
+                        }
+
+
+                        if ($results['amenities'] != null) {
+                            $amenitie = array_map('trim', explode('<=>', $results['amenities']));
+                        }
+
+                        $amenities = array();
+                        $images = array();
+
+
+                        foreach ($amenitie as $amenitiess) {
+                            $amenities[] = $amenitiess;
+                        }
+
+                        foreach ($gallery as $image) {
+                            $images[] = array('image' => $image);
+                        }
+
+                        $results['Dpoints'] = $points;
+                        $results['seat_layout'] = $new_array;
+
+                        if ($results['seat_layout'] === null) {
+                            $results['seat_layout'] = json_decode($results['layout']);
+                        }
+
+                        $results['canceltime'] = $canceltime;
+                        $results['singleP'] = $singlep;
+                        $results['Stoppoints'] = $droppointw;
+                        $results['singleD'] = $droppointD;
+                        $results['duration'] = $duration;
+                        $results['gallery'] = $images;
+
+                        $results['amenities'] = $amenities;
+//
+                        $results['paypals'] = get_settings_details(1);
+
+                        if ($results['paypals']->payment_option == null) {
+                            $results['paypals']->payment_option = "Cash";
+                        }
+                        $new_result[] = $results;
+                    }
+                }
+
+                $result = $new_result;
+            }
+
+            print_r(json_encode($result));
+        }
+    }
+
+    public function select_one_bus() {
+        $template['angularmodule'] = base_url() . "assets/js/app-book.js";
+        $data = file_get_contents("php://input");
+        $request = json_decode($data);
+
+        $result = $this->Booking_model->select_one_bus($request);
+
+        if ($result[0]['points'] != null) {
+            $poin = array_map('trim', explode('<=>', $result[0]['points']));
+
+            foreach ($poin as $r) {
+
+                $row = explode('<#>', $r);
+                $points[] = array(
+                    'time' => $row[1],
+                    'dplace' => $row[0]
+                );
+            }
+
+            $result['Dpoints'] = $points;
+            $result['seat_layout'] = json_decode($result[0]['layout']);
+        }
+
+        $result['paypals'] = get_settings_details(1);
+
+        if ($result['paypals']->payment_option == null) {
+            $result['paypals']->payment_option = "Cash";
+        }
+        print json_encode($result);
+    }
+
+    public function filter_option() {
+        $data = file_get_contents("php://input");
+        $request = json_decode($data);
+
+        $result = $this->Booking_model->filter_option($request);
+
+        $bus_name = array_map('trim', explode('<=>', $result[0]->bus_name));
+        $amenities = array_map('trim', explode('<=>', $result[0]->amenities));
+        $points = array_map('trim', explode('<=>', $result[0]->points));
+        $stoppoint = array_map('trim', explode('<=>', $result[0]->drop_points));
+
+        if (!empty($bus_name[0])) {
+            foreach ($bus_name as $r) {
+
+
+                $row = array_map('trim', explode('<#>', $r));
+
+                $bus_names[] = array('bus' => $row[0]
+                );
+                $bus_types[] = array('bus_type' => $row[1]
+                );
+            }
+        } else {
+            $bus_names = array();
+            $bus_types = array();
+        }
+
+        foreach ($stoppoint as $spoint) {
+            $Spoint[] = array(
+                'Stop' => $spoint
+            );
+        }
+
+        foreach ($amenities as $amenitie) {
+            $Amenities[] = $amenitie;
+        }
+
+        foreach ($points as $point) {
+            $pointss[] = array(
+                'bpoints' => $point
+            );
+        }
+
+        $result['bus_names'] = $bus_names;
+        $result['bus_types'] = $bus_types;
+        $result['pointss'] = $pointss;
+        $result['Amenities'] = $Amenities;
+        $result['Stoppoint'] = $Spoint;
+
+        print json_encode($result);
+    }
+
+    public function rating_details() {
+        $data = file_get_contents("php://input");
+        $request = json_decode($data);
+        $result = $this->Booking_model->rating_details($request);
+        print json_encode($result);
+    }
+
+    public function get_settings() {
+
+        $result = $this->Booking_model->select_settings();
+        print json_encode($result);
+    }
+
+    public function get_assistants() {
+        $data = file_get_contents("php://input");
+        $route = json_decode($data);
+        $result = $this->Booking_model->select_assistants($route->route_id);
+        print json_encode($result);
+    }
+
+}
