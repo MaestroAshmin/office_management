@@ -14,7 +14,7 @@
             }
           ?>
           <!-- Content Row -->
-            <form class="" action="<?php echo site_url();?>user/update_user/<?php echo $user_data['id']?>" method="post" enctype="multipart/form-data">
+            <form class="update_user_form" action="<?php echo site_url();?>user/update_user/<?php echo $user_data['id']?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" class="form-control" value ="<?php echo $user_data['id']?>">
                     
                     <div class="form-group">
@@ -87,6 +87,13 @@
                         <input type="radio" id="allow" name="allow" value="1" <?php echo ($user_data['allow_user_creation']==1) ? 'checked' : ''; ?>>
                         <label for="allow">Yes</label><br>
                         <input type="radio" id="dont_allow" name="allow" value="0" <?php echo ($user_data['allow_user_creation']==0) ? 'checked' : ''; ?>>
+                        <label for="dont_allow">No</label><br>
+                    </div>
+                    <div class="form-group">
+                        <label>Is the user allowed to approve Financial Inserts?  </label></br>
+                        <input type="radio" id="allow_approve" name="allow_approve" value="1">
+                        <label for="allow">Yes</label><br>
+                        <input type="radio" id="dont_allow_approve" name="allow_approve" value="0">
                         <label for="dont_allow">No</label><br>
                     </div>
                     <div class="form-group float-right">

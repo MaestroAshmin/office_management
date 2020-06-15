@@ -295,6 +295,9 @@ class User extends CI_Controller
 	public function add_user(){
 		if($_POST){
 			$data = $this->input->post();
+			if($data['user_type']!=4){
+				unset($data['department']);
+			}
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
 			$this->form_validation->set_rules("address","Address","required",array("required"=>"Please Enter Address"));
@@ -309,6 +312,8 @@ class User extends CI_Controller
 			$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
 			$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
 			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
+			$this->form_validation->set_rules("allow_approve","Allow_approve","required",array("required"=>"Please Select Allow Option"));
+
 
 			if($this->form_validation->run()==true)
 			{

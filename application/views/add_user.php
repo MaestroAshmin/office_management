@@ -91,6 +91,13 @@
                         <input type="radio" id="dont_allow" name="allow" value="0">
                         <label for="dont_allow">No</label><br>
                     </div>
+                    <div class="form-group">
+                        <label>Is the user allowed to approve Financial Inserts?  </label></br>
+                        <input type="radio" id="allow_approve" name="allow_approve" value="1">
+                        <label for="allow">Yes</label><br>
+                        <input type="radio" id="dont_allow_approve" name="allow_approve" value="0">
+                        <label for="dont_allow">No</label><br>
+                    </div>
                     <div class="form-group float-right">
                         <button class="btn btn-primary float-left">Add</button>
                     </div>
