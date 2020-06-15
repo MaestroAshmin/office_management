@@ -295,11 +295,35 @@ class User extends CI_Controller
 	public function add_user(){
 		if($_POST){
 			$data = $this->input->post();
-			$result = $this->user_model->add_user($data);
-			$roles = $this->user_model->view_roles();
-			if($result['status'] == 'success'){
-				$this->view_roles();
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
+			$this->form_validation->set_rules("address","Address","required",array("required"=>"Please Enter Address"));
+			$this->form_validation->set_rules("contact_person","ContactPerson","required",array("required"=>"Please Enter Contact"));
+			$this->form_validation->set_rules("contact_office","ContactOffice","required",array("required"=>"Please Enter Office Contact"));
+			$this->form_validation->set_rules("email","Email","required",array("required"=>"Please Enter Email"));
+			$this->form_validation->set_rules("email_office","EmailOffice","required",array("required"=>"Please Enter Office Email"));
+			$this->form_validation->set_rules("gender","Gender","required",array("required"=>"Please Select Your Gender"));
+			$this->form_validation->set_rules("password","Password","required|min_length[8]",array("required"=>"Please Enter Password","min_length"=>"Password must contain at least 8 character"));
+			$this->form_validation->set_rules("join_date","JoinDate","required",array("required"=>"Please Select Join Date"));
+			$this->form_validation->set_rules("user_type","UserType","required",array("required"=>"Please Select User Type"));
+			$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
+			$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
+			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
+
+			if($this->form_validation->run()==true)
+			{
+				$result = $this->user_model->add_user($data);
+
+				if($result['status'] == 'success'){
+					$this->view_roles();
+				}
+			}else
+			{
+				$this->session->set_flashdata("error",$this->form_validation->error_array());
+				redirect("user/add_user");
 			}
+			
+			
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -326,22 +350,47 @@ class User extends CI_Controller
 		$result = $this->user_model->get_designations($dept);
 		print_r(json_encode($result));exit;
 	}
+	
 	public function update_user($id){
 		if($_POST){
 			$data = $this->input->post();
-			$result = $this->user_model->update_user($data);
-			$roles = $this->user_model->view_roles();
-			if($result['status'] == 'success'){
-				$this->view_roles();
-				$this->load->view('includes/template',$data);
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
+			$this->form_validation->set_rules("address","Address","required",array("required"=>"Please Enter Address"));
+			$this->form_validation->set_rules("contact_person","ContactPerson","required",array("required"=>"Please Enter Contact"));
+			$this->form_validation->set_rules("contact_office","ContactOffice","required",array("required"=>"Please Enter Office Contact"));
+			$this->form_validation->set_rules("email","Email","required",array("required"=>"Please Enter Email"));
+			$this->form_validation->set_rules("email_office","EmailOffice","required",array("required"=>"Please Enter Office Email"));
+			$this->form_validation->set_rules("gender","Gender","required",array("required"=>"Please Select Your Gender"));
+			$this->form_validation->set_rules("password","Password","required|min_length[8]",array("required"=>"Please Enter Password","min_length"=>"Password must contain at least 8 character"));
+			$this->form_validation->set_rules("join_date","JoinDate","required",array("required"=>"Please Select Join Date"));
+			$this->form_validation->set_rules("user_type","UserType","required",array("required"=>"Please Select User Type"));
+			$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
+			$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
+			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
+
+			if($this->form_validation->run()==true)
+			{
+				$result = $this->user_model->update_user($data);
+
+				if($result['status'] == 'success'){
+					$this->view_roles();
+					$this->load->view('includes/template',$data);
+				}
+				if($result['status'] == 'failed'){
+					$data = array(
+						'title' 		=> 'Update',
+						'main_content'	=> 'update_role',
+					);
+					$this->load->view('includes/template',$data);
+				}
+
+			}else
+			{
+				$this->session->set_flashdata("error",$this->form_validation->error_array());
+				redirect("user/update_user/$id");
 			}
-			if($result['status'] == 'failed'){
-				$data = array(
-					'title' 		=> 'Update',
-					'main_content'	=> 'update_role',
-				);
-				$this->load->view('includes/template',$data);
-			}
+			
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
