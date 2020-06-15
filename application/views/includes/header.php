@@ -85,7 +85,7 @@
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="<?php echo site_url();?>user/view_roles">View Roles</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/add_role">View Role</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/add_role">View User Type</a>
               <a class="collapse-item" href="<?php echo site_url();?>user/add_user">Add User</a>
 
             </div>

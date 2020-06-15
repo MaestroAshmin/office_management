@@ -61,26 +61,32 @@
                     </div>
                     <div class="form-group">
                         <label>User Type</label>
-                        <select id="user_type-edit" name="user_type">
-                        <?php foreach ($roles as $role) {?>
-                            <option value ="<?php echo $role['role_id']?>" <?php echo ($role['role_id'] == $user_data['role']) ? 'selected' : ''; ?>><?php echo $role['user_type']?></option>
-                        <?php }?>
-                        </select>
+                        <div>
+                            <select id="user_type-edit" name="user_type">
+                                <?php foreach ($roles as $role) {?>
+                                    <option value ="<?php echo $role['role_id']?>" <?php echo ($role['role_id'] == $user_data['role']) ? 'selected' : ''; ?>><?php echo $role['user_type']?></option>
+                                <?php }?>
+                            </select>
+                        </div>
                     </div>
                         <div class="form-group department-edit">
                             <label>Department</label>
-                            <select id="department-edit" name="department">
-                            <?php foreach ($departments as $department) {?>
-                                <option value ="<?php echo $department['id']?>"  <?php echo ($department['id'] == $user_data['dept_id']) ? 'selected' : ''; ?>><?php echo $department['Name']?></option>
-                            <?php }?>
-                            </select>
+                            <div>
+                                <select id="department-edit" name="department">
+                                    <?php foreach ($departments as $department) {?>
+                                        <option value ="<?php echo $department['id']?>"  <?php echo ($department['id'] == $user_data['dept_id']) ? 'selected' : ''; ?>><?php echo $department['Name']?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
                         </div>
         
                         <div class="form-group designation-edit">
                             <label>Designation</label>
                             <input type="hidden" id="des_user" value="<?php echo $user_data['des_id']; ?>">
-                            <select id="designation-edit" name="designation">
-                            </select>
+                            <div>
+                                <select id="designation-edit" name="designation">
+                                </select>
+                            </div>
                         </div>
                     <div class="form-group">
                         <label>Allow User Creation </label></br>
