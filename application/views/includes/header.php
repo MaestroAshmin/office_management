@@ -94,21 +94,32 @@
       <?php }?>
       
       <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
             <i class="fas fa-user"></i>
             <span>Marketing Section</span>
           </a>
           <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="<?php echo site_url();?>user/contact_management">Contact Management</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/activities_report">Activities Report</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/generate_report">Activities Report</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/activities_report">Activities Report</a>
-
-
+              <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContent">Contact Management</a>
+              <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivity">Activities Report</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/generate_report">Generate Report</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/gross_report">Gross Report</a>
+            </div>
+          </div>
+          <div id="collapseContact" class="collapse" aria-labelledby="headingContent" data-parent="#accordionSidebar">
+            <div class="bg-white py-1 collapse-inner rounded">
+              <a class="collapse-item" href="<?php echo site_url();?>user/view_contact">View Contacts</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/add_contact">Add Contact</a>
+            </div>
+          </div>
+          <div id="collapseActivity" class="collapse" aria-labelledby="headingActivity" data-parent="#accordionSidebar">
+            <div class="bg-white py-1 collapse-inner rounded">
+              <a class="collapse-item" href="<?php echo site_url();?>user/view_activity">View Tasks</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/add_daily_task">Add Daily Activity</a>
             </div>
           </div>
         </li>
+        
     </ul>
     <!-- End of Sidebar -->
      <!-- Content Wrapper -->

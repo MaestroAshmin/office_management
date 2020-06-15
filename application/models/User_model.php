@@ -178,4 +178,70 @@ class User_model extends CI_Model{
               }
               return $result;
        }
+       public function add_daily_task($data){
+              try{
+                     $insertData = [
+                         'user_id' => $data['user_id'],
+                         'entry_date' => $data['entry_date'],
+                         'task_undertaken' => $data['task_undertaken'],
+                         'progress' => $data['progress'],
+                         'remarks' => $data['remarks'],
+                     ];
+                     $this->db->insert('tbl_activity',$insertData);
+                     $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
+                 }
+                 catch(Exception $e){
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+                 }
+                 return $result_status;
+       }
+       public function is_head($user_id){
+              $this->db->select('tbl_designation.is_head')->from('tbl_designation');
+              $this->db->join('tbl_users','tbl_users.des_id=tbl_designation.id')->where('tbl_users.id',$user_id);
+              $query = $this->db->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function find_dept($user_id){
+              $this->db->select('dept_id')->from('tbl_users')->where('tbl_users.id',$user_id);
+              $query = $this->db->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function view_activity($user_id,$is_head,$dept){
+              if($user_id==1){
+                     $this->db->select('tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
+                     $this->db->join('tbl_users','tbl_users.id = a.user_id');
+              }
+              else{
+                     if($is_head[0]['is_head']==0){
+                            $this->db->select('tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
+                            $this->db->join('tbl_users','tbl_users.id = a.user_id');
+                            $this->db->where('a.user_id',$user_id);
+                     }
+                     else{
+                            $this->db->distinct()->select('tbl_users.name,tbl_users.dept_id, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
+                            $this->db->join('tbl_users','tbl_users.id = a.user_id');
+                            $this->db->join('tbl_designation','tbl_designation.department_id=tbl_users.dept_id');
+                            $this->db->where('tbl_users.dept_id',$dept[0]['dept_id']);
+                     }
+                     
+              }
+              
+              $query = $this->db->get();
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
 }

@@ -399,6 +399,52 @@ class User extends CI_Controller
 			$this->view();
 		}
 	}
+	public function view_activity(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$is_head = $this->user_model->is_head($user_id);
+		$dept = $this->user_model->find_dept($user_id);
+		$activity = $this->user_model->view_activity($user_id,$is_head,$dept);
+		$data = array(
+			'title' 		=> 'View Activity',
+			'main_content'	=> 'view_activity',
+			'role' 			=> $user_role,
+			'activity'		=> $activity,
+		);
+		$this->load->view('includes/template', $data);
+	}
+	public function add_daily_task(){
+		if($_POST){
+			$data = $this->input->post();
+			$result = $this->user_model->add_daily_task($data);
+			if($result['status'] == 'success'){
+				$this->view_activity();
+			}
+			if($result['status'] == 'failed'){
+				$this->view_activity();
+			}
+		}
+		else{
+			if($this->session->userdata('user_logged_in') != '1'){
+				redirect('user', 'refresh');
+			}
+			$sess_data = $this->session->all_userdata();
+			$user_id   = $sess_data['user_id'];
+			$user_role = $sess_data['user_role'];
+			$data = array(
+				'title' 		=> 'Add Activity',
+				'main_content'	=> 'add_daily_task',
+				'user_id'	=> $user_id,
+				'role' 			=> $user_role
+			);
+			$this->load->view('includes/template', $data);
+		}
+			
+	}
 	public function logout(){
 
 		$sess_data = array(
