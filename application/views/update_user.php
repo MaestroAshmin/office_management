@@ -14,7 +14,7 @@
             }
           ?>
           <!-- Content Row -->
-            <form class="" action="<?php echo site_url();?>user/update_user/<?php echo $user_data['id']?>" method="post" enctype="multipart/form-data">
+            <form class="update_user_form" action="<?php echo site_url();?>user/update_user/<?php echo $user_data['id']?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" class="form-control" value ="<?php echo $user_data['id']?>">
                     
                     <div class="form-group">
