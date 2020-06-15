@@ -56,8 +56,17 @@ class User_model extends CI_Model{
                      $insertData = [
                          'name' => $data['name'],
                          'email' => $data['email'],
+                         'address' => $data['address'],
+                         'personal_no' => $data['contact_person'],
+                         'office_no' => $data['contact_office'],
+                         'email_office' => $data['email_office'],
+                         'Gender' => $data['gender'],
+                         'join_date' => $data['join_date'],
                          'password' => md5($data['password']),
                          'role' => $data['user_type'],
+                         'dept_id' => $data['department'],
+                         'des_id' => $data['designation'],
+                         'allow_user_creation' => $data['allow'],
 
                      ];
                      $this->db->insert('tbl_users',$insertData);
@@ -69,22 +78,42 @@ class User_model extends CI_Model{
                  return $result_status;
        }
        public function update_user($update_data){
+              echo'<pre>';print_r($update_data);exit;
               try{
-                     if(!empty($update_data['password'])){
+                     if(!empty($data['password'])){
                             $data = array(
                                    'name' => $update_data['name'],
                                    'email' => $update_data['email'],
+                                   'address' => $update_data['address'],
+                                   'personal_no' => $update_data['contact_person'],
+                                   'office_no' => $update_data['contact_office'],
+                                   'email_office' => $update_data['email_office'],
+                                   'Gender' => $update_data['gender'],
+                                   'join_date' => $update_data['join_date'],
                                    'password' => md5($update_data['password']),
                                    'role' => $update_data['user_type'],
+                                   'dept_id' => $data['department'],
+                                   // 'des_id' => $data['designation'],
+                                   'allow_user_creation' => $update_data['allow'],
                             );
                      }
                      else{
                             $data = array(
                                    'name' => $update_data['name'],
                                    'email' => $update_data['email'],
+                                   'address' => $update_data['address'],
+                                   'personal_no' => $update_data['contact_person'],
+                                   'office_no' => $update_data['contact_office'],
+                                   'email_office' => $update_data['email_office'],
+                                   'Gender' => $update_data['gender'],
+                                   'join_date' => $update_data['join_date'],
                                    'role' => $update_data['user_type'],
+                                   'dept_id' => $update_data['department'],
+                                   // 'des_id' => $data['designation'],
+                                   'allow_user_creation' => $update_data['allow'],
                             );
                      }
+                     echo '<pre>';print_r($update_data);exit;
                      $this->db->where('ID',$update_data['id']);
                      $query = $this->db->update('tbl_users',$data);
                      $result_status = array('status' => 'success', 'message' =>"Successfully Edited transaction");
@@ -131,5 +160,22 @@ class User_model extends CI_Model{
                      return $result_status;
                  }
        }
-
+       public function get_departments(){
+              $query = $this->db->select('*')->from('tbl_department')->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function get_designations($dept){
+              $query = $this->db->select('des.id,designation')->from('tbl_designation as des')->join('tbl_department as dept','dept.id=des.department_id')->where('dept.id',$dept['id'])->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
 }

@@ -56,27 +56,24 @@
                         <?php }?>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group department">
                         <label>Department</label>
                         <select id="department" name="department">
-                        <?php foreach ($roles as $role) {?>
-                            <option value ="<?php echo $role['role_id']?>"><?php echo $role['user_type']?></option>
+                        <?php foreach ($departments as $department) {?>
+                            <option value ="<?php echo $department['id']?>"><?php echo $department['Name']?></option>
                         <?php }?>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group designation">
                         <label>Designation</label>
                         <select id="designation" name="designation">
-                        <?php foreach ($roles as $role) {?>
-                            <option value ="<?php echo $role['role_id']?>"><?php echo $role['user_type']?></option>
-                        <?php }?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Allow User Creation </label></br>
                         <input type="radio" id="allow" name="allow" value="1">
                         <label for="allow">Yes</label><br>
-                        <input type="radio" id="allow" name="dont_allow" value="0">
+                        <input type="radio" id="dont_allow" name="allow" value="0">
                         <label for="dont_allow">No</label><br>
                     </div>
                     <div class="form-group float-right">

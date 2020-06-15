@@ -92,7 +92,20 @@
           </div>
         </li>
       <?php }?>
+      
+      <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-user"></i>
+            <span>Marketing Report</span>
+          </a>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="<?php echo site_url();?>user/view_report">View Report</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/add_report">Add Report</a>
 
+            </div>
+          </div>
+        </li>
     </ul>
     <!-- End of Sidebar -->
      <!-- Content Wrapper -->

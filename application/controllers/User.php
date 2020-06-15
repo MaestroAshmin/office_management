@@ -228,7 +228,7 @@ class User extends CI_Controller
 			'title' 		=> 'View',
 			'main_content'	=> 'view_roles',
 			'roles'	=> $roles,
-			'role'	=>$user_role
+			'role'	=>$user_role,
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -292,16 +292,10 @@ class User extends CI_Controller
 	public function add_user(){
 		if($_POST){
 			$data = $this->input->post();
-			echo '<pre>';print_r($data);exit;
 			$result = $this->user_model->add_user($data);
 			$roles = $this->user_model->view_roles();
 			if($result['status'] == 'success'){
-				$data = array(
-					'title' 		=> 'View',
-					'main_content'	=> 'view_roles',
-					'roles'	=> $roles
-				);
-				$this->load->view('includes/template',$data);
+				$this->view_roles();
 			}
 		}
 		else{
@@ -311,17 +305,23 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
-
+			$departments = $this->user_model->get_departments();
 			$roles = $this->user_model->get_roles();
 			$data = array(
 				'title' 		=> 'Add',
 				'main_content'	=> 'add_user',
 				'roles' => $roles,
-				'role'	=> $user_role
+				'role'	=> $user_role,
+				'departments' => $departments
 			);
 			$this->load->view('includes/template', $data);
 		}
 		
+	}
+	public function get_designations(){
+		$dept = $this->input->post();
+		$result = $this->user_model->get_designations($dept);
+		print_r(json_encode($result));exit;
 	}
 	public function update_user($id){
 		if($_POST){
@@ -329,12 +329,7 @@ class User extends CI_Controller
 			$result = $this->user_model->update_user($data);
 			$roles = $this->user_model->view_roles();
 			if($result['status'] == 'success'){
-				$data = array(
-					'title' 		=> 'View',
-					'main_content'	=> 'view_roles',
-					'roles' => $roles
-				);
-				
+				$this->view_roles();
 				$this->load->view('includes/template',$data);
 			}
 			if($result['status'] == 'failed'){
@@ -355,12 +350,14 @@ class User extends CI_Controller
 
 			$user_data = $this->user_model->get_user_data($id);
 			$roles = $this->user_model->get_roles();
+			$departments = $this->user_model->get_departments();
 			$data = array(
 				'title' 		=> 'Update',
 				'main_content'	=> 'update_user',
 				'user_data' => $user_data,
 				'roles' => $roles,
-				'role'	=> $user_role
+				'role'	=> $user_role,
+				'departments' => $departments
 			);
 			$this->load->view('includes/template', $data);
 		}

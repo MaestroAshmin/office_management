@@ -1089,4 +1089,113 @@ function callAutocomplete(field_id){
     var modal = $(this);
     modal.find('.modal-content img').attr('src',url+'/acc/images/'+recipient);
   });
+  $("#user_type").change(function(){
+    var user_type = $(this).children("option:selected").val();
+    if(user_type==4){
+      $(".department").show();
+    }
+    else{
+      $(".department").hide();
+      $(".designation").hide();
+    }
+  });
+  $("#department").change(function(){
+    var val = $('option:selected', this).attr('value');
+    $.ajax({
+      url: "get_designations",
+      data:{
+        'id': val
+      },
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+        $(".designation").show();
+        $.each( objects, function( key, value ){
+          $('#designation').append("<option value ="+value.id+">"+ value.designation +"</option>");
+        });
+      }
+    });
+  });
+  $("#user_type-edit").change(function(){
+    var user_type = $(this).children("option:selected").val();
+    if(user_type==4){
+      $(".department-edit").show();
+    }
+    else{
+      $(".department-edit").hide();
+      $(".designation-edit").hide();
+    }
+  });
+  $("#department-edit").change(function(){
+    base_url = window.location.origin;
+    var val = $('option:selected', this).attr('value');
+    $.ajax({
+      url: base_url + "/acc/user/get_designations",
+      data:{
+        'id': val
+      },
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+        $(".designation-edit").show();
+        $.each( objects, function( key, value ){
+          $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");
+        });
+      }
+    });
+  });
 }
+$(document).ready(function(){
+var val = $("#user_type-edit").children("option:selected").val();
+if(val != 4){
+  $(".department").hide();
+  $(".designation").hide();
+  $(".department-edit").hide();
+  $(".designation-edit").hide();
+  $("#user_type-edit").change(function(){
+    var user_type = $(this).children("option:selected").val();
+    if(user_type==4){
+      $(".department-edit").show();
+    }
+    else{
+      $(".department-edit").hide();
+      $(".designation-edit").hide();
+    }
+  });
+}
+else{
+  $(".department-edit").show();
+  var dept = $("#department-edit").children("option:selected").val();
+  base_url = window.location.origin;
+    var val = $('option:selected', this).attr('value');
+    $.ajax({
+      url: base_url + "/acc/user/get_designations",
+      data:{
+        'id': dept
+      },
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+        $(".designation-edit").show();
+        $.each( objects, function( key, value ){
+          $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");
+        });
+      }
+    });
+}
+  // $(".department").hide();
+  // $(".designation").hide();
+  // $(".department-edit").hide();
+  // $(".designation-edit").hide();
+  // $("#user_type-edit").change(function(){
+  //   var user_type = $(this).children("option:selected").val();
+  //   if(user_type==4){
+  //     $(".department-edit").show();
+  //   }
+  //   else{
+  //     $(".department-edit").hide();
+  //     $(".designation-edit").hide();
+  //   }
+  // });
+
+});
