@@ -70,6 +70,7 @@
         
                         <div class="form-group designation-edit">
                             <label>Designation</label>
+                            <input type="hidden" id="des_user" value="<?php echo $user_data['des_id']; ?>">
                             <select id="designation-edit" name="designation">
                             </select>
                         </div>

@@ -19,11 +19,15 @@ class User extends CI_Controller
 			'title' 		=> 'Login',
 		);
 
-		$this->load->view('page-user-login', $data);
+		if($this->session->userdata("user_logged_in")){
+			redirect('user/view', 'refresh');
+		}else{
+			$this->load->view('page-user-login', $data);
+
+		}
 	}
 
 	public function login(){
- 
 		if(isset($_POST['user_login'])){
 			$email 		= $this->input->post('email_address', true);
 			$password 	= $this->input->post('password', true);
@@ -35,11 +39,10 @@ class User extends CI_Controller
 						'user_fullname' 	=> $res['name'],
 						'user_role' 		=> $res['role'],
 						'user_logged_in'	=> 1
-
 				);
 				$this->session->set_userdata($sess_data);
 				redirect('user/view', 'refresh');
-			} else{
+			}else{
 				$this->session->set_flashdata('error', 'Invalid username or password');
 				redirect('user', 'refresh');
 			}

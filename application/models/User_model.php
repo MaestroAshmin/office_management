@@ -78,9 +78,8 @@ class User_model extends CI_Model{
                  return $result_status;
        }
        public function update_user($update_data){
-              echo'<pre>';print_r($update_data);exit;
               try{
-                     if(!empty($data['password'])){
+                     if(!empty($update_data['password'])){
                             $data = array(
                                    'name' => $update_data['name'],
                                    'email' => $update_data['email'],
@@ -92,8 +91,8 @@ class User_model extends CI_Model{
                                    'join_date' => $update_data['join_date'],
                                    'password' => md5($update_data['password']),
                                    'role' => $update_data['user_type'],
-                                   'dept_id' => $data['department'],
-                                   // 'des_id' => $data['designation'],
+                                   'dept_id' => $update_data['department'],
+                                   'des_id' => $update_data['designation'],
                                    'allow_user_creation' => $update_data['allow'],
                             );
                      }
@@ -109,11 +108,10 @@ class User_model extends CI_Model{
                                    'join_date' => $update_data['join_date'],
                                    'role' => $update_data['user_type'],
                                    'dept_id' => $update_data['department'],
-                                   // 'des_id' => $data['designation'],
+                                   'des_id' => $update_data['designation'],
                                    'allow_user_creation' => $update_data['allow'],
                             );
                      }
-                     echo '<pre>';print_r($update_data);exit;
                      $this->db->where('ID',$update_data['id']);
                      $query = $this->db->update('tbl_users',$data);
                      $result_status = array('status' => 'success', 'message' =>"Successfully Edited transaction");
