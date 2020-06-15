@@ -5,8 +5,17 @@
             <h1 class="h3 mb-0 text-gray-800">Add</h1>
           </div>
 
+          <?php
+            if($this->session->flashdata("error"))
+            {
+                foreach($this->session->flashdata("error") as $error){
+                    echo '<p class="error">*'.$error.'</p>';
+                }
+            }
+          ?>
+
           <!-- Content Row -->
-            <form action="<?php echo site_url();?>user/add_user" method="post" enctype="multipart/form-data">
+            <form class="add_user_form" action="<?php echo site_url();?>user/add_user" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" name="name" class="form-control">
@@ -46,28 +55,34 @@
                     </div>
                     <div class="form-group">
                         <label>Date of Join</label>
-                        <input type="text" id="join_date" name="join_date" class="form-control">
+                        <input type="text" id="join_date" name="join_date" class="form-control" style="width:100%;">
                     </div>
                     <div class="form-group">
                         <label>User Type</label>
-                        <select id="user_type" name="user_type">
-                        <?php foreach ($roles as $role) {?>
-                            <option value ="<?php echo $role['role_id']?>"><?php echo $role['user_type']?></option>
-                        <?php }?>
-                        </select>
+                        <div>
+                            <select id="user_type" name="user_type">
+                            <?php foreach ($roles as $role) {?>
+                                <option value ="<?php echo $role['role_id']?>"><?php echo $role['user_type']?></option>
+                            <?php }?>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group department">
                         <label>Department</label>
-                        <select id="department" name="department">
-                        <?php foreach ($departments as $department) {?>
-                            <option value ="<?php echo $department['id']?>"><?php echo $department['Name']?></option>
-                        <?php }?>
-                        </select>
+                        <div>
+                            <select id="department" name="department">
+                            <?php foreach ($departments as $department) {?>
+                                <option value ="<?php echo $department['id']?>"><?php echo $department['Name']?></option>
+                            <?php }?>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group designation">
                         <label>Designation</label>
-                        <select id="designation" name="designation">
-                        </select>
+                        <div>
+                            <select id="designation" name="designation">
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Allow User Creation </label></br>

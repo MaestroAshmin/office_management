@@ -1093,14 +1093,35 @@ function callAutocomplete(field_id){
     var user_type = $(this).children("option:selected").val();
     if(user_type==4){
       $(".department").show();
+    
+      var val = $('option:selected', '.department').attr('value');
+      $.ajax({
+        url: "get_designations",
+        data:{
+          'id': val
+        },
+        type: "post",
+        success: function(data){
+          let objects = JSON.parse(data);
+          $(".designation").show();
+          $.each( objects, function( key, value ){
+            $('#designation').append("<option value ="+value.id+">"+ value.designation +"</option>");
+          });
+        }
+      });
+
     }
     else{
       $(".department").hide();
       $(".designation").hide();
     }
   });
+
   $("#department").change(function(){
     var val = $('option:selected', this).attr('value');
+    
+    $('#designation').empty();
+
     $.ajax({
       url: "get_designations",
       data:{
@@ -1116,19 +1137,23 @@ function callAutocomplete(field_id){
       }
     });
   });
+
   $("#user_type-edit").change(function(){
     var user_type = $(this).children("option:selected").val();
     if(user_type==4){
       $(".department-edit").show();
+      $(".designation-edit").show();
     }
     else{
       $(".department-edit").hide();
       $(".designation-edit").hide();
     }
   });
+
   $("#department-edit").change(function(){
     base_url = window.location.origin;
     var val = $('option:selected', this).attr('value');
+    $('#designation-edit').empty();
     $.ajax({
       url: base_url + "/acc/user/get_designations",
       data:{
@@ -1138,8 +1163,14 @@ function callAutocomplete(field_id){
       success: function(data){
         let objects = JSON.parse(data);
         $(".designation-edit").show();
+
+        var des_user = $("#des_user").val();
         $.each( objects, function( key, value ){
-          $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");
+          if(des_user==value.id){
+            $('#designation-edit').append("<option value ="+value.id+" selected>"+ value.designation +"</option>");
+          }else{
+            $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");            
+          }
         });
       }
     });
@@ -1177,8 +1208,13 @@ else{
       success: function(data){
         let objects = JSON.parse(data);
         $(".designation-edit").show();
+        var des_user = $("#des_user").val();
         $.each( objects, function( key, value ){
-          $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");
+          if(des_user==value.id){
+            $('#designation-edit').append("<option value ="+value.id+" selected>"+ value.designation +"</option>");
+          }else{
+            $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");            
+          }
         });
       }
     });
