@@ -270,6 +270,7 @@ class User extends CI_Controller
 			$this->load->view('includes/template', $data);
 		}
 	}
+
 	public function delete_role($id){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
@@ -292,6 +293,7 @@ class User extends CI_Controller
 			$this->view();
 		}
 	}
+	
 	public function add_user(){
 		if($_POST){
 			$data = $this->input->post();

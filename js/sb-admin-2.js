@@ -1089,6 +1089,7 @@ function callAutocomplete(field_id){
     var modal = $(this);
     modal.find('.modal-content img').attr('src',url+'/acc/images/'+recipient);
   });
+
   $("#user_type").change(function(){
     var user_type = $(this).children("option:selected").val();
     if(user_type==4){
@@ -1142,7 +1143,30 @@ function callAutocomplete(field_id){
     var user_type = $(this).children("option:selected").val();
     if(user_type==4){
       $(".department-edit").show();
-      $(".designation-edit").show();
+      
+    base_url = window.location.origin;
+    var val = $('option:selected', '#department-edit').attr('value');
+      $('#designation-edit').empty();
+      $.ajax({
+        url: base_url + "/acc/user/get_designations",
+        data:{
+          'id': val
+        },
+        type: "post",
+        success: function(data){
+          let objects = JSON.parse(data);
+          $(".designation-edit").show();
+  
+          var des_user = $("#des_user").val();
+          $.each( objects, function( key, value ){
+            if(des_user==value.id){
+              $('#designation-edit').append("<option value ="+value.id+" selected>"+ value.designation +"</option>");
+            }else{
+              $('#designation-edit').append("<option value ="+value.id+">"+ value.designation +"</option>");            
+            }
+          });
+        }
+      });
     }
     else{
       $(".department-edit").hide();
@@ -1176,6 +1200,7 @@ function callAutocomplete(field_id){
     });
   });
 }
+
 $(document).ready(function(){
 var val = $("#user_type-edit").children("option:selected").val();
 if(val != 4){
@@ -1183,16 +1208,6 @@ if(val != 4){
   $(".designation").hide();
   $(".department-edit").hide();
   $(".designation-edit").hide();
-  $("#user_type-edit").change(function(){
-    var user_type = $(this).children("option:selected").val();
-    if(user_type==4){
-      $(".department-edit").show();
-    }
-    else{
-      $(".department-edit").hide();
-      $(".designation-edit").hide();
-    }
-  });
 }
 else{
   $(".department-edit").show();
@@ -1233,5 +1248,102 @@ else{
   //     $(".designation-edit").hide();
   //   }
   // });
+
+
+  //add user form validation
+  
+  $('.add_user_form').validate({
+    rules:{
+        name              : "required",
+        address           : "required",
+        contact_person    : "required",
+        contact_office    : "required",
+        email             : "required",
+        email_office      : "required",
+        gender            : "required",
+        password          : {
+                                required  : true,
+                                minlength : 8
+                            },
+        join_date         : "required",
+        user_type         : "required",
+        department        : "required",
+        designation       : "required",
+        allow             : "required"
+    },
+    messages:{
+        name              : "Please Enter Name",
+        address           : "Please Enter Address",
+        contact_person    : "Please provide your contact",
+        contact_office    : "Please provide your office contact",
+        email             : "Please Enter Email",
+        email_office      : "Please Enter Office Email",
+        gender            : "Please select Your Gender",
+        password:{
+            required: "Please enter password",
+            minlength: "Password must contain at least 8 characters"
+        },
+        join_date         : "Please provide your join date",
+        user_type         : "Please Select User Type",
+        department        : "Please Select Department",
+        designation       : "Please Select Designation",
+        allow           : "Please Select Allow Option"
+    },
+    errorPlacement: function(error, element) {
+      if(element.parent('.form-control')) {
+          error.insertAfter(element.parent());
+      } else {
+          error.insertAfter(element);
+      }
+    },
+});
+
+//update user form validation
+  
+$('.update_user_form').validate({
+  rules:{
+      name              : "required",
+      address           : "required",
+      contact_person    : "required",
+      contact_office    : "required",
+      email             : "required",
+      email_office      : "required",
+      gender            : "required",
+      password          : {
+                              required  : true,
+                              minlength : 8
+                          },
+      join_date         : "required",
+      user_type         : "required",
+      department        : "required",
+      designation       : "required",
+      allow             : "required"
+  },
+  messages:{
+      name              : "Please Enter Name",
+      address           : "Please Enter Address",
+      contact_person    : "Please provide your contact",
+      contact_office    : "Please provide your office contact",
+      email             : "Please Enter Email",
+      email_office      : "Please Enter Office Email",
+      gender            : "Please select Your Gender",
+      password:{
+          required: "Please enter password",
+          minlength: "Password must contain at least 8 characters"
+      },
+      join_date         : "Please provide your join date",
+      user_type         : "Please Select User Type",
+      department        : "Please Select Department",
+      designation       : "Please Select Designation",
+      allow           : "Please Select Allow Option"
+  },
+  errorPlacement: function(error, element) {
+    if(element.parent('.form-control')) {
+        error.insertAfter(element.parent());
+    } else {
+        error.insertAfter(element);
+    }
+  },
+});
 
 });
