@@ -102,6 +102,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContent">Contact Management</a>
               <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivity">Activities Report</a>
+              <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTarget">Target Report</a>
+
               <a class="collapse-item" href="<?php echo site_url();?>user/generate_report">Generate Report</a>
               <a class="collapse-item" href="<?php echo site_url();?>user/gross_report">Gross Report</a>
             </div>
@@ -116,6 +118,12 @@
             <div class="bg-white py-1 collapse-inner rounded">
               <a class="collapse-item" href="<?php echo site_url();?>user/view_activity">View Tasks</a>
               <a class="collapse-item" href="<?php echo site_url();?>user/add_daily_task">Add Daily Activity</a>
+            </div>
+          </div>
+          <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionSidebar">
+            <div class="bg-white py-1 collapse-inner rounded">
+              <a class="collapse-item" href="<?php echo site_url();?>user/view_target">View Target</a>
+              <a class="collapse-item" href="<?php echo site_url();?>user/add_target">Add Target</a>
             </div>
           </div>
         </li>

@@ -242,4 +242,49 @@ class User_model extends CI_Model{
               }
               return $result;
        }
+       public function get_all_users(){
+              $query = $this->db->select('id,name')->from('tbl_users')->where('dept_id',2)->get();
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function add_target($data){
+              try{
+                     $this->db->insert('tbl_target',$data);
+                     $result_status = array('status' => 'success', 'message' =>"Successfully added Target");
+              }
+              catch (Exception $e){
+                     $result_status = array('status' => 'failed', 'message' =>"Cannot add Target");
+              }
+              return $result_status;
+       }
+       public function get_targets($user_id,$is_head,$dept){
+              if($user_id==1){
+                     $this->db->select('*')->from('tbl_target as a')->order_by('created_at', 'DESC');
+              }
+              else{
+                     if($is_head[0]['is_head']==0){
+                            $this->db->select('*')->from('tbl_target as a');
+                            $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
+                            $this->db->where('a.assigned_to',$user_id)->order_by('a.created_at', 'DESC');
+                     }
+                     else{
+                            $this->db->distinct()->select('*')->from('tbl_target as a');
+                            $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
+                            $this->db->where('tbl_users.dept_id',$dept[0]['dept_id'])->order_by('a.created_at', 'DESC');
+                     }
+                     
+              }
+              $query = $this->db->get();
+              // echo '<pre>';print_r($this->db->last_query());exit;
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
 }

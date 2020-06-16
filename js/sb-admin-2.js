@@ -1234,21 +1234,6 @@ else{
       }
     });
 }
-  // $(".department").hide();
-  // $(".designation").hide();
-  // $(".department-edit").hide();
-  // $(".designation-edit").hide();
-  // $("#user_type-edit").change(function(){
-  //   var user_type = $(this).children("option:selected").val();
-  //   if(user_type==4){
-  //     $(".department-edit").show();
-  //   }
-  //   else{
-  //     $(".department-edit").hide();
-  //     $(".designation-edit").hide();
-  //   }
-  // });
-
 
   //add user form validation
   
@@ -1345,5 +1330,18 @@ $('.update_user_form').validate({
     }
   },
 });
-
+  if($("#assigned_to").length >= 1){
+    base_url = window.location.origin;
+    $.ajax({
+      url: base_url + "/acc/user/get_all_users",
+      type: 'post',
+      success: function(response){
+        let objects = JSON.parse(response);
+        console.log(objects);
+        $.each(objects, function( key, value ){
+            $('#assigned_to').append("<option value ="+value.id+">"+ value.name +"</option>");
+        });
+      }
+    });
+  }
 });

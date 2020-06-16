@@ -504,6 +504,103 @@ class User extends CI_Controller
 		}
 			
 	}
+	public function view_contact(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		// $is_head = $this->user_model->is_head($user_id);
+		// $dept = $this->user_model->find_dept($user_id);
+		// $activity = $this->user_model->view_activity($user_id,$is_head,$dept);
+		$data = array(
+			'title' 		=> 'View Contact Management',
+			'main_content'	=> 'view_contact_management',
+			'role' 			=> $user_role,
+			// 'activity'		=> $activity,
+		);
+		$this->load->view('includes/template', $data);
+	}
+	public function add_contact(){
+		if($_POST){
+			$data = $this->input->post();
+			$result = $this->user_model->add_daily_task($data);
+			if($result['status'] == 'success'){
+				$this->view_contact();
+			}
+			if($result['status'] == 'failed'){
+				$this->view_contact();
+			}
+		}
+		else{
+			if($this->session->userdata('user_logged_in') != '1'){
+				redirect('user', 'refresh');
+			}
+			$sess_data = $this->session->all_userdata();
+			$user_id   = $sess_data['user_id'];
+			$user_role = $sess_data['user_role'];
+			$data = array(
+				'title' 		=> 'Add Contacts',
+				'main_content'	=> 'add_contact',
+				'user_id'	=> $user_id,
+				'role' 			=> $user_role
+			);
+			$this->load->view('includes/template', $data);
+		}
+			
+	}
+	public function view_target(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$is_head = $this->user_model->is_head($user_id);
+		$dept = $this->user_model->find_dept($user_id);
+		$targets = $this->user_model->get_targets($user_id,$is_head,$dept);
+		$data = array(
+			'title' 		=> 'View Target',
+			'main_content'	=> 'view_target',
+			'role' 			=> $user_role,
+			'targets'		=> $targets
+		);
+		echo '<pre>';print_r($data);exit;
+		$this->load->view('includes/template', $data);
+	}
+	public function add_target(){
+		if($_POST){
+			$data = $this->input->post();
+			$result = $this->user_model->add_target($data);
+			if($result['status'] == 'success'){
+				$this->view_target();
+			}
+			if($result['status'] == 'failed'){
+				$this->view_target();
+			}
+		}
+		else{
+			if($this->session->userdata('user_logged_in') != '1'){
+				redirect('user', 'refresh');
+			}
+			$sess_data = $this->session->all_userdata();
+			$user_id   = $sess_data['user_id'];
+			$user_role = $sess_data['user_role'];
+			$data = array(
+				'title' 		=> 'Add Contacts',
+				'main_content'	=> 'add_target',
+				'user_id'	=> $user_id,
+				'role' 			=> $user_role
+			);
+			$this->load->view('includes/template', $data);
+		}
+			
+	}
+	public function get_all_users(){
+		$result = $this->user_model->get_all_users();
+		print_r(json_encode($result));
+	}
 	public function logout(){
 
 		$sess_data = array(
