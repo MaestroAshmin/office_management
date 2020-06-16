@@ -279,7 +279,6 @@ class User_model extends CI_Model{
                      
               }
               $query = $this->db->get();
-              // echo '<pre>';print_r($this->db->last_query());exit;
               if ($query) {
               $result = $query->result_array();
               } else {
