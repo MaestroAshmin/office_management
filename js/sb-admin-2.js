@@ -1253,6 +1253,36 @@ else{
 }
 
   //add user form validation
+    
+  base_url = window.location.origin;
+  $('.add_role_form').validate({
+    rules:{
+        user_type : {
+            required :  true,
+            remote: {
+              url: base_url+"/acc/user/check_role",
+              type: "post",
+              data: {
+                  user_type : function () {
+                      return $("#user_type").val();
+                  }
+              }
+            }
+        }
+    },
+    messages:{
+        user_type : {
+          required : "Please Enter Role",
+          remote   : "Role Already Exits"
+        }
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+
+
+  //add user form validation
   
   $('.add_user_form').validate({
     rules:{

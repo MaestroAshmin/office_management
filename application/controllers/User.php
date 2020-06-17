@@ -235,22 +235,40 @@ class User extends CI_Controller
 		);
 		$this->load->view('includes/template', $data);
 	}
+	public function check_role(){
+		$data = $this->input->post();
+		$result = $this->user_model->check_role($data);
+		if ($result == TRUE)
+        {
+            echo json_encode(FALSE);
+        }
+        else
+        {
+            echo json_encode(TRUE);
+        }
+	}
 	public function add_role(){
 		if($_POST){
 			$data = $this->input->post();
-			$result = $this->user_model->add_role($data);
-			$roles = $this->user_model->get_roles();
+			
+			if(!isset($data["user_type"]) || $data["user_type"]==NULL){
+				$this->session->set_flashdata("error",array("empty_value"=>"Please Enter Role"));
+				redirect("user/add_role");
+			}
 
-			if($result['status'] == 'success'){
-				$this->view_roles();
+			if($this->user_model->check_role($data)){
+				$this->session->set_flashdata("error",array("duplicate_entry"=>"The role already exists."));
+				redirect("user/add_role");
+			}else{
+				$result = $this->user_model->add_role($data);
 			}
+		
 			if($result['status'] == 'failed'){
-				$data = array(
-					'title' 		=> 'Add',
-					'main_content'	=> 'add_role',
-				);
-				$this->load->view('includes/template',$data);
+				$this->session->set_flashdata("error",array("error_adding"=>"Adding Failed Error Occured"));
+				redirect("user/add_role");
 			}
+
+			redirect('user/add_role', 'refresh');
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -279,19 +297,13 @@ class User extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
 		$result = $this->user_model->delete_role($id);
-		$roles = $this->user_model->get_roles();
-		if($result['status'] == 'success'){
-			$data = array(
-				'title' 		=> 'Add',
-				'main_content'	=> 'add_role',
-				'roles'	=> $roles,
-				'role'	=>$user_role
-			);
-			$this->load->view('includes/template',$data);
-		}
+	
 		if($result['status'] == 'failed'){
-			$this->view();
-		}
+			$this->session->set_flashdata("error",array("error_delete"=>"Delete Failed Error Occured"));
+			redirect("user/add_role");		}
+
+		
+		redirect('user/add_role', 'refresh');
 	}
 	
 	public function add_user(){

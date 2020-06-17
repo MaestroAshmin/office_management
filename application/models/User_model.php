@@ -42,6 +42,17 @@ class User_model extends CI_Model{
                  }
                  return $result_status;
        }
+
+       public function check_role($data){
+              $query = $this->db->select('*')->from('tbl_role')->where('tbl_role.user_type',$data["user_type"])->get();
+              if ($query->num_rows()>0) {
+                     $result = true;
+              } else {
+                     $result = false;
+              }
+              return $result;
+       }
+
        public function get_roles(){
               $query = $this->db->select('*')->from('tbl_role')->where('tbl_role.role_id!=',1)->get();
               if ($query) {
