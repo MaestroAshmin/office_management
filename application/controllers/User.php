@@ -566,7 +566,7 @@ class User extends CI_Controller
 			'role' 			=> $user_role,
 			'targets'		=> $targets
 		);
-		echo '<pre>';print_r($data);exit;
+		// echo '<pre>';print_r($data);exit;
 		$this->load->view('includes/template', $data);
 	}
 	public function add_target(){
@@ -599,7 +599,25 @@ class User extends CI_Controller
 	}
 	public function get_all_users(){
 		$result = $this->user_model->get_all_users();
-		print_r(json_encode($result));
+		print_r(json_encode($result));exit;
+	}
+	public function get_each_target(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$post = $this->uri->segment(3);
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$target = $this->user_model->get_each_target($post);
+		$data = array(
+			'title' 		=> 'View Target',
+			'main_content'	=> 'view_each_target',
+			'role' 			=> $user_role,
+			'target'		=> $target,
+		);
+		// echo '<pre>';print_r($target);exit;
+		$this->load->view('includes/template', $data);
 	}
 	public function logout(){
 

@@ -263,7 +263,9 @@ class User_model extends CI_Model{
        }
        public function get_targets($user_id,$is_head,$dept){
               if($user_id==1){
-                     $this->db->select('*')->from('tbl_target as a')->order_by('created_at', 'DESC');
+                     $this->db->select('*')->from('tbl_target as a')
+                     ->join('tbl_users','tbl_users.id=a.assigned_to')
+                     ->order_by('a.created_at', 'DESC');
               }
               else{
                      if($is_head[0]['is_head']==0){
@@ -286,4 +288,15 @@ class User_model extends CI_Model{
               }
               return $result;
        }
+       public function get_each_target($id){
+              $query = $this->db->select('*')->from('tbl_target')
+                     ->join('tbl_users','tbl_users.id=tbl_target.assigned_to')
+                     ->where('t_id',$id)->get();
+              if ($query) {
+              $result = $query->row_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+	}
 }

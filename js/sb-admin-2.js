@@ -1089,7 +1089,24 @@ function callAutocomplete(field_id){
     var modal = $(this);
     modal.find('.modal-content img').attr('src',url+'/acc/images/'+recipient);
   });
-
+  // $('.targetModal').on('show.bs.modal', function (event) {
+  //   var link = window.location.origin;
+  //   var button = $(event.relatedTarget); 
+  //   var target_id = button.data('whatever'); 
+  //   console.log(target_id);
+  //   $.ajax({
+  //     url: link + '/acc/user/get_each_target',
+  //     type: 'post',
+  //     data: {
+  //       'id': target_id
+  //     },
+  //     success: function(response){
+  //       let obj = JSON.parse(response);
+  //       console.log(obj);
+  //       $('.modal-body').append();
+  //     }
+  //   });
+  // });
   $("#user_type").change(function(){
     var user_type = $(this).children("option:selected").val();
     if(user_type==4){

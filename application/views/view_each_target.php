@@ -2,7 +2,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Add Target</h1>
+            <h1 class="h3 mb-0 text-gray-800">View</h1>
           </div>
 
           <?php
@@ -15,39 +15,17 @@
           ?>
 
           <!-- Content Row -->
-            <form class="add_user_form" action="<?php echo site_url();?>user/add_target" method="post" enctype="multipart/form-data">
+            <form class="add_user_form" action="#" enctype="multipart/form-data">
 
                     <div class="form-group">
-                        <label>Assigned To</label>
-                        <div>
-                            <select class="form-control" id="assigned_to" name="assigned_to">
-                                <option selected value> -- Select Person -- </option>
-                            </select>
-                        </div>
+                        <label>Assigned To : </label> <?php echo $target['name']?>
                     </div>
                     <div class="form-group">
-                        <label>For Month</label>
-                        <div>
-                            <select class="form-control" id="for_month" name="for_month">
-                                <option selected value> -- Select Month -- </option>
-                                <option value="Baisakh">Baisakh</option>
-                                <option value="Jestha">Jestha</option>
-                                <option value="Asar">Asar</option>
-                                <option value="Shrawan">Shrawan</option>
-                                <option value="Bhadra">Bhadra</option>
-                                <option value="Ashoj">Ashoj</option>
-                                <option value="Kartik">Kartik</option>
-                                <option value="Mangsir">Mangsir</option>
-                                <option value="Poush">Poush</option>
-                                <option value="Magh">Magh</option>
-                                <option value="Falgun">Falgun</option>
-                                <option value="Chaitra">Chaitra</option>
-                            </select>
-                        </div>
+                        <label>For Month : </label> <?php echo $target['for_month']?>
+            
                     </div>
                     <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" name="title" class="form-control">
+                        <label>Title : </label> <?php echo $target['title']?>    
                     </div>
                     <div class="form-group">
                         <div class="row">
@@ -69,13 +47,13 @@
                                 <label>Seat Seller</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_seat_seller_daily" class="form-control">   
+                                <?php echo $target['nc_seat_seller_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_seat_seller_weekly" class="form-control">
+                            <?php echo $target['nc_seat_seller_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_seat_seller_monthly" class="form-control">
+                            <?php echo $target['nc_seat_seller_monthly'] ?> 
                             </div>
                         </div>
                         <div class="row">
@@ -83,26 +61,26 @@
                                 <label>Bus Company</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_bus_company_daily" class="form-control">   
+                                <?php echo $target['nc_bus_company_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_bus_company_weekly" class="form-control">
+                            <?php echo $target['nc_bus_company_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_bus_company_monthly" class="form-control">
+                            <?php echo $target['nc_bus_company_monthly'] ?> 
                             </div>
                         </div><div class="row">
                             <div class="col-sm">
                                 <label>Merchant</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_merchant_daily" class="form-control">   
+                                <?php echo $target['nc_merchant_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_merchant_weekly" class="form-control">
+                            <?php echo $target['nc_merchant_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nc_merchant_monthly" class="form-control">
+                            <?php echo $target['nc_merchant_monthly'] ?>   
                             </div>
                         </div>
                     </div>
@@ -127,13 +105,13 @@
                                 <label>Seat Seller</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_seat_seller_daily" class="form-control">   
+                                <?php echo $target['fu_seat_seller_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_seat_seller_weekly" class="form-control">
+                            <?php echo $target['fu_seat_seller_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_seat_seller_monthly" class="form-control">
+                            <?php echo $target['fu_seat_seller_monthly'] ?> 
                             </div>
                         </div>
                         <div class="row">
@@ -141,34 +119,33 @@
                                 <label>Bus Company</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_bus_company_daily" class="form-control">   
+                                <?php echo $target['fu_bus_company_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_bus_company_weekly" class="form-control">
+                            <?php echo $target['fu_bus_company_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_bus_company_monthly" class="form-control">
+                            <?php echo $target['fu_bus_company_monthly'] ?> 
                             </div>
                         </div><div class="row">
                             <div class="col-sm">
                                 <label>Merchant</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_merchant_daily" class="form-control">   
+                                <?php echo $target['fu_merchant_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_merchant_weekly" class="form-control">
+                            <?php echo $target['fu_merchant_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="fu_merchant_monthly" class="form-control">
+                            <?php echo $target['fu_merchant_monthly'] ?>   
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label>Meetings</label>
+                                <label>Meeting</label>
                             </div>
                             <div class="col-sm">
                                 Daily   
@@ -185,13 +162,13 @@
                                 <label>Seat Seller</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_seat_seller_daily" class="form-control">   
+                                <?php echo $target['m_seat_seller_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_seat_seller_weekly" class="form-control">
+                            <?php echo $target['m_seat_seller_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_seat_seller_monthly" class="form-control">
+                            <?php echo $target['m_seat_seller_monthly'] ?> 
                             </div>
                         </div>
                         <div class="row">
@@ -199,26 +176,27 @@
                                 <label>Bus Company</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_bus_company_daily" class="form-control">   
+                                <?php echo $target['m_bus_company_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_bus_company_weekly" class="form-control">
+                            <?php echo $target['m_bus_company_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_bus_company_monthly" class="form-control">
+                            <?php echo $target['m_bus_company_monthly'] ?> 
                             </div>
-                        </div><div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col-sm">
                                 <label>Merchant</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_merchant_daily" class="form-control">   
+                                <?php echo $target['m_merchant_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_merchant_weekly" class="form-control">
+                            <?php echo $target['m_merchant_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="m_merchant_monthly" class="form-control">
+                            <?php echo $target['m_merchant_monthly'] ?>   
                             </div>
                         </div>
                     </div>
@@ -243,13 +221,13 @@
                                 <label>Seat Seller</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_seat_seller_daily" class="form-control">   
+                                <?php echo $target['nl_seat_seller_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_seat_seller_weekly" class="form-control">
+                            <?php echo $target['nl_seat_seller_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_seat_seller_monthly" class="form-control">
+                            <?php echo $target['nl_seat_seller_monthly'] ?> 
                             </div>
                         </div>
                         <div class="row">
@@ -257,32 +235,29 @@
                                 <label>Number of Seats</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_no_of_seats_daily" class="form-control">   
+                                <?php echo $target['nl_no_of_seats_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_no_of_seats_weekly" class="form-control">
+                            <?php echo $target['nl_no_of_seats_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_no_of_seats_monthly" class="form-control">
+                            <?php echo $target['nl_no_of_seats_monthly'] ?> 
                             </div>
-                        </div><div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col-sm">
                                 <label>Merchant</label>
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_merchant_daily" class="form-control">   
+                                <?php echo $target['nl_merchant_daily'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_merchant_weekly" class="form-control">
+                            <?php echo $target['nl_merchant_weekly'] ?> 
                             </div>
                             <div class="col-sm">
-                                <input type="number" name="nl_merchant_monthly" class="form-control">
+                            <?php echo $target['nl_merchant_monthly'] ?>   
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-group d-flex justify-content-center">
-                        <button class="btn btn-primary float-left">Add</button>
                     </div>
             </form>
           <!-- Content Row -->
