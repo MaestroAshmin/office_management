@@ -1109,7 +1109,7 @@ function callAutocomplete(field_id){
   // });
   $("#user_type").change(function(){
     var user_type = $(this).children("option:selected").val();
-    if(user_type==4){
+    if(user_type==3){
       $(".department").show();
     
       var val = $('option:selected', '.department').attr('value');
@@ -1158,7 +1158,7 @@ function callAutocomplete(field_id){
 
   $("#user_type-edit").change(function(){
     var user_type = $(this).children("option:selected").val();
-    if(user_type==4){
+    if(user_type==3){
       $(".department-edit").show();
       
     base_url = window.location.origin;
@@ -1220,7 +1220,7 @@ function callAutocomplete(field_id){
 
 $(document).ready(function(){
 var val = $("#user_type-edit").children("option:selected").val();
-if(val != 4){
+if(val != 3){
   $(".department").hide();
   $(".designation").hide();
   $(".department-edit").hide();
@@ -1288,9 +1288,31 @@ else{
     rules:{
         name              : "required",
         address           : "required",
-        contact_person    : "required",
+        contact_person    : {
+                            required :  true,
+                            remote: {
+                              url: base_url+"/acc/user/check_user_phone",
+                              type: "post",
+                              data: {
+                                  contact_person : function () {
+                                      return $(".add_user_form #contact_person").val();
+                                  }
+                              }
+                            }
+        },
         contact_office    : "required",
-        email             : "required",
+        email             :  {
+                              required :  true,
+                              remote: {
+                                url: base_url+"/acc/user/check_user_email",
+                                type: "post",
+                                data: {
+                                    email : function () {
+                                        return $(".add_user_form #email").val();
+                                    }
+                                }
+                              }
+        },
         email_office      : "required",
         gender            : "required",
         password          : {
@@ -1301,14 +1323,21 @@ else{
         user_type         : "required",
         department        : "required",
         designation       : "required",
-        allow             : "required"
+        allow             : "required",
+        allow_approve     : "required",
     },
     messages:{
         name              : "Please Enter Name",
         address           : "Please Enter Address",
-        contact_person    : "Please provide your contact",
+        contact_person    :  {
+          required : "Please provide your contact",
+          remote   : "Personal Contact already exits"
+        },
         contact_office    : "Please provide your office contact",
-        email             : "Please Enter Email",
+        email             : {
+          required : "Please provide your email",
+          remote   : "Personal email already exits"
+        },
         email_office      : "Please Enter Office Email",
         gender            : "Please select Your Gender",
         password:{
@@ -1319,7 +1348,8 @@ else{
         user_type         : "Please Select User Type",
         department        : "Please Select Department",
         designation       : "Please Select Designation",
-        allow           : "Please Select Allow Option"
+        allow             : "Please Select Allow Option",
+        allow_approve     : "Please Select Allow Approve Option"
     },
     errorPlacement: function(error, element) {
       if(element.parent('.form-control')) {
@@ -1336,9 +1366,41 @@ $('.update_user_form').validate({
   rules:{
       name              : "required",
       address           : "required",
-      contact_person    : "required",
+      contact_person    : {
+              required :  true,
+              remote   : {
+                param: {
+                  url: base_url+"/acc/user/check_user_phone",
+                  type: "post",
+                  data: {
+                      contact_person : function () {
+                          return $(".update_user_form #contact_person").val();
+                      }
+                  }
+                },
+                depends: function(element){
+                    return ($(element).val() !== $('.update_user_form #old_contact_person').val());
+                }
+              }
+      },
       contact_office    : "required",
-      email             : "required",
+      email             :  {
+                required :  true,
+                remote   : {
+                  param: {
+                    url: base_url+"/acc/user/check_user_email",
+                    type: "post",
+                    data: {
+                        email : function () {
+                            return $(".update_user_form #email").val();
+                        }
+                    }
+                  },
+                  depends: function(element){
+                      return ($(element).val() !== $('.update_user_form #old_email').val());
+                  }
+                }
+      },
       email_office      : "required",
       gender            : "required",
       password          : {
@@ -1349,14 +1411,21 @@ $('.update_user_form').validate({
       user_type         : "required",
       department        : "required",
       designation       : "required",
-      allow             : "required"
+      allow             : "required",
+      allow_approve     : "required"
   },
   messages:{
       name              : "Please Enter Name",
       address           : "Please Enter Address",
-      contact_person    : "Please provide your contact",
+      contact_person    :  {
+        required : "Please provide your contact",
+        remote   : "Personal Contact already exits"
+      },
       contact_office    : "Please provide your office contact",
-      email             : "Please Enter Email",
+      email             : {
+        required : "Please provide your email",
+        remote   : "Personal email already exits"
+      },
       email_office      : "Please Enter Office Email",
       gender            : "Please select Your Gender",
       password:{
@@ -1367,7 +1436,8 @@ $('.update_user_form').validate({
       user_type         : "Please Select User Type",
       department        : "Please Select Department",
       designation       : "Please Select Designation",
-      allow           : "Please Select Allow Option"
+      allow             : "Please Select Allow Option",
+      allow_approve     : "Please Select Allow Approve Option"
   },
   errorPlacement: function(error, element) {
     if(element.parent('.form-control')) {

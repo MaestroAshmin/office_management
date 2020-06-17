@@ -16,6 +16,8 @@
           <!-- Content Row -->
             <form class="update_user_form" action="<?php echo site_url();?>user/update_user/<?php echo $user_data['id']?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" class="form-control" value ="<?php echo $user_data['id']?>">
+                    <input type="hidden" name="old_contact_person" id="old_contact_person" class="form-control"  value ="<?php echo $user_data['personal_no']?>">
+                    <input type="hidden" name="old_email" id="old_email" class="form-control" value ="<?php echo $user_data['email']?>">
                     
                     <div class="form-group">
                         <label>Name</label>
@@ -27,7 +29,7 @@
                     </div>
                     <div class="form-group">
                         <label>Contact No. (Personal)</label>
-                        <input type="number" name="contact_person" class="form-control"  value ="<?php echo $user_data['personal_no']?>">
+                        <input type="number" name="contact_person" id="contact_person" class="form-control"  value ="<?php echo $user_data['personal_no']?>">
                     </div>
                     <div class="form-group">
                         <label>Contact No. (Office)</label>
@@ -35,16 +37,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Email (Person)</label>
-                        <input type="email" name="email" class="form-control" value ="<?php echo $user_data['email']?>">
+                        <label>Email (Personal)</label>
+                        <input type="email" name="email" id="email" class="form-control" value ="<?php echo $user_data['email']?>">
                     </div>
                     <div class="form-group">
                         <label>Email (Office)</label>
                         <input type="email" name="email_office" class="form-control" value ="<?php echo $user_data['email_office']?>">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control" value ="">
                     </div>
                     <div class="form-group">
                         <label>Gender</label></br>
@@ -62,7 +60,7 @@
                     <div class="form-group">
                         <label>User Type</label>
                         <div>
-                            <select id="user_type-edit" name="user_type">
+                            <select id="user_type-edit" name="user_type" class="form-control">
                                 <?php foreach ($roles as $role) {?>
                                     <option value ="<?php echo $role['role_id']?>" <?php echo ($role['role_id'] == $user_data['role']) ? 'selected' : ''; ?>><?php echo $role['user_type']?></option>
                                 <?php }?>
@@ -72,7 +70,7 @@
                         <div class="form-group department-edit">
                             <label>Department</label>
                             <div>
-                                <select id="department-edit" name="department">
+                                <select id="department-edit" name="department" class="form-control">
                                     <?php foreach ($departments as $department) {?>
                                         <option value ="<?php echo $department['id']?>"  <?php echo ($department['id'] == $user_data['dept_id']) ? 'selected' : ''; ?>><?php echo $department['Name']?></option>
                                     <?php }?>
@@ -84,12 +82,12 @@
                             <label>Designation</label>
                             <input type="hidden" id="des_user" value="<?php echo $user_data['des_id']; ?>">
                             <div>
-                                <select id="designation-edit" name="designation">
+                                <select id="designation-edit" name="designation" class="form-control">
                                 </select>
                             </div>
                         </div>
                     <div class="form-group">
-                        <label>Allow User Creation </label></br>
+                        <label>Allow User Creation</label></br>
                         <input type="radio" id="allow" name="allow" value="1" <?php echo ($user_data['allow_user_creation']==1) ? 'checked' : ''; ?>>
                         <label for="allow">Yes</label><br>
                         <input type="radio" id="dont_allow" name="allow" value="0" <?php echo ($user_data['allow_user_creation']==0) ? 'checked' : ''; ?>>
@@ -97,13 +95,13 @@
                     </div>
                     <div class="form-group">
                         <label>Is the user allowed to approve Financial Inserts?  </label></br>
-                        <input type="radio" id="allow_approve" name="allow_approve" value="1">
+                        <input type="radio" id="allow_approve" name="allow_approve" value="1"  <?php echo ($user_data['is_allowed_to_approve']==1) ? 'checked' : ''; ?>>
                         <label for="allow">Yes</label><br>
-                        <input type="radio" id="dont_allow_approve" name="allow_approve" value="0">
+                        <input type="radio" id="dont_allow_approve" name="allow_approve" value="0"  <?php echo ($user_data['is_allowed_to_approve']==0) ? 'checked' : ''; ?>>
                         <label for="dont_allow">No</label><br>
                     </div>
                     <div class="form-group float-right">
-                        <button class="btn btn-primary float-left">Add</button>
+                        <button class="btn btn-primary float-left">Update</button>
                     </div>
             </form>
         

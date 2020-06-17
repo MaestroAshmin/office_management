@@ -20,6 +20,7 @@ class User_model extends CI_Model{
        public function view_roles(){
               $this->db->select('*')->from('tbl_users');
               $this->db->join('tbl_role','tbl_users.role = tbl_role.role_id');
+              $this->db->join('tbl_designation','tbl_users.des_id = tbl_designation.id','left');
               $this->db->where('tbl_users.role!=',1);
               $query = $this->db->get(); 
               if ($query) {
@@ -62,8 +63,37 @@ class User_model extends CI_Model{
               }
               return $result;
        }
+
+       public function check_user_phone($data){
+              $query = $this->db->select('*')->from('tbl_users')->where('personal_no',$data["contact_person"])->get();
+              if ($query->num_rows()>0) {
+                     $result = true;
+              } else {
+                     $result = false;
+              }
+              return $result;
+       }
+
+       public function check_user_email($data){
+              $query = $this->db->select('*')->from('tbl_users')->where('email',$data["email"])->get();
+              if ($query->num_rows()>0) {
+                     $result = true;
+              } else {
+                     $result = false;
+              }
+              return $result;
+       }
+
        public function add_user($data){
               try{
+                     if(!isset($data['department'])){
+                            $data['department']=null;
+                     }
+
+                     if(!isset($data['designation'])){
+                            $data['designation']=null;
+                     }
+
                      $insertData = [
                          'name' => $data['name'],
                          'email' => $data['email'],
@@ -78,7 +108,7 @@ class User_model extends CI_Model{
                          'dept_id' => $data['department'],
                          'des_id' => $data['designation'],
                          'allow_user_creation' => $data['allow'],
-
+                         'is_allowed_to_approve' => $data['allow_approve']
                      ];
                      $this->db->insert('tbl_users',$insertData);
                      $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
@@ -90,6 +120,14 @@ class User_model extends CI_Model{
        }
        public function update_user($update_data){
               try{
+                     if(!isset($update_data['department'])){
+                            $update_data['department']=null;
+                     }
+
+                     if(!isset($update_data['designation'])){
+                            $update_data['designation']=null;
+                     }
+
                      if(!empty($update_data['password'])){
                             $data = array(
                                    'name' => $update_data['name'],
@@ -100,11 +138,11 @@ class User_model extends CI_Model{
                                    'email_office' => $update_data['email_office'],
                                    'Gender' => $update_data['gender'],
                                    'join_date' => $update_data['join_date'],
-                                   'password' => md5($update_data['password']),
                                    'role' => $update_data['user_type'],
                                    'dept_id' => $update_data['department'],
                                    'des_id' => $update_data['designation'],
                                    'allow_user_creation' => $update_data['allow'],
+                                   'is_allowed_to_approve' => $update_data['allow_approve']                                   
                             );
                      }
                      else{
@@ -121,6 +159,7 @@ class User_model extends CI_Model{
                                    'dept_id' => $update_data['department'],
                                    'des_id' => $update_data['designation'],
                                    'allow_user_creation' => $update_data['allow'],
+                                   'is_allowed_to_approve' => $update_data['allow_approve']
                             );
                      }
                      $this->db->where('ID',$update_data['id']);

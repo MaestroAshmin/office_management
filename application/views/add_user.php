@@ -2,7 +2,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Add</h1>
+            <h1 class="h3 mb-0 text-gray-800">Add User</h1>
           </div>
 
           <?php
@@ -26,7 +26,7 @@
                     </div>
                     <div class="form-group">
                         <label>Contact No. (Personal)</label>
-                        <input type="number" name="contact_person" class="form-control">
+                        <input type="number" name="contact_person" id="contact_person" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Contact No. (Office)</label>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label>Email (Personal)</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" name="email" id="email" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Email (Office)</label>
@@ -60,7 +60,7 @@
                     <div class="form-group">
                         <label>User Type</label>
                         <div>
-                            <select id="user_type" name="user_type">
+                            <select id="user_type" name="user_type" class="form-control">>
                             <?php foreach ($roles as $role) {?>
                                 <option value ="<?php echo $role['role_id']?>"><?php echo $role['user_type']?></option>
                             <?php }?>
@@ -70,7 +70,7 @@
                     <div class="form-group department">
                         <label>Department</label>
                         <div>
-                            <select id="department" name="department">
+                            <select id="department" name="department" class="form-control">
                             <?php foreach ($departments as $department) {?>
                                 <option value ="<?php echo $department['id']?>"><?php echo $department['Name']?></option>
                             <?php }?>
@@ -80,7 +80,7 @@
                     <div class="form-group designation">
                         <label>Designation</label>
                         <div>
-                            <select id="designation" name="designation">
+                            <select id="designation" name="designation" class="form-control">>
                             </select>
                         </div>
                     </div>

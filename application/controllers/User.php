@@ -231,7 +231,7 @@ class User extends CI_Controller
 			'title' 		=> 'View',
 			'main_content'	=> 'view_roles',
 			'roles'	=> $roles,
-			'role'	=>$user_role,
+			'role'	=> $user_role
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -306,11 +306,38 @@ class User extends CI_Controller
 		redirect('user/add_role', 'refresh');
 	}
 	
+	public function check_user_phone(){
+		$data = $this->input->post();
+		$result = $this->user_model->check_user_phone($data);
+		if ($result == TRUE)
+        {
+            echo json_encode(FALSE);
+        }
+        else
+        {
+            echo json_encode(TRUE);
+        }
+	}
+
+	public function check_user_email(){
+		$data = $this->input->post();
+		$result = $this->user_model->check_user_email($data);
+		if ($result == TRUE)
+        {
+            echo json_encode(FALSE);
+        }
+        else
+        {
+            echo json_encode(TRUE);
+        }
+	}
+
 	public function add_user(){
 		if($_POST){
 			$data = $this->input->post();
-			if($data['user_type']!=4){
+			if($data['user_type']!=3){
 				unset($data['department']);
+				unset($data['designation']);
 			}
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
@@ -323,26 +350,45 @@ class User extends CI_Controller
 			$this->form_validation->set_rules("password","Password","required|min_length[8]",array("required"=>"Please Enter Password","min_length"=>"Password must contain at least 8 character"));
 			$this->form_validation->set_rules("join_date","JoinDate","required",array("required"=>"Please Select Join Date"));
 			$this->form_validation->set_rules("user_type","UserType","required",array("required"=>"Please Select User Type"));
-			$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
-			$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
 			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
 			$this->form_validation->set_rules("allow_approve","Allow_approve","required",array("required"=>"Please Select Allow Option"));
 
+			if($data['user_type']==3){
+				$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
+				$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
+			}
 
 			if($this->form_validation->run()==true)
 			{
+				if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
+					
+					$error = [];
+
+					if($this->user_model->check_user_phone($data)){
+						$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
+					}
+						
+					if($this->user_model->check_user_email($data)){
+						$error["duplicate_email_entry"] = "Personal email already exists.";
+					}
+
+					$this->session->set_flashdata("error",$error);
+					redirect("user/add_user");
+				}
+
 				$result = $this->user_model->add_user($data);
 
 				if($result['status'] == 'success'){
-					$this->view_roles();
+					redirect("user/view_roles",'refresh');
+				}else{
+					$this->session->set_flashdata("error",array("error_adding_user"=>"Error occured while adding user."));
+					redirect("user/view_roles",'refresh');
 				}
 			}else
 			{
 				$this->session->set_flashdata("error",$this->form_validation->error_array());
 				redirect("user/add_user");
 			}
-			
-			
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -373,6 +419,11 @@ class User extends CI_Controller
 	public function update_user($id){
 		if($_POST){
 			$data = $this->input->post();
+			if($data['user_type']!=3){
+				unset($data['department']);
+				unset($data['designation']);
+			}
+
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
 			$this->form_validation->set_rules("address","Address","required",array("required"=>"Please Enter Address"));
@@ -381,27 +432,42 @@ class User extends CI_Controller
 			$this->form_validation->set_rules("email","Email","required",array("required"=>"Please Enter Email"));
 			$this->form_validation->set_rules("email_office","EmailOffice","required",array("required"=>"Please Enter Office Email"));
 			$this->form_validation->set_rules("gender","Gender","required",array("required"=>"Please Select Your Gender"));
-			$this->form_validation->set_rules("password","Password","required|min_length[8]",array("required"=>"Please Enter Password","min_length"=>"Password must contain at least 8 character"));
 			$this->form_validation->set_rules("join_date","JoinDate","required",array("required"=>"Please Select Join Date"));
 			$this->form_validation->set_rules("user_type","UserType","required",array("required"=>"Please Select User Type"));
-			$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
-			$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
 			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
+			$this->form_validation->set_rules("allow_approve","Allow_approve","required",array("required"=>"Please Select Allow Option"));
+
+			if($data['user_type']==3){
+				$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
+				$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
+			}
 
 			if($this->form_validation->run()==true)
 			{
+				if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
+					
+					$error = [];
+
+					if($this->user_model->check_user_phone($data) && $data['old_contact_person']!=$data['contact_person']){
+						$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
+					}
+						
+					if($this->user_model->check_user_email($data) && $data['old_email']!=$data['email']){
+						$error["duplicate_email_entry"] = "Personal email already exists.";
+					}
+
+					$this->session->set_flashdata("error",$error);
+					redirect("user/update_user/$id");
+				}
+
 				$result = $this->user_model->update_user($data);
 
 				if($result['status'] == 'success'){
-					$this->view_roles();
-					$this->load->view('includes/template',$data);
+					redirect("user/view_roles",'refresh');
 				}
 				if($result['status'] == 'failed'){
-					$data = array(
-						'title' 		=> 'Update',
-						'main_content'	=> 'update_role',
-					);
-					$this->load->view('includes/template',$data);
+					$this->session->set_flashdata("error",array("error_updating_user"=>"Error occured while updating user."));
+					redirect("user/view_roles",'refresh');
 				}
 
 			}else
@@ -443,18 +509,12 @@ class User extends CI_Controller
 
 		$result = $this->user_model->delete_user($id);
 		$roles = $this->user_model->view_roles();
-		if($result['status'] == 'success'){
-			$data = array(
-				'title' 		=> 'View',
-				'main_content'	=> 'view_roles',
-				'roles'	=> $roles,
-				'role'	=> $user_role
-			);
-			$this->load->view('includes/template',$data);
-		}
+
 		if($result['status'] == 'failed'){
-			$this->view();
+			$this->session->set_flashdata("error",array("error_deleting_user"=>"Error occured while deleting user."));
 		}
+
+		redirect("user/view_roles",'refresh');
 	}
 	public function update_status($id){
 		if($this->session->userdata('user_logged_in') != '1'){
