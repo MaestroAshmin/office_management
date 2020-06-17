@@ -18,7 +18,7 @@ class User_model extends CI_Model{
        	}
        }
        public function view_roles(){
-              $this->db->select('*')->from('tbl_users');
+              $this->db->select('tbl_users.*,tbl_role.user_type as user_type,tbl_designation.designation as designation')->from('tbl_users');
               $this->db->join('tbl_role','tbl_users.role = tbl_role.role_id');
               $this->db->join('tbl_designation','tbl_users.des_id = tbl_designation.id','left');
               $this->db->where('tbl_users.role!=',1);
@@ -28,6 +28,7 @@ class User_model extends CI_Model{
               } else {
               $result = array("Error" => $this->db->error());
               }
+              // var_dump($result);exit;
               return $result;
        }
        public function add_role($data){

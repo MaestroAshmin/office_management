@@ -450,14 +450,15 @@ class User extends CI_Controller
 
 					if($this->user_model->check_user_phone($data) && $data['old_contact_person']!=$data['contact_person']){
 						$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
+						$this->session->set_flashdata("error",$error);
+						redirect("user/update_user/$id");
 					}
 						
 					if($this->user_model->check_user_email($data) && $data['old_email']!=$data['email']){
 						$error["duplicate_email_entry"] = "Personal email already exists.";
+						$this->session->set_flashdata("error",$error);
+						redirect("user/update_user/$id");
 					}
-
-					$this->session->set_flashdata("error",$error);
-					redirect("user/update_user/$id");
 				}
 
 				$result = $this->user_model->update_user($data);
