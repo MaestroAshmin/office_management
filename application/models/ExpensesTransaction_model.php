@@ -6,35 +6,20 @@ class ExpensesTransaction_model extends CI_model{
     public function add_transaction($data){
 
         try{
-            if($data['excel']==''|| empty($data['excel'])){
-                $insertData = [
-                    'Heading' => $data['heading'],
-                    'english_date'=> $data['eng_date'],
-                    'nepali_date'=> $data['nepali_date'],
-                    'bill_invoice_no' => $data['bill_invoice_no'],
-                    'responsible_person' => $data['responsible_person'],
-                    'to_person' => $data['to'],
-                    'Amount' => $data['amount'],
-                    'Remarks' => $data['remarks'],
-                    'Details' => $data['details'],
-                    'Image' => $data['image']
-                ];
-            }
-            else{
-                $insertData = [
-                    'Heading' => $data['heading'],
-                    'english_date'=> $data['eng_date'],
-                    'nepali_date'=> $data['nepali_date'],
-                    'bill_invoice_no' => $data['bill_invoice_no'],
-                    'responsible_person' => $data['responsible_person'],
-                    'to_person' => $data['to'],
-                    'Amount' => $data['amount'],
-                    'Remarks' => $data['remarks'],
-                    'Details' => $data['details'],
-                    'Image' => $data['image'],
-                    'excel' => $data['excel']
-                ];
-            }
+            $insertData = [
+                'Heading' => $data['heading'],
+                'english_date'=> $data['eng_date'],
+                'nepali_date'=> $data['nepali_date'],
+                'bill_invoice_no' => $data['bill_invoice_no'],
+                'responsible_person' => $data['responsible_person'],
+                'to_person' => $data['to'],
+                'Amount' => $data['amount'],
+                'Remarks' => $data['remarks'],
+                'Details' => $data['details'],
+                'Image' => $data['image'],
+                'excel' => ($data['excel']!=''|| !empty($data['excel'])) ? $data['excel'] : ''
+            ];
+    
             $this->db->insert('tbl_expense_data',$insertData);
             $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
         }

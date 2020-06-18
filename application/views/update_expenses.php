@@ -17,7 +17,7 @@
             <form class="col-sm-12 update_expenses_form" action="<?php echo site_url('user/expenses_update/'.$transaction['ID']) ?>" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>English Date</label>
-                        <input type="text" id="datepicker" class="form-control"  value ="<?php echo $transaction['english_date']?>"" disabled read-only>
+                        <input type="text" id="datepicker" class="form-control"  value ="<?php echo $transaction['english_date']?>" disabled read-only>
                     </div>
                     <div class="form-group">
                         <label>Nepali Date</label>

@@ -1495,8 +1495,7 @@ $('.update_user_form').validate({
         amount                : 'required',
         remarks               : 'required',
         details               : 'required',
-        image                 : 'required',
-        excel_file            : 'required'
+        image                 : 'required'
     },
     messages:{
         eng_date              : 'Please Select English Date',
@@ -1508,8 +1507,7 @@ $('.update_user_form').validate({
         amount                : 'Please Enter Amount',
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details',
-        image                 : 'Please Upload Image',
-        excel_file            : 'Please Upload Excel File'
+        image                 : 'Please Upload Image'
     },
     errorPlacement: function(error, element) {
           error.insertAfter(element.parent());
@@ -1554,8 +1552,7 @@ $('.update_user_form').validate({
         amount                : 'required',
         remarks               : 'required',
         details               : 'required',
-        image                 : 'required',
-        excel_file            : 'required'
+        image                 : 'required'
     },
     messages:{
         eng_date              : 'Please Select English Date',
@@ -1567,8 +1564,7 @@ $('.update_user_form').validate({
         amount                : 'Please Enter Amount',
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details',
-        image                 : 'Please Upload Image',
-        excel_file            : 'Please Upload Excel File'
+        image                 : 'Please Upload Image'
     },
     errorPlacement: function(error, element) {
           error.insertAfter(element.parent());
@@ -1594,6 +1590,48 @@ $('.update_user_form').validate({
         amount                : 'Please Enter Amount',
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+  
+  //add equity form validation  
+  $('.add_equity_form').validate({
+    rules:{
+        eng_date              : 'required',
+        nepali_date           : 'required',
+        depositor             : 'required',
+        status                : 'required',
+        amount                : 'required',
+        remarks               : 'required'
+    },
+    messages:{
+        eng_date              : 'Please Select English Date',
+        nepali_date           : 'Please Select Nepali Date',
+        depositor             : 'Please Enter Heading',
+        status                : 'Please Enter Bill Invoice Number',
+        amount                : 'Please Enter Amount',
+        remarks               : 'Please Enter Remarks'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+  
+  //update equity form validation  
+  $('.update_equityform').validate({
+    rules:{
+      depositor             : 'required',
+      status                : 'required',
+      amount                : 'required',
+      remarks               : 'required'
+    },
+    messages:{
+      depositor             : 'Please Enter Heading',
+      status                : 'Please Enter Bill Invoice Number',
+      amount                : 'Please Enter Amount',
+      remarks               : 'Please Enter Remarks'
     },
     errorPlacement: function(error, element) {
           error.insertAfter(element.parent());
