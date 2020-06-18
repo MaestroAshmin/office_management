@@ -1469,8 +1469,6 @@ $('.update_user_form').validate({
   });
 
   //add target form validation
-    
-  base_url = window.location.origin;
   $('.add_target2_form').validate({
     rules:{
         assigned_to : 'required',
@@ -1485,6 +1483,64 @@ $('.update_user_form').validate({
     }
   });
 
+  //add expenses form validation  
+  $('.add_expenses_form').validate({
+    rules:{
+        eng_date              : 'required',
+        nepali_date           : 'required',
+        heading               : 'required',
+        bill_invoice_no       : 'required',
+        responsible_person    : 'required',
+        to                    : 'required',
+        amount                : 'required',
+        remarks               : 'required',
+        details               : 'required',
+        image                 : 'required',
+        excel_file            : 'required'
+    },
+    messages:{
+        eng_date              : 'Please Select English Date',
+        nepali_date           : 'Please Select Nepali Date',
+        heading               : 'Please Enter Heading',
+        bill_invoice_no       : 'Please Enter Bill Invoice Number',
+        responsible_person    : 'Please Assign Responsible Person',
+        to                    : 'Please Assign To Field',
+        amount                : 'Please Enter Amount',
+        remarks               : 'Please Enter Remarks',
+        details               : 'Please Enter Details',
+        image                 : 'Please Upload Image',
+        excel_file            : 'Please Upload Excel File'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+  
+  //update expenses form validation  
+  $('.update_expenses_form').validate({
+    rules:{
+        heading               : 'required',
+        bill_invoice_no       : 'required',
+        responsible_person    : 'required',
+        to                    : 'required',
+        amount                : 'required',
+        remarks               : 'required',
+        details               : 'required'
+    },
+    messages:{
+        heading               : 'Please Enter Heading',
+        bill_invoice_no       : 'Please Enter Bill Invoice Number',
+        responsible_person    : 'Please Assign Responsible Person',
+        to                    : 'Please Assign To Field',
+        amount                : 'Please Enter Amount',
+        remarks               : 'Please Enter Remarks',
+        details               : 'Please Enter Details'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+  
   // if($(".add_target_form #assigned_to").length >= 1){
   //   base_url = window.location.origin;
   //   $.ajax({

@@ -9,7 +9,7 @@ class User extends CI_Controller
 		$this->load->helper('url', 'form');
 		$this->load->model('user_model');
 		$this->load->library('session');
-		$this->load->model('transaction_model');
+		$this->load->model('expensestransaction_model');
 		$this->load->library('sendmail');
 	}
 
@@ -20,7 +20,7 @@ class User extends CI_Controller
 		);
 
 		if($this->session->userdata("user_logged_in")){
-			redirect('user/view', 'refresh');
+			redirect('user/expenses_view', 'refresh');
 		}else{
 			$this->load->view('page-user-login', $data);
 
@@ -66,7 +66,7 @@ class User extends CI_Controller
 		$this->load->view('includes/template', $data);
 	}
 
-	public function add(){
+	public function expenses_add(){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
@@ -76,13 +76,43 @@ class User extends CI_Controller
 		$user_role = $sess_data['user_role'];
 		$data = array(
 			'title' 		=> 'Add',
-			'main_content'	=> 'add',
+			'main_content'	=> 'expenses_add',
 			'role' 			=> $user_role
 		);
 		$this->load->view('includes/template', $data);
 	}
-	public function store(){
-		$post 			= $this->input->post();
+	public function expenses_store(){
+		$post = $this->input->post();
+
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules("eng_date","EngDate","required",array("required"=>"Please Select English Date"));
+		$this->form_validation->set_rules("nepali_date","NepaliDate","required",array("required"=>"Please Select Nepali Date"));
+		$this->form_validation->set_rules("heading","Heading","required",array("required"=>"Please Enter Heading"));
+		$this->form_validation->set_rules("bill_invoice_no","BillInvoiceNo","required",array("required"=>"Please Enter Bill Invoice Number"));
+		$this->form_validation->set_rules("responsible_person","ResponsiblePerson","required",array("required"=>"Please Enter Responsible Person"));
+		$this->form_validation->set_rules("to","To","required",array("required"=>"Please Enter Asssign To"));
+		$this->form_validation->set_rules("amount","Amount","required",array("required"=>"Please Enter Amount"));
+		$this->form_validation->set_rules("remarks","Remarks","required",array("required"=>"Please Enter Remarks"));
+		$this->form_validation->set_rules("details","Details","required",array("required"=>"Please Enter Details"));
+
+		if($this->form_validation->run()==false){
+			$this->session->set_flashdata('error',$this->form_validation->error_array());
+			redirect('user/expenses_add');
+		}
+
+		if (empty($_FILES['image']['name'])) 
+		{
+			$error = array('image_empty' => 'Please Upload Image');	
+			$this->session->set_flashdata('error',$error);
+			redirect('user/expenses_add');
+		}
+
+		if (empty($_FILES['excel_file']['name'])) 
+		{
+			$error = array('image_empty' => 'Please Upload Excel File');	
+			$this->session->set_flashdata('error',$error);
+			redirect('user/expenses_add');
+		}
 
 		$image_data 	= array();
 		$document_data 	= array();
@@ -100,7 +130,9 @@ class User extends CI_Controller
 			$this->upload->initialize($config);
 
 			if (!$this->upload->do_upload('image')) {
-				$error = array('error' => $this->upload->display_errors());
+				$error = array('error' => $this->upload->display_errors());	
+				$this->session->set_flashdata('error',$error);
+				redirect('user/expenses_add');
 			} else {
 				$image_data[] = $this->upload->data();
 			}
@@ -117,6 +149,8 @@ class User extends CI_Controller
 			if (!$this->upload->do_upload('excel_file')) 
 			{
 				$error = array('error' => $this->upload->display_errors());
+				$this->session->set_flashdata('error',$error);
+				redirect('user/expenses_add');
 			} 
 			else 
 			{
@@ -126,65 +160,82 @@ class User extends CI_Controller
 
 		$post['image'] = isset($image_data[0]['file_name']) ? $image_data[0]['file_name'] : '';
 		$post['excel'] = isset($document_data[0]['file_name']) ? $document_data[0]['file_name'] : '';
-		$result = $this->transaction_model->add_transaction($post);
-		if($result['status'] == 'success')
-		{
-			$this->view();
-		}
+		$result = $this->expensestransaction_model->add_transaction($post);
+
 		if($result['status'] == 'failed')
 		{
-			$this->view();
+			$error = array('error' => 'error occured while adding expenses');
+			$this->session->set_flashdata('error',$error);
 		}
+		
+		redirect('user/expenses_view');
 	}
 
-	public function view()
+	public function expenses_view()
 	{
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$transactions = $this->transaction_model->get_transactions();
+		$transactions = $this->expensestransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
 		$data = array(
 			'title' 		=> 'View',
-			'main_content'	=> 'view',
+			'main_content'	=> 'expenses_view',
 			'transactions'	=> $transactions,
 			'role' 			=> $user_role
 		);
 		$this->load->view('includes/template', $data);
 	}
 
-	public function update_transaction($id){
+	public function expenses_update($id){
 		if($_POST){
 			$update_data1 = $this->input->post();
-			$config['upload_path'] = './images/';
-			$config['allowed_types'] = 'jpg|png';
-			$config['max_size'] = 2000;
-			$config['max_width'] = 1500;
-			$config['max_height'] = 1500;
 
-			$this->load->library('upload', $config);
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules("heading","Heading","required",array("required"=>"Please Enter Heading"));
+			$this->form_validation->set_rules("bill_invoice_no","BillInvoiceNo","required",array("required"=>"Please Enter Bill Invoice Number"));
+			$this->form_validation->set_rules("responsible_person","ResponsiblePerson","required",array("required"=>"Please Enter Responsible Person"));
+			$this->form_validation->set_rules("to","To","required",array("required"=>"Please Enter Asssign To"));
+			$this->form_validation->set_rules("amount","Amount","required",array("required"=>"Please Enter Amount"));
+			$this->form_validation->set_rules("remarks","Remarks","required",array("required"=>"Please Enter Remarks"));
+			$this->form_validation->set_rules("details","Details","required",array("required"=>"Please Enter Details"));
+	
+			if($this->form_validation->run()==false){
+				$this->session->set_flashdata('error',$this->form_validation->error_array());
+				redirect('user/expenses_update/'.$id);
+			}
 
-			if (!$this->upload->do_upload('image')) {
-				$error = array('error' => $this->upload->display_errors());
+			if (!empty($_FILES['image']['name'])) 
+			{
+				$config['upload_path'] = './images/';
+				$config['allowed_types'] = 'jpg|png';
+				$config['max_size'] = 2000;
+				$config['max_width'] = 1500;
+				$config['max_height'] = 1500;
+	
+				$this->load->library('upload', $config);
+	
+				if (!$this->upload->do_upload('image')) {
+					$error = array('error' => $this->upload->display_errors());
+					$this->session->set_flashdata('error',$error);
+				} else {
+					$data = array('upload_data' => $this->upload->data());
+					$update_data2 = array("image_name"=> $data['upload_data']['file_name']);
+					$update_data = array_merge($update_data1,$update_data2);
+				}
+			}else{
 				$update_data = $update_data1;
-			} else {
-				$data = array('upload_data' => $this->upload->data());
-				$update_data2 = array("image_name"=> $data['upload_data']['file_name']);
-				$update_data = array_merge($update_data1,$update_data2);
 			}
-			$result = $this->transaction_model->update_transaction($update_data);
-			if($result['status'] == 'success'){
-				$this->view();
-			}
+		
+			$result = $this->expensestransaction_model->update_transaction($update_data);
+	
 			if($result['status'] == 'failed'){
-				$data = array(
-					'title' 		=> 'Update',
-					'main_content'	=> 'update',
-				);
-				$this->load->view('includes/template',$data);
+				$this->session->set_flashdata('error',array('expense_update_error'=>'Error Occured while updating expense'));
 			}
+
+			redirect('user/expenses_view');
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -194,30 +245,30 @@ class User extends CI_Controller
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
 
-			$transaction = $this->transaction_model->get_transaction($id);
+			$transaction = $this->expensestransaction_model->get_transaction($id);
 			$data = array(
-				'title' 		=> 'Update',
-				'main_content'	=> 'update',
+				'title' 		=> 'update_expenses',
+				'main_content'	=> 'update_expenses',
 				'transaction'	=> $transaction,
 				'role'			=> $user_role
 			);
 			$this->load->view('includes/template', $data);
 		}
-		
 	}
-	public function delete_transaction($id){
+
+	public function expenses_delete($id){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$result = $this->transaction_model->delete_transaction($id);
-		if($result['status'] == 'success'){
-			$this->view();
-		}
+		$result = $this->expensestransaction_model->delete_transaction($id);
+	
 		if($result['status'] == 'failed'){
-			$this->view();
+			$this->session->set_flashdata('error',array('delete_expenses_error'=>'Error Occured while deleting Expenses'));
 		}
+
+		redirect('user/expenses_view');
 	}
 	public function view_roles(){
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -517,19 +568,19 @@ class User extends CI_Controller
 
 		redirect("user/view_roles",'refresh');
 	}
-	public function update_status($id){
+	public function update_expenses_status($id){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$result = $this->transaction_model->update_status($id);
-		if($result['status'] == 'success'){
-			$this->view();
-		}
+		$result = $this->expensestransaction_model->update_status($id);
+		
 		if($result['status'] == 'failed'){
-			$this->view();
+			$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));
 		}
+
+		redirect('user/expenses_view');
 	}
 	public function view_activity(){
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -658,7 +709,7 @@ class User extends CI_Controller
 		// echo '<pre>';print_r($data);exit;
 		$this->load->view('includes/template', $data);
 	}
-	
+
 	public function add_target(){
 		if($_POST){
 			$data = $this->input->post();

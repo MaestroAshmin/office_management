@@ -10,6 +10,14 @@
                     width: 100%;
                 }
                 </style>
+         <?php
+            if($this->session->flashdata("error"))
+            {
+                foreach($this->session->flashdata("error") as $error){
+                    echo '<p class="error">*'.$error.'</p>';
+                }
+            }
+          ?>
           <!-- Content Row -->
         <div class="row">
             <div class="container">
@@ -124,11 +132,11 @@
                             <?php if($role==1 || $role ==2){?>
                                 <td style="display: inline-block; width:150px;">
                                 <?php if($transaction['Status']==0){?>
-                                        <a href="<?php echo site_url('user/update_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
+                                        <a href="<?php echo site_url('user/update_expenses_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
                                         <i class="fas fa-check"></i></a>
                                     <?php }if($role == 1){?>
-                                        <a href="<?php echo site_url('user/update_transaction/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
-                                        <a href="<?php echo site_url('user/delete_transaction/'.$transaction['ID']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
+                                        <a href="<?php echo site_url('user/expenses_update/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
+                                        <a href="<?php echo site_url('user/expenses_delete/'.$transaction['ID']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             <?php }?>

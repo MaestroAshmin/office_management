@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH')OR exit('No direct script access');
 
-class Transaction_model extends CI_model{
+class ExpensesTransaction_model extends CI_model{
 
     public function add_transaction($data){
 

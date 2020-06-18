@@ -2,11 +2,19 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Add</h1>
+            <h1 class="h3 mb-0 text-gray-800">Add Expenses</h1>
           </div>
-          <!-- Content Row -->
-        <!-- <div class="row"> -->
-            <form action="<?php echo site_url();?>user/store" method="post" class="user_add_form" enctype="multipart/form-data">
+          <?php
+            if($this->session->flashdata("error"))
+            {
+                foreach($this->session->flashdata("error") as $error){
+                    echo '<p class="error">*'.$error.'</p>';
+                }
+            }
+          ?>
+          <!-- Content -->
+        <div class="row container">
+            <form class="col-sm-12 add_expenses_form" action="<?php echo site_url();?>user/expenses_store" method="post" class="user_add_form" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>English Date</label>
                         <input type="text" id="from_date" name="eng_date" class="form-control eng_date" value="" readonly>
@@ -56,6 +64,6 @@
                         <button class="btn btn-primary float-left">Add</button>
                     </div>
             </form>
-        <!-- </div> -->
-          <!-- Content Row -->
+        </div>
+          <!-- Content -->
 </div>
