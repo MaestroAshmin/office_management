@@ -100,3 +100,7 @@ $route['user/requests/create']			= 'user/request_create';
 $route['user/requests'] 				= 'user/request_list';
 $route['user/request/view/(:num)'] 	    = 'user/request_details/$1';
 $route['user/report/generate']			= 'user/generate_report';
+
+$route['spreadsheet'] = 'PhpspreadsheetController';
+$route['spreadsheet/import'] = 'PhpspreadsheetController/import';
+$route['spreadsheet/export'] = 'PhpspreadsheetController/export';
