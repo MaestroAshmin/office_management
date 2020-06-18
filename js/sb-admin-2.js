@@ -1252,7 +1252,7 @@ else{
     });
 }
 
-  //add user form validation
+  //add user type form validation
     
   base_url = window.location.origin;
   $('.add_role_form').validate({
@@ -1447,20 +1447,58 @@ $('.update_user_form').validate({
     }
   },
 });
-  if($("#assigned_to").length >= 1){
-    base_url = window.location.origin;
-    $.ajax({
-      url: base_url + "/acc/user/get_all_users",
-      type: 'post',
-      success: function(response){
-        let objects = JSON.parse(response);
-        console.log(objects);
-        $.each(objects, function( key, value ){
-            $('#assigned_to').append("<option value ="+value.id+">"+ value.name +"</option>");
-        });
-      }
-    });
-  }
+
+  //add activity form validation
+    
+  $('.add_activity_form').validate({
+    rules:{
+        entry_date : "required",
+        task_undertaken : "required",
+        progress : "required",
+        remarks  : "required"
+    },
+    messages:{
+        entry_date : "Please choose Entry Date",
+        task_undertaken : "Please Enter Task UnderTaken",
+        progress : "Please Enter Progress",
+        remarks  : "Please Enter Remarks"
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+
+  //add target form validation
+    
+  base_url = window.location.origin;
+  $('.add_target2_form').validate({
+    rules:{
+        assigned_to : 'required',
+        title       : 'required'
+    },
+    messages:{
+        assigned_to : 'Please Select Person',
+        title       : 'Please Enter the Title'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+
+  // if($(".add_target_form #assigned_to").length >= 1){
+  //   base_url = window.location.origin;
+  //   $.ajax({
+  //     url: base_url + "/acc/user/get_all_management_role",
+  //     type: 'post',
+  //     success: function(response){
+  //       let objects = JSON.parse(response);
+  //       console.log(objects);
+  //       $.each(objects, function( key, value ){
+  //           $('#assigned_to').append("<option value ="+value.id+">"+ value.name +"</option>");
+  //       });
+  //     }
+  //   });
+  // }
 
 var slider = document.querySelector('.drag-scroll');
 let isDown = false;

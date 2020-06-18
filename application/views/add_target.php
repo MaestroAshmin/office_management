@@ -15,13 +15,20 @@
           ?>
 
           <!-- Content Row -->
-            <form class="add_user_form" action="<?php echo site_url();?>user/add_target" method="post" enctype="multipart/form-data">
+            <form class="add_target_form" action="<?php echo site_url();?>user/add_target" method="post" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label>Assigned To</label>
                         <div>
                             <select class="form-control" id="assigned_to" name="assigned_to">
-                                <option selected value> -- Select Person -- </option>
+                                <option value="">--- Select Person ---</option>
+                                <?php
+                                    foreach($management_role as $m){
+                                ?>
+                                    <option value="<?php echo $m['id'] ?>"><?php echo $m['name'] ?></option>
+                                <?php
+                                    }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -29,7 +36,6 @@
                         <label>For Month</label>
                         <div>
                             <select class="form-control" id="for_month" name="for_month">
-                                <option selected value> -- Select Month -- </option>
                                 <option value="Baisakh">Baisakh</option>
                                 <option value="Jestha">Jestha</option>
                                 <option value="Asar">Asar</option>

@@ -43,7 +43,7 @@
                             <th scope="col">Amount</th>
                             <th scope="col">Remarks</th>
                             <th scope="col">Details</th>
-                            <th scope="col">Image & Report/th>
+                            <th scope="col">Image & Report</th>
                             <?php if($role==1 || $role ==2){?>
                                 <th scope="col">Action</th>
                             <?php }?>

@@ -265,10 +265,10 @@ class User_model extends CI_Model{
               }
               return $result;
        }
-       public function view_activity($user_id,$is_head,$dept){
-              if($user_id==1){
+       public function view_activity($user_role,$user_id,$is_head,$dept){
+              if($user_id==1 && $user_role==1){
                      $this->db->select('tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
-                     $this->db->join('tbl_users','tbl_users.id = a.user_id');
+                     $this->db->join('tbl_users','tbl_users.id = a.user_id','left');
               }
               else{
                      if($is_head[0]['is_head']==0){
@@ -281,8 +281,7 @@ class User_model extends CI_Model{
                             $this->db->join('tbl_users','tbl_users.id = a.user_id');
                             $this->db->join('tbl_designation','tbl_designation.department_id=tbl_users.dept_id');
                             $this->db->where('tbl_users.dept_id',$dept[0]['dept_id']);
-                     }
-                     
+                     }     
               }
               
               $query = $this->db->get();
@@ -291,9 +290,10 @@ class User_model extends CI_Model{
               } else {
               $result = array("Error" => $this->db->error());
               }
+              // var_dump($result);exit;
               return $result;
        }
-       public function get_all_users(){
+       public function get_all_management_role(){
               $query = $this->db->select('id,name')->from('tbl_users')->where('dept_id',2)->get();
               if ($query) {
               $result = $query->result_array();
