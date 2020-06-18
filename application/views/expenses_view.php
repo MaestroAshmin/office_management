@@ -2,7 +2,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">View</h1>
+            <h1 class="h3 mb-0 text-gray-800">Expense View</h1>
           </div>
 
             <style>
@@ -93,11 +93,11 @@
                                     <?php if($role==1 || $role ==2){?>
                                         <td>
                                         <?php if($transaction['Status']==0){?>
-                                                <a href="<?php echo site_url('user/update_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
+                                                <a href="<?php echo site_url('user/update_expenses_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
                                                 <i class="fas fa-check"></i></a>
                                             <?php }if($role == 1){?>
-                                                <a href="<?php echo site_url('user/update_transaction/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block">Edit</a>
-                                                <a onclick="alert('Do you want to delete')" href="<?php echo site_url('user/delete_transaction/'.$transaction['ID']) ?>" class="btn btn-danger" style="display:inline-block">Delete</a>
+                                                <a href="<?php echo site_url('user/expenses_update/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block">Edit</a>
+                                                <a onclick="alert('Do you want to delete')" href="<?php echo site_url('user/expenses_delete/'.$transaction['ID']) ?>" class="btn btn-danger" style="display:inline-block">Delete</a>
                                             <?php }?>
                                         </td>
                                     <?php }

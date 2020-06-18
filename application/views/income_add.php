@@ -2,7 +2,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Add Expenses</h1>
+            <h1 class="h3 mb-0 text-gray-800">Add Income</h1>
           </div>
           <?php
             if($this->session->flashdata("error"))
@@ -14,7 +14,7 @@
           ?>
           <!-- Content -->
         <div class="row container">
-            <form class="col-sm-12 add_expenses_form" action="<?php echo site_url();?>user/expenses_store" method="post"  enctype="multipart/form-data">
+            <form class="col-sm-12 add_income_form" action="<?php echo site_url();?>income/income_store" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>English Date</label>
                         <input type="text" id="from_date" name="eng_date" class="form-control eng_date" value="" readonly>
@@ -37,8 +37,8 @@
                         <input type="text" name="responsible_person" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>To</label>
-                        <input type="text" name="to" class="form-control">
+                        <label>From</label>
+                        <input type="text" name="from" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Amount</label>

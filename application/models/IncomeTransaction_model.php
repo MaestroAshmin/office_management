@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH')OR exit('No direct script access');
 
-class ExpensesTransaction_model extends CI_model{
+class IncomeTransaction_model extends CI_model{
 
     public function add_transaction($data){
 
@@ -13,7 +13,7 @@ class ExpensesTransaction_model extends CI_model{
                     'nepali_date'=> $data['nepali_date'],
                     'bill_invoice_no' => $data['bill_invoice_no'],
                     'responsible_person' => $data['responsible_person'],
-                    'to_person' => $data['to'],
+                    'from_person' => $data['from'],
                     'Amount' => $data['amount'],
                     'Remarks' => $data['remarks'],
                     'Details' => $data['details'],
@@ -27,7 +27,7 @@ class ExpensesTransaction_model extends CI_model{
                     'nepali_date'=> $data['nepali_date'],
                     'bill_invoice_no' => $data['bill_invoice_no'],
                     'responsible_person' => $data['responsible_person'],
-                    'to_person' => $data['to'],
+                    'from_person' => $data['from'],
                     'Amount' => $data['amount'],
                     'Remarks' => $data['remarks'],
                     'Details' => $data['details'],
@@ -35,7 +35,7 @@ class ExpensesTransaction_model extends CI_model{
                     'excel' => $data['excel']
                 ];
             }
-            $this->db->insert('tbl_expense_data',$insertData);
+            $this->db->insert('tbl_income_data',$insertData);
             $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
         }
         catch(Exception $e){
@@ -44,7 +44,7 @@ class ExpensesTransaction_model extends CI_model{
         return $result_status;
     }
     public function get_transactions(){
-        $query = $this->db->select('*')->from('tbl_expense_data')->order_by('created_at', 'DESC')->get();
+        $query = $this->db->select('*')->from('tbl_income_data')->order_by('created_at', 'DESC')->get();
         if ($query) {
             $result = $query->result_array();
         } else {
@@ -53,7 +53,7 @@ class ExpensesTransaction_model extends CI_model{
         return $result;
     }
     public function get_transaction($id){
-        $query = $this->db->select('*')->from('tbl_expense_data')->where('ID',$id)->get(); 
+        $query = $this->db->select('*')->from('tbl_income_data')->where('ID',$id)->get(); 
         if ($query) {
             $result = $query->row_array();
         } else {
@@ -68,7 +68,7 @@ class ExpensesTransaction_model extends CI_model{
                     'Heading' => $update_data['heading'],
                     'bill_invoice_no' => $update_data['bill_invoice_no'],
                     'responsible_person' => $update_data['responsible_person'],
-                    'to_person' => $update_data['to'],
+                    'from_person' => $update_data['from'],
                     'Amount' => $update_data['amount'],
                     'Remarks' => $update_data['remarks'],
                     'Details' => $update_data['details'],
@@ -80,14 +80,14 @@ class ExpensesTransaction_model extends CI_model{
                     'Heading' => $update_data['heading'],
                     'bill_invoice_no' => $update_data['bill_invoice_no'],
                     'responsible_person' => $update_data['responsible_person'],
-                    'to_person' => $update_data['to'],
+                    'from_person' => $update_data['from'],
                     'Amount' => $update_data['amount'],
                     'Remarks' => $update_data['remarks'],
                     'Details' => $update_data['details'],
                 );
             }
             $this->db->where('ID',$update_data['id']);
-            $query = $this->db->update('tbl_expense_data',$data);
+            $query = $this->db->update('tbl_income_data',$data);
             $result_status = array('status' => 'success', 'message' =>"Successfully Edited transaction");
 
         }
@@ -99,7 +99,7 @@ class ExpensesTransaction_model extends CI_model{
     public function delete_transaction($id){
         try{
             $this->db->where('ID',$id);
-            $query = $this->db->delete('tbl_expense_data');
+            $query = $this->db->delete('tbl_income_data');
             $result_status = array('status' => 'success', 'message' =>"Successfully Deleted transaction");
             return $result_status;
         }
@@ -114,7 +114,7 @@ class ExpensesTransaction_model extends CI_model{
         $data = array(
             'Status' => 1
         );
-        $query = $this->db->update('tbl_expense_data',$data);
+        $query = $this->db->update('tbl_income_data',$data);
         $result_status = array('status' => 'success', 'message' =>"Transaction Approved");
         return $result_status;
         }
