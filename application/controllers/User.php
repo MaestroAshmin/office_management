@@ -41,7 +41,7 @@ class User extends CI_Controller
 						'user_logged_in'	=> 1
 				);
 				$this->session->set_userdata($sess_data);
-				redirect('user/view', 'refresh');
+				redirect('user/expense_view', 'refresh');
 			}else{
 				$this->session->set_flashdata('error', 'Invalid username or password');
 				redirect('user', 'refresh');

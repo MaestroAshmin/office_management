@@ -1637,6 +1637,78 @@ $('.update_user_form').validate({
           error.insertAfter(element.parent());
     }
   });
+
+  //add bank account form validation  
+  $('.add_bank_account_form').validate({
+    rules:{
+        bank_name             : 'required',
+        account_type          : 'required',
+        account_no            :  {
+          required :  true,
+          remote: {
+            url: base_url+"/acc/bankAccount/check_account_no",
+            type: "post",
+            data: {
+                email : function () {
+                    return $(".add_bank_account_form #account_no").val();
+                }
+            }
+          }
+        },
+        closing_balance       : 'required'
+    },
+    messages:{
+        bank_name              : 'Please Enter Bank Name',
+        account_type           : 'Please Enter Account Type',
+        account_no             :  {
+          required  :  "Please Enter Account Number",
+          remote    :  "Account Number Already Exists"
+        },
+        closing_balance        : 'Please Enter Closing Balance'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+  
+  //update equity form validation  
+  $('.update_bank_account_form').validate({
+    rules:{
+      bank_name             : 'required',
+      account_type          : 'required',
+      account_no    : {
+        required :  true,
+        remote   : {
+          param: {
+            url: base_url+"/acc/bankAccount/check_account_no",
+            type: "post",
+            data: {
+                contact_person : function () {
+                    return $(".update_bank_account_form #account_no").val();
+                }
+            }
+          },
+          depends: function(element){
+              return ($(element).val() !== $('.update_bank_account_form #old_account_no').val());
+          }
+        }
+    },
+      closing_balance       : 'required'
+    },
+    messages:{
+      bank_name              : 'Please Enter Bank Name',
+      account_type           : 'Please Enter Account Type',
+      account_no             :  {
+        required  :  "Please Enter Account Number",
+        remote    :  "Account Number Already Exists"
+      },
+      closing_balance        : 'Please Enter Closing Balance'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+  
   
   // if($(".add_target_form #assigned_to").length >= 1){
   //   base_url = window.location.origin;
