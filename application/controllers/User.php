@@ -92,6 +92,13 @@ class User extends CI_Controller
 
 		return $monthly_data;
 	}
+
+	public function get_monthly_income_expense_combined(){
+		$income = $this->get_monthly_income_expense('income');
+		$expense = $this->get_monthly_income_expense('expense');
+		echo json_encode(array('income'=>$income,'expense'=>$expense));
+	}
+
 	private function get_yearly_income_expense($data_type){
 		if($data_type=='income'){
 			$res 		=  $this->dashboard_model->get_yearly_income();
@@ -113,7 +120,7 @@ class User extends CI_Controller
 		return $yearly_data;
 	}
 
-	private function get_yearly_income_expense_combined(){
+	public function get_yearly_income_expense_combined(){
 				
 		$yearly_expense = 	$this->get_yearly_income_expense('expense');
 		$yearly_income	=	$this->get_yearly_income_expense('income');
@@ -143,7 +150,27 @@ class User extends CI_Controller
 		ksort($yearly_expense);
 		ksort($yearly_income);
 
-		return array('year'=>$year,'yearly_income'=>$yearly_income,'yearly_expense'=>$yearly_expense);
+		echo json_encode(array('year'=>$year,'yearly_income'=>$yearly_income,'yearly_expense'=>$yearly_expense));
+	}
+
+	public function get_current_year_income_expense(){
+		$year 	= date('Y');
+		$month  = date('m');
+		$day    = date('d');
+
+		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+		$income =  $this->dashboard_model->get_current_year_income($nepali_year);
+		$expense =  $this->dashboard_model->get_current_year_expense($nepali_year);
+
+		return array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"]);
+	}
+
+	
+	public function get_total_year_income_expense(){
+		$income =  $this->dashboard_model->get_total_year_income();
+		$expense =  $this->dashboard_model->get_total_year_expense();
+		
+		return array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"]);
 	}
 
 	public function dashboard(){
@@ -157,12 +184,11 @@ class User extends CI_Controller
 		$user_role = $sess_data['user_role'];
 
 		$data = array(
-			'title' 				=>	'User Dashbaord',
-			'main_content'			=>	'page-user-dashboard',
-			'role'					=>	$user_role,
-			'monthly_expense' 		=>	$this->get_monthly_income_expense('expense'),
-			'monthly_income' 		=>	$this->get_monthly_income_expense('income'),
-			'yearly_income_expense'	=> 	$this->get_yearly_income_expense_combined()
+			'title' 						=>	'User Dashbaord',
+			'main_content'					=>	'page-user-dashboard',
+			'role'							=>	$user_role,
+			'current_year_income_expense' 	=>	$this->get_current_year_income_expense(),
+			'total_year_income_expense' 	=>	$this->get_total_year_income_expense(),
 		);
 		$this->load->view('includes/template', $data);
 	}

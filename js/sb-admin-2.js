@@ -2,14 +2,15 @@
   "use strict"; // Start of use strict
   let site_url = $('.footer').attr('data-siteurl');
 
-      $('.delete').on("click", function (e) {
-        e.preventDefault();
-        let choice = confirm($(this).attr('data-confirm'));
-        if (choice) 
-        {
-            window.location.href = $(this).attr('href');
-        }
-      }); 
+
+  $('.delete').on("click", function (e) {
+    e.preventDefault();
+    let choice = confirm($(this).attr('data-confirm'));
+    if (choice) 
+    {
+        window.location.href = $(this).attr('href');
+    }
+  }); 
 
   $('.estimates_form_create').validate({
     errorClass: "error-class",
@@ -1750,5 +1751,187 @@ if(slider!=null){
       slider.scrollLeft = scrollLeft - walk;    
   });
 }
+
+var lineChartDataMonthly = {
+  datasets: [
+    {
+      label               : 'Income',
+      backgroundColor     : 'rgba(0,255,0,0.9)',
+      borderColor         : 'rgba(0,255,0,0.8)',
+      pointColor          : '#3b8bba',
+      pointStrokeColor    : 'rgba(60,141,188,1)',
+      pointHighlightFill  : '#fff',
+      pointHighlightStroke: 'rgba(60,141,188,1)'
+    },
+    {
+      label               : 'Expense',
+      backgroundColor     : 'rgba(255, 0, 0, 0.9)',
+      borderColor         : 'rgba(255, 0, 0, 0.8)',
+      pointDotRadius      :  1,
+      pointColor          : 'rgba(210, 214, 222, 1)',
+      pointStrokeColor    : '#c1c7d1',
+      pointHighlightFill  : '#fff',
+      pointHighlightStroke: 'rgba(220,220,220,1)'
+    },
+  ]
+}
+
+var lineChartDataYearly = {
+  datasets: [
+    {
+      label               : 'Income',
+      backgroundColor     : 'rgba(0,255,0,0.9)',
+      borderColor         : 'rgba(0,255,0,0.8)',
+      pointColor          : '#3b8bba',
+      pointStrokeColor    : 'rgba(60,141,188,1)',
+      pointHighlightFill  : '#fff',
+      pointHighlightStroke: 'rgba(60,141,188,1)'
+    },
+    {
+      label               : 'Expense',
+      backgroundColor     : 'rgba(255, 0, 0, 1)',
+      borderColor         : 'rgba(255, 0, 0, 1)',
+      pointDotRadius      :  1,
+      pointColor          : 'rgba(210, 214, 222, 1)',
+      pointStrokeColor    : '#c1c7d1',
+      pointHighlightFill  : '#fff',
+      pointHighlightStroke: 'rgba(220,220,220,1)'
+    },
+  ]
+}
+
+var lineChartOptions = {
+  maintainAspectRatio : true,
+  responsive : true,
+  legend: {
+    display: true,
+    labels: {
+        fontSize: 20,
+    }
+  },
+  scales: {
+    xAxes: [{
+      gridLines : {
+        display : false,
+      },
+      scaleLabel: {
+        display: false,
+        labelString: 'Time'
+      },
+    }],
+    yAxes: [{
+      gridLines : {
+        display : true,
+      },
+      scaleLabel: {
+        display: false,
+        labelString: 'Amount'
+      }
+    }]
+  }
+}
+    //-------------
+  //- LINE CHART -
+  //--------------
+
+  if($('#lineChart').length){
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+    var lineChartOptions = $.extend(true, {}, lineChartOptions);
+    var lineChartData = $.extend(true, {}, lineChartDataMonthly);
+    lineChartData.datasets[0].fill = false;
+    lineChartData.datasets[1].fill = false;
+    lineChartOptions.datasetFill = false;
+    var labels_monthly = [];
+    var labels_yearly = [];
+    var income_data_monthly = [];
+    var income_data_yearly = [];
+    var expense_data_monthly = [];
+    var expense_data_yearly = [];
+
+    $.ajax({
+      url: "get_monthly_income_expense_combined",
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+        let count_income = Object.keys(objects['income']).length;
+        let count_expense = Object.keys(objects['expense']).length;
+
+        if(count_income > count_expense){
+          for(x in objects["income"]){
+            labels_monthly.push(objects["income"][x].month);
+          }
+        }else{
+          for(x in objects["expense"]){
+            labels_monthly.push(objects["expense"][x].month);
+          }
+        }
+
+        for(x in objects["income"]){
+          income_data_monthly.push(objects["income"][x].amount);
+        }
+
+        for(x in objects["expense"]){
+          expense_data_monthly.push(objects["expense"][x].amount);
+        }
+
+        lineChartData.labels = labels_monthly;
+        lineChartData.datasets[0].data = income_data_monthly;
+        lineChartData.datasets[1].data = expense_data_monthly;
+
+        var lineChart = new Chart(lineChartCanvas, {
+          type: 'line',
+          data: lineChartData,
+          options: lineChartOptions
+        });
+      }
+    });
+
+    $.ajax({
+      url: "get_yearly_income_expense_combined",
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+
+        for(x in objects["year"]){
+          labels_yearly.push(objects["year"][x]);
+        }
+
+        for(x in objects["yearly_income"]){
+          income_data_yearly.push(objects["yearly_income"][x]);
+        }
+
+        for(x in objects["yearly_expense"]){
+          expense_data_yearly.push(objects["yearly_expense"][x]);
+        }
+      }
+    });
+  }
+  
+  $('#line-chart-type').on('change', function() {
+    if(this.value=="Monthly"){
+      $('#chart-title').html("Income Vs Expense (Monthly)");
+      lineChartData.labels = labels_monthly;
+      lineChartData.datasets[0].data = income_data_monthly;
+      lineChartData.datasets[1].data = expense_data_monthly;
+
+      var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions
+      });
+    }
+    else if(this.value=="Yearly"){
+      $('#chart-title').html("Income Vs Expense (Yearly)");              
+      lineChartData.labels = labels_yearly;
+      lineChartData.datasets[0].data = income_data_yearly;
+      lineChartData.datasets[1].data = expense_data_yearly;
+
+      var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions
+      });
+    }
+  });
 
 });
