@@ -13,9 +13,10 @@
           <!-- Content Row -->
         <div class="row">
             <div class="container col-lg-12">
-                <table class="table table-bordered" id="" style="width:100%">
+                <table class="table table-bordered" id="target" style="width:100%">
                     <thead class="thead-dark">
                         <tr>
+                        <th>S.N</th>
                         <th>Title</th>
                         <th>Assigned To</th>
                         <th>For month</th>
@@ -23,8 +24,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($targets as $target){?>
+                    <?php 
+                    $i=1;
+                    foreach($targets as $target){?>
                         <tr>
+                        <td><?php echo $i ?> </td>
                             <td><?php echo $target['title']?></td>
                             <td><?php echo $target['name']?></td>
                             <td><?php echo $target['for_month']?></td>
@@ -34,7 +38,9 @@
                                 </a>
                             </td>
                         </tr>
-                    <?php }?>
+                    <?php 
+                    $i++;
+                    }?>
                     </tbody>
                 </table>       
             </div>

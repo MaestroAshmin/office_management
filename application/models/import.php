@@ -4,24 +4,7 @@ defined('BASEPATH')OR exit('No direct script access');
 class Import extends CI_Model {
 
     public function save_to_db($insertData,$user_id){ 
-        $tbl = [
-            'Name',
-            'Company',
-            'Designation',
-            'Email',
-            'mobile_number',
-            'landline_number',
-            'Address',
-            'Purpose',
-            'new_contact',
-            'follow_up_round',
-            'follow_up_date',
-            'Status',
-            'name_of_bus',
-            'number_of_bus',
-            'number_of_seat',
-            'uploaded_by'
-        ];
+        // echo '<pre>';print_r($insertData);exit;
         foreach($insertData as $insertdata){
             $data = [
                 'Name' => $insertdata[0],
@@ -37,8 +20,13 @@ class Import extends CI_Model {
                 'name_of_bus' => $insertdata[12],
                 'number_of_bus' => $insertdata[13],
                 'number_of_seat' => $insertdata[14],
+                'live_seat'      => ($insertdata[15]=='') ? 0 : $insertdata[15],
                 'uploaded_by'=> $user_id,
             ];
+
+            $data = array_flip($data); 
+            $data = array_change_key_case($data, CASE_UPPER); 
+            $data = array_flip($data);
             try{
                 $is_exists = $this->is_exists($insertdata,$user_id);
                 if($is_exists){

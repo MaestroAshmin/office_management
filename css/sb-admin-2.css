@@ -12098,3 +12098,9 @@ div#client-error {
     margin-left: 160px;
 }
 #ui-datepicker-div {display: none;}
+.table-follow-up {
+  border-radius: 5px;
+  width: 50%;
+  margin: 0px auto;
+  float: none;
+}
