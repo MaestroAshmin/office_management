@@ -20,7 +20,7 @@
 
     <!-- Custom styles for this page -->
   <link href="<?php echo site_url();?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" real="text/css">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/nepali.datepicker.v2.2.min.css">

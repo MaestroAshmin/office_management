@@ -17,11 +17,11 @@
             <form class="col-sm-12 add_income_form" action="<?php echo site_url();?>income/income_store" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>English Date</label>
-                        <input type="text" id="from_date" name="eng_date" class="form-control eng_date" value="" readonly>
+                        <input type="text" name="eng_date" class="form-control eng_date" value="" readonly>
                     </div>
                     <div class="form-group">
                         <label>Nepali Date</label>
-                        <input type="text" id="nepali-datepicker" name="nepali_date" class="form-control nepali_date" value= "" readonly>
+                        <input type="text" name="nepali_date" class="form-control nepali_date" value= "" readonly>
                     </div>
                     <div class="form-group">
                         <label>Heading</label>

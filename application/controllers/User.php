@@ -10,6 +10,7 @@ class User extends CI_Controller
 		$this->load->model('user_model');
 		$this->load->library('session');
 		$this->load->model('expensestransaction_model');
+		$this->load->model('dashboard_model');
 		$this->load->library('sendmail');
 	}
 
@@ -20,7 +21,7 @@ class User extends CI_Controller
 		);
 
 		if($this->session->userdata("user_logged_in")){
-			redirect('user/expenses_view', 'refresh');
+			redirect('user/dashboard', 'refresh');
 		}else{
 			$this->load->view('page-user-login', $data);
 
@@ -41,7 +42,7 @@ class User extends CI_Controller
 						'user_logged_in'	=> 1
 				);
 				$this->session->set_userdata($sess_data);
-				redirect('user/expense_view', 'refresh');
+				redirect('user/dashboard', 'refresh');
 			}else{
 				$this->session->set_flashdata('error', 'Invalid username or password');
 				redirect('user', 'refresh');
@@ -58,10 +59,12 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+
+
 		$data = array(
 			'title' 		=> 'User Dashbaord',
 			'main_content'	=> 'page-user-dashboard',
-			'role'	=> $user_role
+			'role'			=> $user_role
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -107,12 +110,7 @@ class User extends CI_Controller
 			redirect('user/expenses_add');
 		}
 
-		if (empty($_FILES['excel_file']['name'])) 
-		{
-			$error = array('image_empty' => 'Please Upload Excel File');	
-			$this->session->set_flashdata('error',$error);
-			redirect('user/expenses_add');
-		}
+
 
 		$image_data 	= array();
 		$document_data 	= array();
