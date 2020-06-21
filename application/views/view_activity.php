@@ -16,10 +16,21 @@
 
         <!-- Content Row -->
         <div class="row">
+        <div class="container">
+                <div class="radio_date_filter1">
+                    <input type="radio" name="filtertable" value="day" />Today
+                    <input type="radio" name="filtertable"  value="month"/>This Month
+                    <input type="radio" name="filtertable"  value="year"/>This Year
+                </div>
+                <div id="date_filter">
+                    <button class="btn reset_btn1">Reset</button>
+                </div>
+            </div>
             <div class="container col-lg-12">
-                <table class="table table-bordered">
+                <table class="table table-bordered" id='activity'>
                     <thead class="thead-dark">
                         <tr>
+                        <th scope="col">S.N</th>
                             <th scope="col">Entry Date</th>
                             <th scope="col">Task Undertaken</th>
                             <th scope="col">Progress</th>
@@ -28,15 +39,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($activity as $act){ ?>
+                    <?php
+                    $i=1;
+                    foreach ($activity as $act){ ?>
                         <tr>
+                        <td><?php echo $i ?></td>
                             <td scope="col"><?php echo $act['entry_date']?></td>
                             <td scope="col"><?php echo $act['task_undertaken']?></td>
                             <td scope="col"><?php echo $act['progress']?></td>
                             <td scope="col"><?php echo $act['remarks']?></td>
                             <td scope="col"><?php echo $act['name']?></td>
                         </tr>
-                        <?php } ?>
+                        <?php }
+                        $i++;
+                        ?>
                     </tbody>
                 </table>       
             </div>

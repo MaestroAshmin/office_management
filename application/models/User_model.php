@@ -268,7 +268,7 @@ class User_model extends CI_Model{
        public function view_activity($user_role,$user_id,$is_head,$dept){
               if($user_id==1 && $user_role==1){
                      $this->db->select('tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
-                     $this->db->join('tbl_users','tbl_users.id = a.user_id','left');
+                     $this->db->join('tbl_users','tbl_users.id = a.user_id','left')->ORDER_BY('a.created_at', 'DESC');
               }
               else{
                      if($is_head[0]['is_head']==0){
@@ -349,5 +349,47 @@ class User_model extends CI_Model{
               $result = array("Error" => $this->db->error());
               }
               return $result;
-	}
+       }
+       public function view_contacts(){
+              $this->db->select('*')->from('csv_data');
+              $query = $this->db->get();
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function get_each_contact($id){
+              $query = $this->db->select('*')->from('csv_data')
+                     ->where('id',$id)->get();
+              if ($query) {
+              $result = $query->row_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function get_follow_ups($id){
+              $query = $this->db->select('*')->from('tbl_follow_up')
+                     ->where('csv_data_id',$id)->get();
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function generate_report(){
+              $query = $this->db->select('c.created_at as csv_date, c.Name,c.mobile_number,c.Company,c.Address, c.Status, c.Purpose, f.follow_up_round, f.date , c.live_seat')->from('csv_data as c')
+                            ->join('tbl_follow_up as f', 'f.csv_data_id= c.id')
+                            ->get();
+              if ($query) {
+                     $result = $query->result_array();
+                     } 
+              else {
+                     $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
 }

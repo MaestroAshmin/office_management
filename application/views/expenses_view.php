@@ -38,7 +38,7 @@
             </div>
          
             <div class="container table-responsive drag-scroll">
-                <table class="table table-bordered" id="transaction">
+                <table class="table table-bordered" id="datatable transaction">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">S.N</th>
