@@ -2,7 +2,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Update Expense</h1>
+            <h1 class="h3 mb-0 text-gray-800">Update Income</h1>
           </div>
           <?php
             if($this->session->flashdata("error"))
@@ -17,7 +17,7 @@
             <form class="col-sm-12 update_income_form" action="<?php echo site_url('income/income_update/'.$transaction['ID']) ?>" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>English Date</label>
-                        <input type="text" id="datepicker" class="form-control"  value ="<?php echo $transaction['english_date']?>"" disabled read-only>
+                        <input type="text" id="datepicker" class="form-control"  value ="<?php echo $transaction['english_date']?>" disabled read-only>
                     </div>
                     <div class="form-group">
                         <label>Nepali Date</label>

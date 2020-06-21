@@ -68,12 +68,12 @@ class Income extends CI_Controller
 			redirect('income/income_add');
 		}
 
-		if (empty($_FILES['excel_file']['name'])) 
-		{
-			$error = array('image_empty' => 'Please Upload Excel File');	
-			$this->session->set_flashdata('error',$error);
-			redirect('income/income_add');
-		}
+		// if (empty($_FILES['excel_file']['name'])) 
+		// {
+		// 	$error = array('image_empty' => 'Please Upload Excel File');	
+		// 	$this->session->set_flashdata('error',$error);
+		// 	redirect('income/income_add');
+		// }
 
 		$image_data 	= array();
 		$document_data 	= array();

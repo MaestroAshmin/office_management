@@ -76,7 +76,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-user"></i>
             <span>Expenses</span>
           </a>
@@ -87,16 +87,45 @@
             </div>
           </div>
         </li>
+
+         <!-- Nav Item - Pages Collapse Menu -->
+         <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-user"></i>
+            <span>Equity</span>
+          </a>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="<?php echo site_url();?>equity/equity_add">Add</a>
+              <a class="collapse-item" href="<?php echo site_url();?>equity/equity_view">View</a>
+            </div>
+          </div>
+        </li>
+
+        
+         <!-- Nav Item - Pages Collapse Menu -->
+         <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+            <i class="fas fa-user"></i>
+            <span>Bank Accounts</span>
+          </a>
+          <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="<?php echo site_url();?>bankAccount/bank_account_add">Add</a>
+              <a class="collapse-item" href="<?php echo site_url();?>bankAccount/bank_account_view">View</a>
+            </div>
+          </div>
+        </li>
       <?php }?>
 
       <?php if($role==1){?>
       <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
             <i class="fas fa-user"></i>
             <span>Role Manager</span>
           </a>
-          <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+          <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="<?php echo site_url();?>user/view_roles">View User</a>
               <a class="collapse-item" href="<?php echo site_url();?>user/add_user">Add User</a>
@@ -107,11 +136,11 @@
       <?php }?>
       
       <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
             <i class="fas fa-user"></i>
             <span>Marketing Section</span>
           </a>
-          <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
+          <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContent">Contact Management</a>
               <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivity">Activities Report</a>
