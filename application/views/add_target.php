@@ -36,18 +36,18 @@
                         <label>For Month</label>
                         <div>
                             <select class="form-control" id="for_month" name="for_month">
-                                <option value="Baisakh">Baisakh</option>
-                                <option value="Jestha">Jestha</option>
-                                <option value="Asar">Asar</option>
-                                <option value="Shrawan">Shrawan</option>
-                                <option value="Bhadra">Bhadra</option>
-                                <option value="Ashoj">Ashoj</option>
-                                <option value="Kartik">Kartik</option>
-                                <option value="Mangsir">Mangsir</option>
-                                <option value="Poush">Poush</option>
-                                <option value="Magh">Magh</option>
-                                <option value="Falgun">Falgun</option>
-                                <option value="Chaitra">Chaitra</option>
+                                <option value="01">Baisakh</option>
+                                <option value="02">Jestha</option>
+                                <option value="03">Asar</option>
+                                <option value="04">Shrawan</option>
+                                <option value="05">Bhadra</option>
+                                <option value="06">Ashoj</option>
+                                <option value="07">Kartik</option>
+                                <option value="08">Mangsir</option>
+                                <option value="09">Poush</option>
+                                <option value="10">Magh</option>
+                                <option value="11">Falgun</option>
+                                <option value="12">Chaitra</option>
                             </select>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label>Meetings</label>
+                                <label>New contract</label>
                             </div>
                             <div class="col-sm">
                                 Daily   

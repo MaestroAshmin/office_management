@@ -7,7 +7,6 @@ class User extends CI_Controller
 	public function __construct(){
 		parent:: __construct();
 		$this->load->model('user_model');
-		$this->load->model('dashboard_model');
 		$this->load->library('session');
 		$this->load->model('expensestransaction_model');
 		$this->load->model('dashboard_model');
@@ -74,6 +73,52 @@ class User extends CI_Controller
 		return $monthly_expense;
 	}
 
+	private function get_monthly_achievement($user_id){
+		$year 	= date('Y');
+		$month  = date('m');
+		$day    = date('d');
+
+		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+		$nepali_month = $this->nepali_date->AD_to_BS($year,$month,$day)["month"];
+		if(strlen($nepali_month)==1){
+			$nepali_month = '0'.$nepali_month;
+		}
+		$nepali_date = $nepali_year.'-'.$nepali_month;
+		$result['live'] =  $this->dashboard_model->get_live($nepali_date,$user_id);
+		$result['follow_up'] =  $this->dashboard_model->get_follow_up($nepali_date,$user_id);
+		$result['contract_signed'] =  $this->dashboard_model->get_contract_signed($nepali_date,$user_id);
+		$result['new_contact'] =  $this->dashboard_model->get_new_contact($nepali_date,$user_id);
+		echo '<pre>';print_r($result);
+		return $result;
+	}
+
+	private function get_monthly_target($user_id){
+		$year 	= date('Y');
+		$month  = date('m');
+		$day    = date('d');
+
+		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+		$nepali_month = $this->nepali_date->AD_to_BS($year,$month,$day)["month"];
+		if(strlen($nepali_month)==1){
+			$nepali_month = '0'.$nepali_month;
+		}
+		$nepali_date = $nepali_year.'-'.$nepali_month;
+		$result 	 =  $this->dashboard_model->get_monthly_target($nepali_date,$user_id);
+		$target = [];
+			for($i = 0; $i<count($result); $i++){
+				$calc[$i]['new_contact_target'] =  $result[$i]['nc_seat_seller_monthly'] + $result[$i]['nc_bus_company_monthly'] + $result[$i]['nc_merchant_monthly'];
+				
+				$calc[$i]['follow_up_target']=  $result[$i]['fu_seat_seller_monthly'] + $result[$i]['fu_bus_company_monthly'] + $result[$i]['fu_merchant_monthly'];
+				
+				$calc[$i]['new_live_target'] =  $result[$i]['nl_seat_seller_monthly'] + $result[$i]['nl_no_of_seats_monthly'] + $result[$i]['nl_merchant_monthly'];
+				$calc[$i]['new_contract_target'] =  $result[$i]['m_seat_seller_monthly'] + $result[$i]['m_bus_company_monthly'] + $result[$i]['m_merchant_monthly'];
+				$calc[$i]['user'] = $result[$i]['assigned_to'];
+				$target =$calc; 
+			}
+		return $target;
+	}
+
+	
 	public function dashboard(){
 
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -84,12 +129,15 @@ class User extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
 		$monthly_expense = $this->get_monthly_expense();
+		$monthly_target = $this->get_monthly_target($user_id);
+		$monthly_achievement = $this->get_monthly_achievement($user_id);exit;
 
 		$data = array(
 			'title' 			=>	'User Dashbaord',
 			'main_content'		=>	'page-user-dashboard',
 			'role'				=>	$user_role,
-			'monthly_expense' 	=>	$this->get_monthly_expense()
+			'monthly_expense' 	=>	$this->get_monthly_expense(),
+			'monthly_target'	=> $monthly_target
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -735,12 +783,20 @@ class User extends CI_Controller
 
 	public function add_target(){
 		if($_POST){
-			$data = $this->input->post();
+			$first_data = $this->input->post();
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("assigned_to","AssignedTo","required",array("required"=>"Please Select Persons"));
 			$this->form_validation->set_rules("title","Title","required",array("required"=>"Please Enter Title"));
 			
 			if($this->form_validation->run()==true){
+				$year 	= date('Y');
+				$month  = date('m');
+				$day    = date('d');
+
+				$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+				$date['check_date'] = $nepali_year.'-'.$first_data['for_month'];
+				$data = [];
+				$data = array_merge($first_data,$date);
 				$result = $this->user_model->add_target($data);
 			}
 			else{
