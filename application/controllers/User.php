@@ -49,28 +49,102 @@ class User extends CI_Controller
 		}
 	}
 
-	private function get_monthly_expense(){
+	private function get_monthly_income_expense($data_type){
 		$year 	= date('Y');
 		$month  = date('m');
 		$day    = date('d');
 
 		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
-		$res 		=  $this->dashboard_model->get_monthly_expense($nepali_year);
-		$expense = [];
-		$monthly_expense = [];
+		if($data_type=='income'){
+			$res 		=  $this->dashboard_model->get_monthly_income($nepali_year);
+		}else if($data_type=='expense'){
+			$res 		=  $this->dashboard_model->get_monthly_expense($nepali_year);
+		}
+		$month_name = ['Baisakh', 'Jestha', 'Asar', 'Shrawan', 'Bhadra', 'Ashwin', 'Kartik','Mangshir','Poush','Magh','Falgun','Chaitra'];
+		$data = [];
+		$monthly_data = [];
 		foreach($res as $r){
 			$month = (int)explode('-', $r["date"])[1];
-			if(isset($expense[$month]))
-				$expense[$month] += (float)$r["amount"];
+			if(isset($data[$month]))
+				$data[$month] += (float)$r["amount"];
 			else
-				$expense[$month] = (float)$r["amount"];
+				$data[$month] = (float)$r["amount"];
 		}
 
-		foreach($expense as $key=>$e){
-			$monthly_expense[] = array('month'=>$key,'amount'=>$e);
+		$max_month = 1;
+		foreach($data as $key=>$e){
+			if($key>$max_month){
+				$max_month = $key;
+			}
 		}
 
-		return $monthly_expense;
+		for($i=1;$i<=$max_month;$i++){
+			$month_index = $i-1;
+			foreach($data as $key=>$e){
+				if($key==$i){
+					$monthly_data[$i] = array('month'=>$month_name[$month_index],'amount'=>$e);
+					break;
+				}
+				else{
+					$monthly_data[$i] = array('month'=>$month_name[$month_index],'amount'=>0);
+				}
+			}
+		}
+
+		return $monthly_data;
+	}
+	private function get_yearly_income_expense($data_type){
+		if($data_type=='income'){
+			$res 		=  $this->dashboard_model->get_yearly_income();
+		}else if($data_type=='expense'){
+			$res 		=  $this->dashboard_model->get_yearly_expense();
+		}
+		$data = [];
+		$yearly_data = [];
+		foreach($res as $r){
+			$year = (int)explode('-', $r["date"])[0];
+			if(isset($data[$year]))
+				$data[$year] += (float)$r["amount"];
+			else
+				$data[$year] = (float)$r["amount"];
+		}
+
+		$yearly_data = $data;
+
+		return $yearly_data;
+	}
+
+	private function get_yearly_income_expense_combined(){
+				
+		$yearly_expense = 	$this->get_yearly_income_expense('expense');
+		$yearly_income	=	$this->get_yearly_income_expense('income');
+
+		$year = [];
+
+		foreach($yearly_expense as $key=>$value){
+			$year[] = $key;
+		}
+		
+		foreach($yearly_income as $key=>$value){
+			$year[] = $key;
+		}
+		$year = array_unique($year);
+		sort($year);    
+
+		foreach($year as $y){
+			if(!isset($yearly_expense[$y])){
+			  $yearly_expense[$y]=(float)0;
+			}
+
+			if(!isset($yearly_income[$y])){
+				$yearly_income[$y]=(float)0;
+			}
+		}
+
+		ksort($yearly_expense);
+		ksort($yearly_income);
+
+		return array('year'=>$year,'yearly_income'=>$yearly_income,'yearly_expense'=>$yearly_expense);
 	}
 
 	private function get_monthly_achievement($user_id){
@@ -128,16 +202,15 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$monthly_expense = $this->get_monthly_expense();
 		$monthly_target = $this->get_monthly_target($user_id);
 		$monthly_achievement = $this->get_monthly_achievement($user_id);exit;
-
 		$data = array(
-			'title' 			=>	'User Dashbaord',
-			'main_content'		=>	'page-user-dashboard',
-			'role'				=>	$user_role,
-			'monthly_expense' 	=>	$this->get_monthly_expense(),
-			'monthly_target'	=> $monthly_target
+			'title' 				=>	'User Dashbaord',
+			'main_content'			=>	'page-user-dashboard',
+			'role'					=>	$user_role,
+			'monthly_expense' 		=>	$this->get_monthly_income_expense('expense'),
+			'monthly_income' 		=>	$this->get_monthly_income_expense('income'),
+			'yearly_income_expense'	=> 	$this->get_yearly_income_expense_combined()
 		);
 		$this->load->view('includes/template', $data);
 	}
