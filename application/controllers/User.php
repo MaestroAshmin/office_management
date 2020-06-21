@@ -8,6 +8,7 @@ class User extends CI_Controller
 		parent:: __construct();
 		$this->load->helper('url', 'form');
 		$this->load->model('user_model');
+		$this->load->model('dashboard_model');
 		$this->load->library('session');
 		$this->load->model('expensestransaction_model');
 		$this->load->model('dashboard_model');
@@ -64,7 +65,8 @@ class User extends CI_Controller
 		// var_dump($res);exit;
 		// $res 		= $this->user_model->get_monthly_expense(date("Y"));
 
-
+		$performance = $this->dashboard_model->get_monthly_performance();
+		exit;
 		$data = array(
 			'title' 		=> 'User Dashbaord',
 			'main_content'	=> 'page-user-dashboard',
@@ -730,7 +732,7 @@ class User extends CI_Controller
 				redirect('user/add_target');
 			}
 			
-			redirect('user/view_activity');
+			redirect('user/view_target');
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){

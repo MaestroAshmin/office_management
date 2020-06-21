@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH')OR exit('No direct script access');
 
-class User_model extends CI_Model{
+class Dashboard_model extends CI_Model{
 
 	public function get_monthly_expense(){
 		$result= $this->db->select('id, name, email,role')->from('tbl_users')
@@ -14,5 +14,10 @@ class User_model extends CI_Model{
        		return $result;
        	}else{
        		return false;
-       	}
+       	}	
+	}
+	public function get_monthly_performance(){
+		$query = $this->db->select('*')->from('csv_data')->get();
+		exit;
+	}
 }
