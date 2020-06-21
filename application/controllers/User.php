@@ -6,13 +6,12 @@ class User extends CI_Controller
 	
 	public function __construct(){
 		parent:: __construct();
-		$this->load->helper('url', 'form');
 		$this->load->model('user_model');
 		$this->load->model('dashboard_model');
 		$this->load->library('session');
 		$this->load->model('expensestransaction_model');
 		$this->load->model('dashboard_model');
-		$this->load->library('sendmail');
+		$this->load->library(array('sendmail','nepali_date'));
 	}
 
 
@@ -51,6 +50,30 @@ class User extends CI_Controller
 		}
 	}
 
+	private function get_monthly_expense(){
+		$year 	= date('Y');
+		$month  = date('m');
+		$day    = date('d');
+
+		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+		$res 		=  $this->dashboard_model->get_monthly_expense($nepali_year);
+		$expense = [];
+		$monthly_expense = [];
+		foreach($res as $r){
+			$month = (int)explode('-', $r["date"])[1];
+			if(isset($expense[$month]))
+				$expense[$month] += (float)$r["amount"];
+			else
+				$expense[$month] = (float)$r["amount"];
+		}
+
+		foreach($expense as $key=>$e){
+			$monthly_expense[] = array('month'=>$key,'amount'=>$e);
+		}
+
+		return $monthly_expense;
+	}
+
 	public function dashboard(){
 
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -60,17 +83,13 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$monthly_expense = $this->get_monthly_expense();
 
-		// $res 
-		// var_dump($res);exit;
-		// $res 		= $this->user_model->get_monthly_expense(date("Y"));
-
-		$performance = $this->dashboard_model->get_monthly_performance();
-		exit;
 		$data = array(
-			'title' 		=> 'User Dashbaord',
-			'main_content'	=> 'page-user-dashboard',
-			'role'			=> $user_role
+			'title' 			=>	'User Dashbaord',
+			'main_content'		=>	'page-user-dashboard',
+			'role'				=>	$user_role,
+			'monthly_expense' 	=>	$this->get_monthly_expense()
 		);
 		$this->load->view('includes/template', $data);
 	}

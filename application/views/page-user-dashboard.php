@@ -42,7 +42,7 @@
               pointStrokeColor    : 'rgba(60,141,188,1)',
               pointHighlightFill  : '#fff',
               pointHighlightStroke: 'rgba(60,141,188,1)',
-              data                : [28, 48, 40, 19, 80, 27]
+              data                : [<?php foreach($monthly_expense as $e) echo $e["amount"].','; ?>]
             },
             {
               label               : 'Expense',
@@ -53,7 +53,7 @@
               pointStrokeColor    : '#c1c7d1',
               pointHighlightFill  : '#fff',
               pointHighlightStroke: 'rgba(220,220,220,1)',
-              data                : [65, 59, 30, 79, 56, 40]
+              data                : [<?php foreach($monthly_expense as $e) echo $e["amount"].','; ?>]
             },
           ]
         }

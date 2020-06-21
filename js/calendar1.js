@@ -1,6 +1,5 @@
 $(document).ready(function(){
         if($(".eng_date").length >= 1){
-                $('.eng_date').datepicker();
                 // let eng_date = $(".eng_date").datepicker().datepicker("getDate");
                 var d = new Date();
                 var month = d.getMonth()+1;
