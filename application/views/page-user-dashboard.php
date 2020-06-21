@@ -8,7 +8,7 @@
           <!-- Content Row -->
           <div class="container account_dashboard">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-sm-12">
               <!-- LINE CHART -->
               <div class="card card-info">
                 <div class="card-header">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                   <div class="chart">
-                    <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    <canvas id="lineChart" style="max-height: 300px; max-width: 100%;"></canvas>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -32,7 +32,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script>
         var lineChartData = {
-          labels  : ['Baisakh', 'Jestha', 'Asar', 'Shrawan', 'Bhadra', 'Ashwin', 'Kartik','Mangshir','Poush','Magh','Falgun','Chaitra'],
+          labels  : [<?php foreach($monthly_expense as $e) echo "'".$e["month"]."',"; ?>],
           datasets: [
             {
               label               : 'Income',
@@ -42,7 +42,7 @@
               pointStrokeColor    : 'rgba(60,141,188,1)',
               pointHighlightFill  : '#fff',
               pointHighlightStroke: 'rgba(60,141,188,1)',
-              data                : [<?php foreach($monthly_expense as $e) echo $e["amount"].','; ?>]
+              data                : [<?php foreach($monthly_income as $e) echo $e["amount"].','; ?>]
             },
             {
               label               : 'Expense',

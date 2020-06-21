@@ -12,7 +12,18 @@ class Dashboard_model extends CI_Model{
        		return $result;
        	}else{
        		return false;
-           }
+        }
+    }
+    public function get_monthly_income($year){
+		$result= $this->db->select("SUM(amount) as amount, nepali_date as date")->from('tbl_income_data')
+                    -> where("nepali_date like '".$year."%'")
+                    -> group_by('nepali_date')->get()
+       				-> result_array();
+       	if(!empty($result)){
+       		return $result;
+       	}else{
+       		return false;
+        }
     }
 }
 

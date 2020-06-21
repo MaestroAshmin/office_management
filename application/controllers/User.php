@@ -48,6 +48,47 @@ class User extends CI_Controller
 		}
 	}
 
+	private function get_monthly_income(){
+		$year 	= date('Y');
+		$month  = date('m');
+		$day    = date('d');
+
+		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+		$res 		=  $this->dashboard_model->get_monthly_income($nepali_year);
+		$month_name = ['Baisakh', 'Jestha', 'Asar', 'Shrawan', 'Bhadra', 'Ashwin', 'Kartik','Mangshir','Poush','Magh','Falgun','Chaitra'];
+		$income = [];
+		$monthly_income = [];
+		foreach($res as $r){
+			$month = (int)explode('-', $r["date"])[1];
+			if(isset($income[$month]))
+				$income[$month] += (float)$r["amount"];
+			else
+				$income[$month] = (float)$r["amount"];
+		}
+
+		$max_month = 1;
+		foreach($income as $key=>$e){
+			if($key>$max_month){
+				$max_month = $key;
+			}
+		}
+
+		for($i=1;$i<=$max_month;$i++){
+			$month_index = $i-1;
+			foreach($income as $key=>$e){
+				if($key==$i){
+					$monthly_income[$i] = array('month'=>$month_name[$month_index],'amount'=>$e);
+					break;
+				}
+				else{
+					$monthly_income[$i] = array('month'=>$month_name[$month_index],'amount'=>0);
+				}
+			}
+		}
+
+		return $monthly_income;
+	}
+
 	private function get_monthly_expense(){
 		$year 	= date('Y');
 		$month  = date('m');
@@ -55,6 +96,7 @@ class User extends CI_Controller
 
 		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
 		$res 		=  $this->dashboard_model->get_monthly_expense($nepali_year);
+		$month_name = ['Baisakh', 'Jestha', 'Asar', 'Shrawan', 'Bhadra', 'Ashwin', 'Kartik','Mangshir','Poush','Magh','Falgun','Chaitra'];
 		$expense = [];
 		$monthly_expense = [];
 		foreach($res as $r){
@@ -65,8 +107,24 @@ class User extends CI_Controller
 				$expense[$month] = (float)$r["amount"];
 		}
 
+		$max_month = 1;
 		foreach($expense as $key=>$e){
-			$monthly_expense[] = array('month'=>$key,'amount'=>$e);
+			if($key>$max_month){
+				$max_month = $key;
+			}
+		}
+
+		for($i=1;$i<=$max_month;$i++){
+			$month_index = $i-1;
+			foreach($expense as $key=>$e){
+				if($key==$i){
+					$monthly_expense[$i] = array('month'=>$month_name[$month_index],'amount'=>$e);
+					break;
+				}
+				else{
+					$monthly_expense[$i] = array('month'=>$month_name[$month_index],'amount'=>0);
+				}
+			}
 		}
 
 		return $monthly_expense;
@@ -87,7 +145,8 @@ class User extends CI_Controller
 			'title' 			=>	'User Dashbaord',
 			'main_content'		=>	'page-user-dashboard',
 			'role'				=>	$user_role,
-			'monthly_expense' 	=>	$this->get_monthly_expense()
+			'monthly_expense' 	=>	$this->get_monthly_expense(),
+			'monthly_income' 	=>	$this->get_monthly_income()
 		);
 		$this->load->view('includes/template', $data);
 	}
