@@ -78,43 +78,6 @@ $(document).ready(function() {
         alert( table.rows('.selected').data().length +' row(s) selected' );
     });
 
- $('#target thead tr').clone(true).appendTo( '#target thead' );
-      $('#target thead tr:eq(1) th').each( function (i) {
-          $(this).html( '<input type="text" placeholder="" />' );
-  
-          $( 'input', this ).on( 'keyup change', function () {
-              if ( table.column(i).search() !== this.value ) {
-                  table
-                      .column(i)
-                      .search( this.value )
-                      .draw();
-              }
-          } );
-      });
-  
-      var table = $('#target').DataTable({ 
-        "searching": true,
-        orderCellsTop: true,
-        "pageLength": 100,
-        "columnDefs": [
-          { 
-            "searchable": false,
-            "targets": [0,4],
-            }
-        ],
-        "pagingType": "full_numbers",
-        "scrollY": true,
-        "scrollX": true
-      });
-        // $.fn.DataTable.ext.pager.numbers_length = 100;
-
-      $('#target tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-      });
- 
-    $('#button').click( function () {
-        alert( table.rows('.selected').data().length +' row(s) selected' );
-    });
     
     $('#activity thead tr').clone(true).appendTo( '#activity thead' );
       $('#activity thead tr:eq(1) th').each( function (i) {

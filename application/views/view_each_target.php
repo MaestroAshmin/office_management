@@ -145,7 +145,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label>Meeting</label>
+                                <label>New Contract</label>
                             </div>
                             <div class="col-sm">
                                 Daily   

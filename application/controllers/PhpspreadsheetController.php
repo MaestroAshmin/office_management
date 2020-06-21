@@ -47,6 +47,7 @@ class PhpspreadsheetController extends CI_Controller {
                     $insertData[] = $sheetData[$i];
                 }
             }
+
             $result = $this->import->save_to_db($insertData,$user_id);
             if($result['status'] == 'success'){
 				redirect('user', 'refresh');
