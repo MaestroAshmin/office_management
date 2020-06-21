@@ -31,8 +31,46 @@
     <script src="<?php echo site_url();?>vendor/jquery/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script>
-        var lineChartData = {
+        var lineChartDataMonthly = {
+          <?php 
+            if (count($monthly_expense) > count($monthly_income))
+            {
+          ?>
           labels  : [<?php foreach($monthly_expense as $e) echo "'".$e["month"]."',"; ?>],
+          <?php
+            }else{
+          ?>
+          labels  : [<?php foreach($monthly_income as $e) echo "'".$e["month"]."',"; ?>],
+          <?php
+            }
+          ?>
+          datasets: [
+            {
+              label               : 'Income',
+              backgroundColor     : 'rgba(60,141,188,0.9)',
+              borderColor         : 'rgba(60,141,188,0.8)',
+              pointColor          : '#3b8bba',
+              pointStrokeColor    : 'rgba(60,141,188,1)',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(60,141,188,1)',
+              data                : [<?php foreach($monthly_income as $e) echo $e["amount"].','; ?>]
+            },
+            {
+              label               : 'Expense',
+              backgroundColor     : 'rgba(210, 214, 222, 1)',
+              borderColor         : 'rgba(210, 214, 222, 1)',
+              pointDotRadius      :  1,
+              pointColor          : 'rgba(210, 214, 222, 1)',
+              pointStrokeColor    : '#c1c7d1',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(220,220,220,1)',
+              data                : [<?php foreach($monthly_expense as $e) echo $e["amount"].','; ?>]
+            },
+          ]
+        }
+
+        var lineChartDataYearly = {
+          labels  : [<?php foreach($monthly_income as $e) echo "'".$e["month"]."',"; ?>],
           datasets: [
             {
               label               : 'Income',
@@ -90,7 +128,7 @@
           //--------------
           var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
           var lineChartOptions = $.extend(true, {}, lineChartOptions);
-          var lineChartData = $.extend(true, {}, lineChartData);
+          var lineChartData = $.extend(true, {}, lineChartDataYearly);
           lineChartData.datasets[0].fill = false;
           lineChartData.datasets[1].fill = false;
           lineChartOptions.datasetFill = false;
