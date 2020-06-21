@@ -25,5 +25,26 @@ class Dashboard_model extends CI_Model{
        		return false;
         }
     }
+    
+    public function get_yearly_income(){
+		$result= $this->db->select("SUM(amount) as amount, nepali_date as date")->from('tbl_income_data')
+                    -> group_by('nepali_date')->get()
+       				-> result_array();
+       	if(!empty($result)){
+       		return $result;
+       	}else{
+       		return false;
+        }
+    }
+    public function get_yearly_expense(){
+		$result= $this->db->select("SUM(amount) as amount, nepali_date as date")->from('tbl_expense_data')
+                    -> group_by('nepali_date')->get()
+       				-> result_array();
+       	if(!empty($result)){
+       		return $result;
+       	}else{
+       		return false;
+        }
+    }
 }
 

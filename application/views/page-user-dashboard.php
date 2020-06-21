@@ -12,7 +12,13 @@
               <!-- LINE CHART -->
               <div class="card card-info">
                 <div class="card-header">
-                  <h3 class="card-title">Income Vs Expense</h3>
+                  <h3 class="card-title float-left" id="chart-title">Income Vs Expense (Monthly)</h3>
+                  <div class="form-group float-right" style="margin:0;">
+                    <select class="form-control" id="line-chart-type" style="margin:0;">
+                      <option>Monthly</option>
+                      <option>Yearly</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="card-body">
                   <div class="chart">
@@ -70,7 +76,7 @@
         }
 
         var lineChartDataYearly = {
-          labels  : [<?php foreach($monthly_income as $e) echo "'".$e["month"]."',"; ?>],
+          labels  : [<?php foreach($yearly_income_expense["year"] as $e) echo "'".$e."',"; ?>],
           datasets: [
             {
               label               : 'Income',
@@ -80,7 +86,7 @@
               pointStrokeColor    : 'rgba(60,141,188,1)',
               pointHighlightFill  : '#fff',
               pointHighlightStroke: 'rgba(60,141,188,1)',
-              data                : [<?php foreach($monthly_income as $e) echo $e["amount"].','; ?>]
+              data                : [<?php foreach($yearly_income_expense["yearly_income"] as $e) echo $e.','; ?>]
             },
             {
               label               : 'Expense',
@@ -91,7 +97,7 @@
               pointStrokeColor    : '#c1c7d1',
               pointHighlightFill  : '#fff',
               pointHighlightStroke: 'rgba(220,220,220,1)',
-              data                : [<?php foreach($monthly_expense as $e) echo $e["amount"].','; ?>]
+              data                : [<?php foreach($yearly_income_expense["yearly_expense"] as $e) echo $e.','; ?>]
             },
           ]
         }
@@ -101,6 +107,9 @@
           responsive : true,
           legend: {
             display: true,
+            labels: {
+                fontSize: 20,
+            }
           },
           scales: {
             xAxes: [{
@@ -108,16 +117,16 @@
                 display : false,
               },
               scaleLabel: {
-                display: true,
+                display: false,
                 labelString: 'Time'
-              }
+              },
             }],
             yAxes: [{
               gridLines : {
                 display : true,
               },
               scaleLabel: {
-                display: true,
+                display: false,
                 labelString: 'Amount'
               }
             }]
@@ -128,7 +137,7 @@
           //--------------
           var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
           var lineChartOptions = $.extend(true, {}, lineChartOptions);
-          var lineChartData = $.extend(true, {}, lineChartDataYearly);
+          var lineChartData = $.extend(true, {}, lineChartDataMonthly);
           lineChartData.datasets[0].fill = false;
           lineChartData.datasets[1].fill = false;
           lineChartOptions.datasetFill = false;
@@ -137,5 +146,34 @@
             type: 'line',
             data: lineChartData,
             options: lineChartOptions
+          });
+
+          $('#line-chart-type').on('change', function() {
+            if(this.value=="Monthly"){
+              $('#chart-title').html("Income Vs Expense (Monthly)");
+              lineChartData = $.extend(true, {}, lineChartDataMonthly);
+              lineChartData.datasets[0].fill = false;
+              lineChartData.datasets[1].fill = false;
+              lineChartOptions.datasetFill = false;
+              
+              lineChart = new Chart(lineChartCanvas, {
+                    type: 'line',
+                    data: lineChartData,
+                    options: lineChartOptions
+              });
+            }
+            else if(this.value=="Yearly"){
+              $('#chart-title').html("Income Vs Expense (Yearly)");              
+              lineChartData = $.extend(true, {}, lineChartDataYearly);
+              lineChartData.datasets[0].fill = false;
+              lineChartData.datasets[1].fill = false;
+              lineChartOptions.datasetFill = false;
+
+              lineChart = new Chart(lineChartCanvas, {
+                    type: 'line',
+                    data: lineChartData,
+                    options: lineChartOptions
+              });
+            }
           });
     </script>

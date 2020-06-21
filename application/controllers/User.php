@@ -92,6 +92,59 @@ class User extends CI_Controller
 
 		return $monthly_data;
 	}
+	private function get_yearly_income_expense($data_type){
+		if($data_type=='income'){
+			$res 		=  $this->dashboard_model->get_yearly_income();
+		}else if($data_type=='expense'){
+			$res 		=  $this->dashboard_model->get_yearly_expense();
+		}
+		$data = [];
+		$yearly_data = [];
+		foreach($res as $r){
+			$year = (int)explode('-', $r["date"])[0];
+			if(isset($data[$year]))
+				$data[$year] += (float)$r["amount"];
+			else
+				$data[$year] = (float)$r["amount"];
+		}
+
+		$yearly_data = $data;
+
+		return $yearly_data;
+	}
+
+	private function get_yearly_income_expense_combined(){
+				
+		$yearly_expense = 	$this->get_yearly_income_expense('expense');
+		$yearly_income	=	$this->get_yearly_income_expense('income');
+
+		$year = [];
+
+		foreach($yearly_expense as $key=>$value){
+			$year[] = $key;
+		}
+		
+		foreach($yearly_income as $key=>$value){
+			$year[] = $key;
+		}
+		$year = array_unique($year);
+		sort($year);    
+
+		foreach($year as $y){
+			if(!isset($yearly_expense[$y])){
+			  $yearly_expense[$y]=(float)0;
+			}
+
+			if(!isset($yearly_income[$y])){
+				$yearly_income[$y]=(float)0;
+			}
+		}
+
+		ksort($yearly_expense);
+		ksort($yearly_income);
+
+		return array('year'=>$year,'yearly_income'=>$yearly_income,'yearly_expense'=>$yearly_expense);
+	}
 
 	public function dashboard(){
 
@@ -104,11 +157,12 @@ class User extends CI_Controller
 		$user_role = $sess_data['user_role'];
 
 		$data = array(
-			'title' 			=>	'User Dashbaord',
-			'main_content'		=>	'page-user-dashboard',
-			'role'				=>	$user_role,
-			'monthly_expense' 	=>	$this->get_monthly_income_expense('expense'),
-			'monthly_income' 	=>	$this->get_monthly_income_expense('income')
+			'title' 				=>	'User Dashbaord',
+			'main_content'			=>	'page-user-dashboard',
+			'role'					=>	$user_role,
+			'monthly_expense' 		=>	$this->get_monthly_income_expense('expense'),
+			'monthly_income' 		=>	$this->get_monthly_income_expense('income'),
+			'yearly_income_expense'	=> 	$this->get_yearly_income_expense_combined()
 		);
 		$this->load->view('includes/template', $data);
 	}
