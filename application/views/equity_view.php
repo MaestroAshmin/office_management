@@ -20,7 +20,7 @@
           ?>
           <!-- Content Row -->
         <div class="row">
-            <div class="container">
+            <div class="container d-flex align-items-center">
                 <div class="radio_date_filter1">
                     <input type="radio" name="filtertable" value="day" />Today
                     <input type="radio" name="filtertable"  value="month"/>This Month

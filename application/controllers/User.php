@@ -154,7 +154,7 @@ class User extends CI_Controller
 		echo json_encode(array('year'=>$year,'yearly_income'=>$yearly_income,'yearly_expense'=>$yearly_expense));
 	}
 
-	public function get_current_year_income_expense(){
+	public function get_current_year_income_expense_equity(){
 		$year 	= date('Y');
 		$month  = date('m');
 		$day    = date('d');
@@ -162,16 +162,18 @@ class User extends CI_Controller
 		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
 		$income =  $this->dashboard_model->get_current_year_income($nepali_year);
 		$expense =  $this->dashboard_model->get_current_year_expense($nepali_year);
+		$equity =  $this->dashboard_model->get_current_year_equity($nepali_year);
 
-		return array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"]);
+		echo json_encode(array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"],'equity'=>$equity[0]["amount"]));
 	}
 
 	
-	public function get_total_year_income_expense(){
+	public function get_total_year_income_expense_equity(){
 		$income =  $this->dashboard_model->get_total_year_income();
 		$expense =  $this->dashboard_model->get_total_year_expense();
+		$equity =  $this->dashboard_model->get_total_year_equity();
 		
-		return array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"]);
+		echo json_encode(array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"],'equity'=>$equity[0]["amount"]));
 	}
 
 	private function get_monthly_achievement(){
@@ -369,7 +371,6 @@ class User extends CI_Controller
 	// 	echo '<pre>'; print_r($data);
 	// }
 
-	
 	public function dashboard(){
 
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -384,9 +385,7 @@ class User extends CI_Controller
 		$data = array(
 			'title' 						=>	'User Dashbaord',
 			'main_content'					=>	'page-user-dashboard',
-			'role'							=>	$user_role,
-			'current_year_income_expense' 	=>	$this->get_current_year_income_expense(),
-			'total_year_income_expense' 	=>	$this->get_total_year_income_expense(),
+			'role'							=>	$user_role
 		);
 		$this->load->view('includes/template', $data);
 	}

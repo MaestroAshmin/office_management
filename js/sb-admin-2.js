@@ -1756,8 +1756,8 @@ var lineChartData = {
   datasets: [
     {
       label               : 'Income',
-      backgroundColor     : 'rgba(0,255,0,0.9)',
-      borderColor         : 'rgba(0,255,0,0.8)',
+      backgroundColor     : 'rgba(60,100,255,0.9)',
+      borderColor         : 'rgba(60,100,255,0.8)',
       pointColor          : '#3b8bba',
       pointStrokeColor    : 'rgba(60,141,188,1)',
       pointHighlightFill  : '#fff',
@@ -1817,6 +1817,12 @@ var lineChartOptions = {
     lineChartData.datasets[0].fill = false;
     lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false;
+    var total_income_current_year = '';
+    var total_expense_current_year = '';
+    var total_equity_current_year = '';
+    var total_income_total_year = '';
+    var total_expense_total_year = '';
+    var total_equity_total_year = '';
     var labels_monthly = [];
     var labels_yearly = [];
     var income_data_monthly = [];
@@ -1824,6 +1830,40 @@ var lineChartOptions = {
     var expense_data_monthly = [];
     var expense_data_yearly = [];
 
+    var formatter = new Intl.NumberFormat('en-IN', { 
+      minimumFractionDigits: 2
+    }); 
+
+    //get current year income expense equity
+    $.ajax({
+      url: "get_current_year_income_expense_equity",
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+        total_income_current_year   = formatter.format(objects.income);
+        total_expense_current_year  = formatter.format(objects.expense);
+        total_equity_current_year   = formatter.format(objects.equity);
+        
+        $('#total_income').html('Rs. '+total_income_current_year);
+        $('#total_expense').html('Rs. '+total_expense_current_year);
+        $('#total_equity').html('Rs. '+total_equity_current_year);
+      }
+    });
+
+    //get total year income equity
+    $.ajax({
+      url: "get_total_year_income_expense_equity",
+      type: "post",
+      success: function(data){
+        let objects = JSON.parse(data);
+        total_income_total_year   =  formatter.format(objects.income);
+        total_expense_total_year  =  formatter.format(objects.expense);
+        total_equity_total_year   =  formatter.format(objects.equity);
+      }
+    });
+
+
+    //get data for monthly line chart
     $.ajax({
       url: "get_monthly_income_expense_combined",
       type: "post",
@@ -1862,6 +1902,7 @@ var lineChartOptions = {
       }
     });
 
+    // get data for yearly line chart
     $.ajax({
       url: "get_yearly_income_expense_combined",
       type: "post",
@@ -1895,6 +1936,10 @@ var lineChartOptions = {
         data: lineChartData,
         options: lineChartOptions
       });
+      
+      $('#total_income').html('Rs. '+total_income_current_year);
+      $('#total_expense').html('Rs. '+total_expense_current_year);
+      $('#total_equity').html('Rs. '+total_equity_current_year);
     }
     else if(this.value=="Yearly"){
       $('#chart-title').html("Income Vs Expense (Yearly)");              
@@ -1907,6 +1952,10 @@ var lineChartOptions = {
         data: lineChartData,
         options: lineChartOptions
       });
+      
+      $('#total_income').html('Rs. '+total_income_total_year);
+      $('#total_expense').html('Rs. '+total_expense_total_year);
+      $('#total_equity').html('Rs. '+total_equity_total_year);
     }
   });
 

@@ -14,146 +14,10 @@ $(document).ready(function() {
           } );
       });
   
-      var table = $('#transaction').DataTable({ 
-        "searching": false,
-        orderCellsTop: true,
-        "pageLength": 100,
-        "columnDefs": [
-          { 
-            "searchable": false,
-            "targets": [0,10,11],
-            }
-        ],
-        "pagingType": "full_numbers",
-        "scrollY": true,
-        "scrollX": true
-      });
-        // $.fn.DataTable.ext.pager.numbers_length = 100;
-
-      $('#transaction tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-      });
- 
-    $('#button').click( function () {
-        alert( table.rows('.selected').data().length +' row(s) selected' );
-    });
-    $('#from_date, #to_date').on('keyup change', function() {
-        table.draw();
-    } );
-    $('#target thead tr').clone(true).appendTo( '#target thead' );
-      $('#target thead tr:eq(1) th').each( function (i) {
-          $(this).html( '<input type="text" placeholder="" />' );
-  
-          $( 'input', this ).on( 'keyup change', function () {
-              if ( table.column(i).search() !== this.value ) {
-                  table
-                      .column(i)
-                      .search( this.value )
-                      .draw();
-              }
-          } );
-      });
-  
-      var table = $('#target').DataTable({ 
-        "searching": true,
-        orderCellsTop: true,
-        "pageLength": 100,
-        "columnDefs": [
-          { 
-            "searchable": false,
-            "targets": [0,4],
-            }
-        ],
-        "pagingType": "full_numbers",
-        "scrollY": true,
-        "scrollX": true
-      });
-        // $.fn.DataTable.ext.pager.numbers_length = 100;
-
-      $('#target tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-      });
- 
-    $('#button').click( function () {
-        alert( table.rows('.selected').data().length +' row(s) selected' );
-    });
-
-    
-    $('#activity thead tr').clone(true).appendTo( '#activity thead' );
-      $('#activity thead tr:eq(1) th').each( function (i) {
-          $(this).html( '<input type="text" placeholder="" />' );
-  
-          $( 'input', this ).on( 'keyup change', function () {
-              if ( table.column(i).search() !== this.value ) {
-                  table
-                      .column(i)
-                      .search( this.value )
-                      .draw();
-              }
-          } );
-      });
-  
-      var table = $('#activity').DataTable({ 
-        "searching": true,
-        orderCellsTop: true,
-        "pageLength": 100,
-        "columnDefs": [
-          { 
-            "searchable": false,
-            "targets": [0],
-            }
-        ],
-        "pagingType": "full_numbers",
-        "scrollY": true,
-        "scrollX": true
-      });
-
-      $('#activity tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-      });
- 
-    $('#button').click( function () {
-        alert( table.rows('.selected').data().length +' row(s) selected' );
-    });
-
-    $('#contact thead tr').clone(true).appendTo( '#contact thead' );
-    $('#contact thead tr:eq(1) th').each( function (i) {
-        $(this).html( '<input type="text" placeholder="" />' );
-
-        $( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
-            }
-        } );
-    });
-
-    var table = $('#contact').DataTable({ 
-      "searching": true,
-      orderCellsTop: true,
-      "pageLength": 100,
-      "columnDefs": [
-        { 
-          "searchable": false,
-          "targets": [0,6],
-          }
-      ],
-      "pagingType": "full_numbers",
-      "scrollY": true,
-      "scrollX": true
-    });
-      // $.fn.DataTable.ext.pager.numbers_length = 100;
-
-    $('#contact tbody').on( 'click', 'tr', function () {
+    var table = $('#transaction').DataTable({sDom: 'lrtip',"bSortCellsTop": true});
+    $('#transaction tbody').on( 'click', 'tr', function () {
       $(this).toggleClass('selected');
-    });
-
-  $('#button').click( function () {
-      alert( table.rows('.selected').data().length +' row(s) selected' );
-  });
-    
+    }); 
 });
 
 minDateFilter = "";
@@ -165,14 +29,13 @@ $('.reset_btn1').click(function () {
     minDateFilter = '';
     maxDateFilter = '';
 
-    $('.radio_date_filter1 input:radio').attr('checked',false);
-
     $('#transaction').DataTable().column('1').search(
         minDateFilter,maxDateFilter
     ).draw();
-    $('#activity').DataTable().column('1').search(
-        minDateFilter,maxDateFilter
-    ).draw();
+  
+    $(".radio_date_filter1 input:radio").each(function(){
+      $(this).prop('checked', false);
+    });
 });
 
 $.fn.dataTable.ext.search.push(
@@ -231,12 +94,8 @@ $(".radio_date_filter1 input:radio").click(function () {
     $('#transaction').DataTable().column('1').search(
         minDateFilter,
     ).draw();
-    $('#activity').DataTable().column('1').search(
-        minDateFilter,
-    ).draw();
-
-
 });
+
 function formatDate(date) {
   var d = new Date(date),
       month = '' + (d.getMonth() + 1),
