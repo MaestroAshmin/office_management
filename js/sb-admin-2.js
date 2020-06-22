@@ -1752,7 +1752,7 @@ if(slider!=null){
   });
 }
 
-var lineChartDataMonthly = {
+var lineChartData = {
   datasets: [
     {
       label               : 'Income',
@@ -1767,30 +1767,6 @@ var lineChartDataMonthly = {
       label               : 'Expense',
       backgroundColor     : 'rgba(255, 0, 0, 0.9)',
       borderColor         : 'rgba(255, 0, 0, 0.8)',
-      pointDotRadius      :  1,
-      pointColor          : 'rgba(210, 214, 222, 1)',
-      pointStrokeColor    : '#c1c7d1',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(220,220,220,1)'
-    },
-  ]
-}
-
-var lineChartDataYearly = {
-  datasets: [
-    {
-      label               : 'Income',
-      backgroundColor     : 'rgba(0,255,0,0.9)',
-      borderColor         : 'rgba(0,255,0,0.8)',
-      pointColor          : '#3b8bba',
-      pointStrokeColor    : 'rgba(60,141,188,1)',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(60,141,188,1)'
-    },
-    {
-      label               : 'Expense',
-      backgroundColor     : 'rgba(255, 0, 0, 1)',
-      borderColor         : 'rgba(255, 0, 0, 1)',
       pointDotRadius      :  1,
       pointColor          : 'rgba(210, 214, 222, 1)',
       pointStrokeColor    : '#c1c7d1',
@@ -1837,7 +1813,7 @@ var lineChartOptions = {
   if($('#lineChart').length){
     var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
     var lineChartOptions = $.extend(true, {}, lineChartOptions);
-    var lineChartData = $.extend(true, {}, lineChartDataMonthly);
+    var lineChartData = $.extend(true, {}, lineChartData);
     lineChartData.datasets[0].fill = false;
     lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false;
@@ -1935,3 +1911,45 @@ var lineChartOptions = {
   });
 
 });
+
+if($('#pieChart').length){
+  var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+  var performanceData = [];
+  $.ajax({
+    url: 'calculate_performance',
+    type: 'post',
+    success: function(response){
+      let obj = JSON.parse(response);
+      for(x in obj){
+        console.log(obj[x]['contract_signed']);
+      }
+    }
+  });
+    var pieData = {
+      labels: [
+        'Live',
+        'Contracts Signed',
+        'Follow Up',
+        'New Contacts'
+      ],
+      datasets: [
+        {
+          data: [700, 500, 400, 600],
+          backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+        }
+      ]
+    }
+    var pieOptions = {
+      legend: {
+        display: false
+      }
+    }
+    // Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    // eslint-disable-next-line no-unused-vars
+    var pieChart = new Chart(pieChartCanvas, {
+      type: 'doughnut',
+      data: pieData,
+      options: pieOptions
+    })
+  }

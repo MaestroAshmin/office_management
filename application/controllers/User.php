@@ -174,7 +174,9 @@ class User extends CI_Controller
 		return array('income'=>$income[0]["amount"],'expense'=>$expense[0]["amount"]);
 	}
 
-	private function get_monthly_achievement($user_id){
+	private function get_monthly_achievement(){
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
 		$year 	= date('Y');
 		$month  = date('m');
 		$day    = date('d');
@@ -185,26 +187,32 @@ class User extends CI_Controller
 			$nepali_month = '0'.$nepali_month;
 		}
 		$nepali_date = $nepali_year.'-'.$nepali_month;
+		// $result = $this->dashboard_model->get_monthly_achievement($nepali_date,$user_id);
+		// return $result;
 		$result['live'] =  $this->dashboard_model->get_live($nepali_date,$user_id);
 		$result['follow_up'] =  $this->dashboard_model->get_follow_up($nepali_date,$user_id);
 		$result['contract_signed'] =  $this->dashboard_model->get_contract_signed($nepali_date,$user_id);
 		$result['new_contact'] =  $this->dashboard_model->get_new_contact($nepali_date,$user_id);
-		echo '<pre>';print_r($result);
+		echo '<pre>';print_r($result);exit;
 		return $result;
 	}
 
-	private function get_monthly_target($user_id){
+	public function get_monthly_target(){
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+
 		$year 	= date('Y');
 		$month  = date('m');
 		$day    = date('d');
 
 		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
 		$nepali_month = $this->nepali_date->AD_to_BS($year,$month,$day)["month"];
+		
 		if(strlen($nepali_month)==1){
 			$nepali_month = '0'.$nepali_month;
 		}
 		$nepali_date = $nepali_year.'-'.$nepali_month;
-		$result 	 =  $this->dashboard_model->get_monthly_target($nepali_date,$user_id);
+		$result 	 =  $this->dashboard_model->get_monthly_target($nepali_date, $user_id);
 		$target = [];
 			for($i = 0; $i<count($result); $i++){
 				$calc[$i]['new_contact_target'] =  $result[$i]['nc_seat_seller_monthly'] + $result[$i]['nc_bus_company_monthly'] + $result[$i]['nc_merchant_monthly'];
@@ -218,6 +226,148 @@ class User extends CI_Controller
 			}
 		return $target;
 	}
+	public function calculate_performance(){
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+
+		$year 	= date('Y');
+		$month  = date('m');
+		$day    = date('d');
+		$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+		$nepali_month = $this->nepali_date->AD_to_BS($year,$month,$day)["month"];
+		if(strlen($nepali_month)==1){
+			$nepali_month = '0'.$nepali_month;
+		}
+		$nepali_date = $nepali_year.'-'.$nepali_month;
+		$target = $this->get_monthly_target();
+		$i = 0;
+
+		foreach($target as $tar){
+			// echo '<pre>';print_r($tar);
+			$live_seat = $this->dashboard_model->get_live_seats($nepali_date,$tar['user'], 'LIVE');
+			if($live_seat >= $tar['new_live_target']){
+				$data[$i]['live_seats'] = 50;
+			}
+			else{
+				$data[$i]['live_seats'] = ($live_seat*50)/$tar['new_live_target'];
+			}
+			$follow_up = $this->dashboard_model->get_follow_ups($nepali_date,$tar['user']);
+			if($follow_up >= $tar['follow_up_target']){
+				$data[$i]['follow_up'] = 5;
+			}
+			else{
+				$data[$i]['follow_up'] = ($follow_up*5)/$tar['follow_up_target'];
+			}
+			$contracts_signed = $this->dashboard_model->get_signed_contracts($nepali_date,$tar['user']);
+			if($contracts_signed >= $tar['new_contract_target']){
+				$data[$i]['contract_signed'] = 40;
+			}
+			else{
+				$data[$i]['contract_signed'] = ($contracts_signed*40)/$tar['new_contract_target'];
+			}
+			$new_contacts = $this->dashboard_model->get_new_contacts($nepali_date,$tar['user']);
+			if($new_contacts >= $tar['new_contact_target']){
+				$data[$i]['new_contact'] = 5;
+			}
+			else{
+				$data[$i]['new_contact'] = ($new_contacts*5)/$tar['new_contact_target'];
+			}
+			$data[$i]['user'] = $tar['user'];
+			$i++;
+		}
+		echo json_encode($data);
+		exit;
+	}
+	// public function calculate_performance(){
+	// 	$target = $this->get_monthly_target();
+	// 	$achievement = $this->get_monthly_achievement();
+	// 	// echo '<pre>';print_r($target);exit;
+	// 	echo '<pre>';print_r($achievement);exit;
+	// 	$i = 0;
+	// 	foreach($target as $tar){
+	// 		foreach($achievement as $condition){
+	// 			$keys = array_keys($achievement);
+	// 			// echo '<pre>';print_r($keys);
+	// 			// echo '=============';
+	// 			// echo $i;
+	// 			// echo '===============';
+	// 			if(isset($keys[$i])){
+	// 			if($keys[$i] == 'live')
+	// 			{
+	// 				foreach($condition as $cond){
+	// 					if($tar['user'] == $cond['uploaded_by']){
+	// 						if(isset($cond['live_seat']))
+	// 						{
+	// 							if($cond['live_seat'] >= $tar['new_live_target']){
+	// 								$data[$i]['live_seats'] = 50;
+	// 							}
+	// 							else{
+	// 								$data[$i]['live_seats'] = ($cond['live_seat']*50)/$tar['new_live_target'];
+	// 							}
+	// 						}							
+	// 					}
+	// 				}
+	// 				unset($achievement['live']);
+	// 			}
+				
+	// 			elseif($keys[$i] == 'follow_up')
+	// 			{
+	// 				foreach($condition as $cond){
+	// 					if($tar['user'] == $cond['uploaded_by']){
+	// 						if(isset($cond['follow_up_count']))
+	// 						{
+	// 							if($cond['follow_up_count'] >= $tar['follow_up_target']){
+	// 								$data[$i]['follow_up'] = 5;
+	// 							}
+	// 							else{
+	// 								$data[$i]['follow_up'] = ($cond['follow_up_count']*5)/$tar['follow_up_target'];
+	// 							}
+	// 						}							
+	// 					}
+	// 				}
+	// 				unset($achievement['follow_up']);
+	// 			}
+	// 			elseif($keys[$i] == 'contract_signed')
+	// 			{
+	// 				foreach($condition as $cond){
+	// 					if($tar['user'] == $cond['uploaded_by']){
+	// 						if(isset($cond['signed_contract_count']))
+	// 						{
+	// 							if($cond['signed_contract_count'] >= $tar['new_contract_target']){
+	// 								$data[$i]['contract_signed'] = 40;
+	// 							}
+	// 							else{
+	// 								$data[$i]['contract_signed'] = ($cond['signed_contract_count']*40)/$tar['new_contract_target'];
+	// 							}
+	// 						}							
+	// 					}
+	// 				}
+	// 				unset($achievement['contract_signed']);
+	// 			}
+	// 			elseif($keys[$i] == 'new_contact')
+	// 			{
+	// 				foreach($condition as $cond){
+	// 					if($tar['user'] == $cond['uploaded_by']){
+	// 						if(isset($cond['new_contact']))
+	// 						{
+	// 							if($cond['new_contact'] >= $tar['new_contact_target']){
+	// 								$data[$i]['new_contact'] = 5;
+	// 							}
+	// 							else{
+	// 								$data[$i]['new_contact'] = ($cond['new_contact']*5)/$tar['new_contact_target'];
+	// 							}
+	// 						}							
+	// 					}
+	// 				}
+	// 				unset($achievement['new_contact']);
+	// 			}
+	// 			$data[$i]['user'] = $tar['user'];
+	// 			$i++;
+	// 			}
+	// 		}
+	// 	}
+	// 	echo '<pre>'; print_r($data);
+	// }
 
 	
 	public function dashboard(){
@@ -229,8 +379,8 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$monthly_target = $this->get_monthly_target($user_id);
-		$monthly_achievement = $this->get_monthly_achievement($user_id);exit;
+		// $monthly_target = $this->get_monthly_target($user_id);
+		// $monthly_achievement = $this->get_monthly_achievement($user_id);
 		$data = array(
 			'title' 						=>	'User Dashbaord',
 			'main_content'					=>	'page-user-dashboard',
