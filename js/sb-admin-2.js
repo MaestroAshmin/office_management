@@ -1959,46 +1959,47 @@ var lineChartOptions = {
     }
   });
 
-});
+  
+  if($('#pieChart').length){
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+    var pie_labels = [];
+    var performanceData = [];
 
-if($('#pieChart').length){
-  var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-  var performanceData = [];
-  $.ajax({
-    url: 'calculate_performance',
-    type: 'post',
-    success: function(response){
-      let obj = JSON.parse(response);
-      for(x in obj){
-        console.log(obj[x]['contract_signed']);
-      }
-    }
-  });
     var pieData = {
-      labels: [
-        'Live',
-        'Contracts Signed',
-        'Follow Up',
-        'New Contacts'
-      ],
       datasets: [
         {
-          data: [700, 500, 400, 600],
           backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
         }
       ]
     }
     var pieOptions = {
       legend: {
-        display: false
+        display: false,
       }
     }
-    // Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    // eslint-disable-next-line no-unused-vars
-    var pieChart = new Chart(pieChartCanvas, {
-      type: 'doughnut',
-      data: pieData,
-      options: pieOptions
-    })
+
+    $.ajax({
+      url: 'calculate_performance',
+      type: 'post',
+      success: function(response){
+        let obj = JSON.parse(response);
+        for(x in obj[1]){
+          pie_labels.push(x);
+        }
+
+        for(x in obj[1]){
+          performanceData.push(obj[1][x]);
+        }
+
+        pieData.labels = pie_labels;
+        pieData.datasets[0].data = performanceData;
+
+        var pieChart = new Chart(pieChartCanvas, {
+          type: 'doughnut',
+          data: pieData,
+          options: pieOptions
+        })
+      }
+    });  
   }
+});
