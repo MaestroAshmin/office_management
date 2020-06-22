@@ -83,6 +83,29 @@ class Dashboard_model extends CI_Model{
        		return false;
 		}
 	}
+
+	public function get_current_year_equity($year){
+		$result= $this->db->select("SUM(amount) as amount")->from('tbl_equity_data')
+                    -> where("nepali_date like '".$year."%'")
+                    ->get()
+       				-> result_array();
+       	if(!empty($result)){
+       		return $result;
+       	}else{
+       		return false;
+		}
+    }
+	public function get_total_year_equity(){
+		$result= $this->db->select("SUM(amount) as amount")->from('tbl_equity_data')
+                    ->get()
+       				-> result_array();
+       	if(!empty($result)){
+       		return $result;
+       	}else{
+       		return false;
+        }
+	}
+
     public function get_yearly_income(){
 		$result= $this->db->select("SUM(amount) as amount, nepali_date as date")->from('tbl_income_data')
                     -> group_by('nepali_date')->get()

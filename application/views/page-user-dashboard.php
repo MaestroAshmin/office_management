@@ -29,7 +29,7 @@
                   <div class="row">
                     <div class="col-sm-4 col-6">
                       <div class="description-block border-right">
-                        <h5 class="description-header">Rs. <?php echo $current_year_income_expense["income"]; ?></h5>
+                        <h5 class="description-header" id="total_income"></h5>
                         <span class="description-text">TOTAL INCOME</span>
                       </div>
                       <!-- /.description-block -->
@@ -37,7 +37,7 @@
                     <!-- /.col -->
                     <div class="col-sm-4 col-6">
                       <div class="description-block border-right">
-                        <h5 class="description-header">Rs. <?php echo $current_year_income_expense["expense"]; ?></h5>
+                        <h5 class="description-header" id="total_expense"></h5>
                         <span class="description-text">TOTAL EXPENSE</span>
                       </div>
                       <!-- /.description-block -->
@@ -45,7 +45,7 @@
                     <!-- /.col -->
                     <div class="col-sm-4 col-6">
                       <div class="description-block border-right">
-                        <h5 class="description-header">$24,813.53</h5>
+                        <h5 class="description-header" id="total_equity">$24,813.53</h5>
                         <span class="description-text">TOTAL EQUITY</span>
                       </div>
                       <!-- /.description-block -->
