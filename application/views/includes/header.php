@@ -15,24 +15,25 @@
   <link href="<?php echo site_url();?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link href="<?php echo site_url();?>css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
   <link href="<?php echo site_url();?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" real="text/css">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/nepali.datepicker.v2.2.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" real="text/css">
+  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/nepali.datepicker.v2.2.min.css">
 
-<link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-themes-1.12.1/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-themes-1.12.1/jquery-ui.structure.min.css">
-<link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-themes-1.12.1/jquery-ui.theme.min.css">
-<!-- 
-<link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-1.12.1/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-1.12.1/jquery-ui.structure.min.css"> -->
-<!-- <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-1.12.1/jquery-ui.theme.min.css"> -->
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-themes-1.12.1/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-themes-1.12.1/jquery-ui.structure.min.css">
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-themes-1.12.1/jquery-ui.theme.min.css">
+  <!-- 
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-1.12.1/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-1.12.1/jquery-ui.structure.min.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" rel="stylesheet" href="<?php echo site_url();?>css/jquery-ui-1.12.1/jquery-ui.theme.min.css"> -->
 
+  <!-- Custom styles for this template-->
+  <link href="<?php echo site_url();?>css/sb-admin-2.css" rel="stylesheet">
+  
 </head>
 
 <body id="page-top">
