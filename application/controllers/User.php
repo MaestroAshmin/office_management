@@ -681,6 +681,45 @@ class User extends CI_Controller
 		}
 		
 	}
+
+	public function get_each_contact(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$post = $this->uri->segment(3);
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$contact = $this->user_model->get_each_contact($post);
+		$follow_ups = $this->user_model->get_follow_ups($post);
+
+		$data = array(
+			'title' 		=> 'View Contact',
+			'main_content'	=> 'view_each_contact',
+			'role' 			=> $user_role,
+			'contact'		=> $contact,
+			'follow_ups'	=> $follow_ups
+		);
+		$this->load->view('includes/template', $data);
+	}
+	public function report_generate(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$reports = $this->user_model->generate_report();
+		$data = array(
+			'title' 		=> 'View Reports',
+			'main_content'	=> 'report_generate',
+			'role' 			=> $user_role,
+			'reports'		=> $reports
+		);
+		// echo '<pre>';print_r($data);exit;
+		$this->load->view('includes/template', $data);
+	}
+
 	public function get_designations(){
 		$dept = $this->input->post();
 		$result = $this->user_model->get_designations($dept);
@@ -906,7 +945,6 @@ class User extends CI_Controller
 			);
 			$this->load->view('includes/template', $data);
 		}
-			
 	}
 	public function view_target(){
 		if($this->session->userdata('user_logged_in') != '1'){
