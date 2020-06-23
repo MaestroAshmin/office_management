@@ -237,7 +237,7 @@ class User_model extends CI_Model{
                          'remarks' => $data['remarks'],
                      ];
                      $this->db->insert('tbl_activity',$insertData);
-                     $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
+              $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
                  }
                  catch(Exception $e){
                      $result_status = array('status' => 'failed', 'message' => $e->getMessage());

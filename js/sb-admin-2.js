@@ -1806,6 +1806,33 @@ var lineChartOptions = {
     }]
   }
 }
+
+
+var barChartData = {
+  datasets: [
+    {
+      label               : 'Target',
+      backgroundColor     : '#0C9F5F',
+      borderColor         : '#0C9F5F',
+      pointRadius         :  false,
+      pointColor          : '#3b8bba',
+      pointStrokeColor    : 'rgba(60,141,188,1)',
+      pointHighlightFill  : '#fff',
+      pointHighlightStroke: 'rgba(60,141,188,1)'
+    },
+    {
+      label               : 'Performance',
+      backgroundColor     : 'rgba(60,141,188,0.9)',
+      borderColor         : 'rgba(60,141,188,0.8)',
+      pointRadius         :  false,
+      pointColor          : '#3b8bba',
+      pointStrokeColor    : 'rgba(60,141,188,1)',
+      pointHighlightFill  : '#fff',
+      pointHighlightStroke: 'rgba(60,141,188,1)'
+    },
+  ]
+}
+
     //-------------
   //- LINE CHART -
   //--------------
@@ -1960,46 +1987,127 @@ var lineChartOptions = {
   });
 
   
-  if($('#pieChart').length){
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-    var pie_labels = [];
-    var performanceData = [];
+  if($('#barChart').length){
+    //-------------
+    //- BAR CHART -
+    //-------------
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = $.extend(true, {}, barChartData)
+    var bar_labels = [];
+    var bar_performance = [];
+    var bar_target = [];
 
-    var pieData = {
-      datasets: [
-        {
-          backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
-        }
-      ]
-    }
-    var pieOptions = {
-      legend: {
-        display: false,
-      }
+    var barChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      datasetFill             : false
     }
 
-    $.ajax({
-      url: 'calculate_performance',
-      type: 'post',
-      success: function(response){
-        let obj = JSON.parse(response);
-        for(x in obj[1]){
-          pie_labels.push(x);
+    performance_barChart();
+
+    $('#employee_chart').on('change', function() { 
+       performance_barChart();
+    });
+    
+    function performance_barChart(){
+      $.ajax({
+        url: 'calculate_performance',
+        type: 'post',
+        data:{
+          'user_id' : $('#employee_chart').val()
+        },
+        success: function(response){
+          let obj = JSON.parse(response);
+          for(x in obj['performance']){
+              let label = x;
+              //change underscore to space
+              label = label.replace('_',' ');
+
+              //change to sentence case
+              let sentence = label.toLowerCase().split(" ");
+
+              for(var i = 0; i< sentence.length; i++){
+                sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+              }
+
+              label = sentence.join(" ");
+              if(x=="new_contact"){
+                bar_labels[0] = label;
+              }else if(x=="follow_up"){
+                bar_labels[1] = label;
+              }else if(x=="contract_signed"){
+                bar_labels[2] = label;
+              }else if(x == "live"){
+                bar_labels[3] = label;
+              }
+          }
+
+          for(x in obj['performance']){
+            if(x=="new_contact"){
+              bar_performance[0] = obj['performance'][x];
+            }else if(x=="follow_up"){
+              bar_performance[1] = obj['performance'][x];
+            }else if(x=="contract_signed"){
+              bar_performance[2] = obj['performance'][x];
+            }else if(x=="live"){
+              bar_performance[3] = obj['performance'][x];
+            }
+          }
+
+          for(x in obj['target']){
+            if(x=="new_contact_target"){
+              bar_target[0] = obj['target'][x];
+            }else if(x=="follow_up_target"){
+              bar_target[1] = obj['target'][x];
+            }else if(x=="new_contract_target"){
+              bar_target[2] = obj['target'][x];
+            }else if(x=="new_live_target"){
+              bar_target[3] = obj['target'][x];
+            }
+          }
+
+          barChartData.labels = bar_labels;
+          barChartData.datasets[0].data = bar_target;
+          barChartData.datasets[1].data = bar_performance;
+
+          let total_achievement = obj['total']
+          let comment = '';
+          let color = '';
+          $('#total_achievement').html(total_achievement.toFixed(2)+' %');
+
+          if(total_achievement < 50){
+            comment = 'You have Failed';
+            color = 'red';
+          }else if(total_achievement<=60){
+            comment = 'Performance : Under Par';
+            color = 'brown';
+          }else if(total_achievement<=75){
+            comment = 'Performance : Average';
+            color = 'orange';
+          }else if(total_achievement<=85){
+            comment = 'Performance : Moderate';
+            color = 'blue';
+          }else if(total_achievement<=90){
+            comment = 'Performance : Good';
+            color = 'lightgreen';
+          }else if(total_achievement<=100){
+            comment = 'Performance : Excellent';
+            color = 'green';
+          }else{
+            comment = 'Undefined';
+            color = 'grey';
+          }
+
+          $('#achievement_comment').html(comment);
+          $('#achievement_comment').css({'color': color, 'font-size': '20px','font-weight':'bold'});
+
+          var barChart = new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: barChartOptions
+          })
         }
-
-        for(x in obj[1]){
-          performanceData.push(obj[1][x]);
-        }
-
-        pieData.labels = pie_labels;
-        pieData.datasets[0].data = performanceData;
-
-        var pieChart = new Chart(pieChartCanvas, {
-          type: 'doughnut',
-          data: pieData,
-          options: pieOptions
-        })
-      }
-    });  
+      });  
+    }
   }
 });

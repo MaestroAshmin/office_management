@@ -4,7 +4,7 @@
       <footer class="sticky-footer bg-white footer" data-siteurl="<?php echo site_url();?>">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Unified Communications Pvt. Ltd <?php echo date('Y');?></span>
+            <span>Copyright &copy; Bonjour Management Pvt. Ltd <?php echo date('Y');?></span>
           </div>
         </div>
       </footer>
