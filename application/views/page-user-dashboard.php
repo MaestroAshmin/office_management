@@ -45,7 +45,7 @@
                     <!-- /.col -->
                     <div class="col-sm-4 col-6">
                       <div class="description-block border-right">
-                        <h5 class="description-header" id="total_equity">$24,813.53</h5>
+                        <h5 class="description-header" id="total_equity"></h5>
                         <span class="description-text">TOTAL EQUITY</span>
                       </div>
                       <!-- /.description-block -->

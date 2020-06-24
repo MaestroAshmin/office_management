@@ -42,7 +42,11 @@ class Income extends CI_Controller
 			'dept'			=>	$user_dept,
 			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
     }
     
 	public function income_store(){
@@ -154,7 +158,11 @@ class Income extends CI_Controller
 			'dept'			=>	$user_dept,
 			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+		if($user_dept==1 || $user_role==1 || $user_role==2){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 
 	public function income_update($id){
@@ -224,7 +232,11 @@ class Income extends CI_Controller
 				'dept'			=>	$user_dept,
 				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_des==5 || $user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -232,14 +244,22 @@ class Income extends CI_Controller
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('income', 'refresh');
 		}
+		
 		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$result = $this->incometransaction_model->delete_transaction($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata('error',array('delete_income_error'=>'Error Occured while deleting income'));
-		}
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 
-		redirect('income/income_view');
+		if($user_des==5 || $user_role==1){
+			$result = $this->incometransaction_model->delete_transaction($id);
+		
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata('error',array('delete_income_error'=>'Error Occured while deleting income'));
+			}
+	
+			redirect('income/income_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 }

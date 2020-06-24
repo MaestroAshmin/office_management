@@ -317,8 +317,14 @@ class User extends CI_Controller
 			'dept'			=>	$user_dept,
 			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
+
 	public function expenses_store(){
 		$post = $this->input->post();
 
@@ -344,8 +350,6 @@ class User extends CI_Controller
 			$this->session->set_flashdata('error',$error);
 			redirect('user/expenses_add');
 		}
-
-
 
 		$image_data 	= array();
 		$document_data 	= array();
@@ -424,7 +428,10 @@ class User extends CI_Controller
 			'dept'			=>	$user_dept,
 			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_role==1 || $user_role==2 || $user_dept==1){
+			$this->load->view('includes/template', $data);
+		}
 	}
 
 	public function expenses_update($id){
@@ -494,7 +501,11 @@ class User extends CI_Controller
 				'dept'			=>	$user_dept,
 				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_des==5 || $user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -502,15 +513,23 @@ class User extends CI_Controller
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
+		
 		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$result = $this->expensestransaction_model->delete_transaction($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata('error',array('delete_expenses_error'=>'Error Occured while deleting Expenses'));
-		}
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 
-		redirect('user/expenses_view');
+		if($user_des==5 || $user_role==1){
+			$result = $this->expensestransaction_model->delete_transaction($id);
+		
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata('error',array('delete_expenses_error'=>'Error Occured while deleting Expenses'));
+			}
+
+			redirect('user/expenses_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	public function view_roles(){
 		if($this->session->userdata('user_logged_in') != '1'){
