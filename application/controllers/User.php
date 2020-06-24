@@ -550,7 +550,12 @@ class User extends CI_Controller
 			'des'			=>	$user_des,
 			'role'			=> $user_role
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	public function check_role(){
 		$data = $this->input->post();
@@ -606,7 +611,11 @@ class User extends CI_Controller
 				'dept'			=>	$user_dept,
 				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -617,14 +626,18 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$result = $this->user_model->delete_role($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata("error",array("error_delete"=>"Delete Failed Error Occured"));
-			redirect("user/add_role");		}
 
-		
-		redirect('user/add_role', 'refresh');
+		if($user_role==1){
+			$result = $this->user_model->delete_role($id);
+	
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata("error",array("error_delete"=>"Delete Failed Error Occured"));
+				redirect("user/add_role");		
+			}			
+			redirect('user/add_role', 'refresh');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	
 	public function check_user_phone(){
@@ -732,7 +745,11 @@ class User extends CI_Controller
 				'des'			=>	$user_des,
 				'departments' 	=> $departments
 			);
-			$this->load->view('includes/template', $data);
+			if($user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 		
 	}
@@ -860,21 +877,24 @@ class User extends CI_Controller
 			$user_role = $sess_data['user_role'];
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
-
-			$user_data = $this->user_model->get_user_data($id);
-			$roles = $this->user_model->get_roles();
-			$departments = $this->user_model->get_departments();
-			$data = array(
-				'title' 		=> 'Update',
-				'main_content'	=> 'update_user',
-				'user_data' 	=> $user_data,
-				'roles'	 		=> $roles,
-				'role'			=> $user_role,
-				'dept'			=>	$user_dept,
-				'des'			=>	$user_des,
-				'departments' => $departments
-			);
-			$this->load->view('includes/template', $data);
+			if($user_role==1){
+				$user_data = $this->user_model->get_user_data($id);
+				$roles = $this->user_model->get_roles();
+				$departments = $this->user_model->get_departments();
+				$data = array(
+					'title' 		=> 'Update',
+					'main_content'	=> 'update_user',
+					'user_data' 	=> $user_data,
+					'roles'	 		=> $roles,
+					'role'			=> $user_role,
+					'dept'			=>	$user_dept,
+					'des'			=>	$user_des,
+					'departments' => $departments
+				);
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}			
 		}
 	}
 	public function delete_user($id){
@@ -885,28 +905,39 @@ class User extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
 
-		$result = $this->user_model->delete_user($id);
-		$roles = $this->user_model->view_roles();
+		if($user_role==1){
+			$result = $this->user_model->delete_user($id);
+			$roles = $this->user_model->view_roles();
 
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata("error",array("error_deleting_user"=>"Error occured while deleting user."));
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata("error",array("error_deleting_user"=>"Error occured while deleting user."));
+			}
+
+			redirect("user/view_roles",'refresh');
+		}else{
+			$this->load->view('includes/pagenotfound');
 		}
-
-		redirect("user/view_roles",'refresh');
 	}
+
 	public function update_expenses_status($id){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$result = $this->expensestransaction_model->update_status($id);
-		
-		if($result['status'] == 'failed'){
-			$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));
-		}
+		$user_role   = $sess_data['user_role'];
 
-		redirect('user/expenses_view');
+		if($user_role==1){
+			$result = $this->expensestransaction_model->update_status($id);
+			
+			if($result['status'] == 'failed'){
+				$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));
+			}
+
+			redirect('user/expenses_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	public function view_activity(){
 		if($this->session->userdata('user_logged_in') != '1'){
