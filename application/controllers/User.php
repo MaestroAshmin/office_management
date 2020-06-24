@@ -307,10 +307,15 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$data = array(
 			'title' 		=> 'Add',
 			'main_content'	=> 'expenses_add',
-			'role' 			=> $user_role
+			'role' 			=>  $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -408,11 +413,16 @@ class User extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$transactions = $this->expensestransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$data = array(
 			'title' 		=> 'View',
 			'main_content'	=> 'expenses_view',
 			'transactions'	=> $transactions,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -472,13 +482,17 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$transaction = $this->expensestransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_expenses',
 				'main_content'	=> 'update_expenses',
 				'transaction'	=> $transaction,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
 			$this->load->view('includes/template', $data);
 		}
@@ -505,12 +519,17 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$roles = $this->user_model->view_roles();
 		$data = array(
 			'title' 		=> 'View',
 			'main_content'	=> 'view_roles',
-			'roles'	=> $roles,
-			'role'	=> $user_role
+			'roles'			=> $roles,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
+			'role'			=> $user_role
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -556,13 +575,17 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$roles = $this->user_model->get_roles();
 			$data = array(
 				'title' 		=> 'Add',
 				'main_content'	=> 'add_role',
-				'roles' => $roles,
-				'role'	=> $user_role
+				'roles' 		=> $roles,
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
 			$this->load->view('includes/template', $data);
 		}
@@ -676,14 +699,19 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$departments = $this->user_model->get_departments();
 			$roles = $this->user_model->get_roles();
 			$data = array(
 				'title' 		=> 'Add',
 				'main_content'	=> 'add_user',
-				'roles' => $roles,
-				'role'	=> $user_role,
-				'departments' => $departments
+				'roles' 		=> $roles,
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des,
+				'departments' 	=> $departments
 			);
 			$this->load->view('includes/template', $data);
 		}
@@ -698,6 +726,8 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$contact = $this->user_model->get_each_contact($post);
 		$follow_ups = $this->user_model->get_follow_ups($post);
 
@@ -705,6 +735,8 @@ class User extends CI_Controller
 			'title' 		=> 'View Contact',
 			'main_content'	=> 'view_each_contact',
 			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
 			'contact'		=> $contact,
 			'follow_ups'	=> $follow_ups
 		);
@@ -717,11 +749,15 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$reports = $this->user_model->generate_report();
 		$data = array(
 			'title' 		=> 'View Reports',
 			'main_content'	=> 'report_generate',
 			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
 			'reports'		=> $reports
 		);
 		// echo '<pre>';print_r($data);exit;
@@ -803,6 +839,8 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$user_data = $this->user_model->get_user_data($id);
 			$roles = $this->user_model->get_roles();
@@ -810,9 +848,11 @@ class User extends CI_Controller
 			$data = array(
 				'title' 		=> 'Update',
 				'main_content'	=> 'update_user',
-				'user_data' => $user_data,
-				'roles' => $roles,
-				'role'	=> $user_role,
+				'user_data' 	=> $user_data,
+				'roles'	 		=> $roles,
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des,
 				'departments' => $departments
 			);
 			$this->load->view('includes/template', $data);
@@ -856,6 +896,8 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		
 		$is_head = $this->user_model->is_head($user_id);
 		$dept = $this->user_model->find_dept($user_id);
@@ -864,7 +906,9 @@ class User extends CI_Controller
 			'title' 		=> 'View Activity',
 			'main_content'	=> 'view_activity',
 			'role' 			=> $user_role,
-			'activity'		=> $activity,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
+			'activity'		=> $activity
 		);
 		$this->load->view('includes/template', $data);
 	
@@ -901,11 +945,16 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$data = array(
 				'title' 		=> 'Add Activity',
 				'main_content'	=> 'add_daily_task',
-				'user_id'	=> $user_id,
-				'role' 			=> $user_role
+				'user_id'		=> $user_id,
+				'role' 			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
 			$this->load->view('includes/template', $data);
 		}
@@ -917,12 +966,17 @@ class User extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$user_role = $sess_data['user_role'];;
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$contacts = $this->user_model->view_contacts();
 		$data = array(
 			'title' 		=> 'View Contact Management',
 			'main_content'	=> 'view_contact_management',
 			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
 			'contacts'		=> $contacts
 		);
 		$this->load->view('includes/template', $data);
@@ -945,11 +999,16 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$data = array(
 				'title' 		=> 'Add Contacts',
 				'main_content'	=> 'add_contact',
-				'user_id'	=> $user_id,
-				'role' 			=> $user_role
+				'user_id'		=> $user_id,
+				'role' 			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
 			$this->load->view('includes/template', $data);
 		}
@@ -961,6 +1020,8 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$is_head = $this->user_model->is_head($user_id);
 		$dept = $this->user_model->find_dept($user_id);
 		$targets = $this->user_model->get_targets($user_id,$is_head,$dept);
@@ -968,6 +1029,8 @@ class User extends CI_Controller
 			'title' 		=> 'View Target',
 			'main_content'	=> 'view_target',
 			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
 			'targets'		=> $targets
 		);
 		// echo '<pre>';print_r($data);exit;
@@ -1009,6 +1072,9 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$management_role = $this->get_all_management_role();
 
 			$data = array(
@@ -1016,6 +1082,8 @@ class User extends CI_Controller
 				'main_content'		=> 'add_target',
 				'user_id'			=> $user_id,
 				'role' 				=> $user_role,
+				'dept'				=>	$user_dept,
+				'des'				=>	$user_des,
 				'management_role' 	=> $management_role
 			);
 			$this->load->view('includes/template', $data);
@@ -1034,12 +1102,16 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$target = $this->user_model->get_each_target($post);
 		$data = array(
 			'title' 		=> 'View Target',
 			'main_content'	=> 'view_each_target',
 			'role' 			=> $user_role,
 			'target'		=> $target,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		// echo '<pre>';print_r($target);exit;
 		$this->load->view('includes/template', $data);

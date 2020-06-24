@@ -46,10 +46,14 @@ class BankAccount extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'Bank Account Add',
 			'main_content'	=> 'bank_account_add',
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
     }
@@ -95,11 +99,15 @@ class BankAccount extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$accounts = $this->bankAccount_model->get_accounts();
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'Bank Account View',
 			'main_content'	=> 'bank_account_view',
 			'accounts'  	=> $accounts,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -141,13 +149,17 @@ class BankAccount extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$account = $this->bankAccount_model->get_account($id);
 			$data = array(
 				'title' 		=> 'update bank account',
 				'main_content'	=> 'update_bank_account',
 				'account'	    => $account,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
             );
 			$this->load->view('includes/template', $data);
 		}

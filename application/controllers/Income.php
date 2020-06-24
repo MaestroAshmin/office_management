@@ -33,10 +33,14 @@ class Income extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'Income Add',
 			'main_content'	=> 'income_add',
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
     }
@@ -138,13 +142,17 @@ class Income extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$transactions = $this->incometransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
 		$data = array(
 			'title' 		=> 'Income View',
 			'main_content'	=> 'income_view',
 			'transactions'	=> $transactions,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -204,13 +212,17 @@ class Income extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$transaction = $this->incometransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_income',
 				'main_content'	=> 'update_income',
 				'transaction'	=> $transaction,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
 			$this->load->view('includes/template', $data);
 		}

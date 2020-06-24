@@ -33,10 +33,14 @@ class Equity extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'equity Add',
 			'main_content'	=> 'equity_add',
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
     }
@@ -74,13 +78,17 @@ class Equity extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$transactions = $this->equitytransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
 		$data = array(
 			'title' 		=> 'equity View',
 			'main_content'	=> 'equity_view',
 			'transactions'	=> $transactions,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -137,13 +145,17 @@ class Equity extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$transaction = $this->equitytransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_equity',
 				'main_content'	=> 'update_equity',
 				'transaction'	=> $transaction,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
 			$this->load->view('includes/template', $data);
 		}
