@@ -13,4 +13,5 @@ $(document).ready(function(){
                 $('.eng_date').attr('value',date);
                 $('.nepali_date').attr('value',AD2BS(date));
         }
+        $('#nepali-datepicker').nepaliDatePicker();
 })

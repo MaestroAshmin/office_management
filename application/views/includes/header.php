@@ -148,7 +148,7 @@
               <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTarget">Target Report</a>
 
               <a class="collapse-item" href="<?php echo site_url();?>user/report_generate">Generate Report</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/gross_report">Gross Report</a>
+              <a class="collapse-item" href="<?php echo site_url();?>grossreport/gross_report">Gross Report</a>
             </div>
           </div>
           <div id="collapseContact" class="collapse" aria-labelledby="headingContent" data-parent="#accordionSidebar">
