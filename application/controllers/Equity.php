@@ -33,12 +33,21 @@ class Equity extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'equity Add',
 			'main_content'	=> 'equity_add',
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
     }
     
 	public function equity_store(){
@@ -74,15 +83,23 @@ class Equity extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$transactions = $this->equitytransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
 		$data = array(
 			'title' 		=> 'equity View',
 			'main_content'	=> 'equity_view',
 			'transactions'	=> $transactions,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 
 	public function equity_update($id){
@@ -137,15 +154,23 @@ class Equity extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$transaction = $this->equitytransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_equity',
 				'main_content'	=> 'update_equity',
 				'transaction'	=> $transaction,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_des==5 || $user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -153,14 +178,22 @@ class Equity extends CI_Controller
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('equity', 'refresh');
 		}
+		
 		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$result = $this->equitytransaction_model->delete_transaction($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata('error',array('delete_equity_error'=>'Error Occured while deleting equity'));
-		}
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 
-		redirect('equity/equity_view');
+		if($user_des==5 || $user_role==1){
+			$result = $this->equitytransaction_model->delete_transaction($id);
+		
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata('error',array('delete_equity_error'=>'Error Occured while deleting equity'));
+			}
+	
+			redirect('equity/equity_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}		
 	}
 }

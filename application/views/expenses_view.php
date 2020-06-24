@@ -78,7 +78,7 @@
                                     <td><?php echo $transaction['Remarks']?></td>
                                     <td><?php echo $transaction['Details']?></td>
                                     <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".exampleModal" data-whatever="<?php echo $transactiom['Image']?>">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".exampleModal" data-whatever="<?php echo $transaction['Image']?>">
                                         View Receipt
                                     </button>
                                         <?php if($transaction['Excel']!='' || !empty($transaction['Excel'])){?>

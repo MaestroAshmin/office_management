@@ -46,12 +46,20 @@ class BankAccount extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'Bank Account Add',
 			'main_content'	=> 'bank_account_add',
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
     }
     
 	public function account_store(){
@@ -95,13 +103,21 @@ class BankAccount extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$accounts = $this->bankAccount_model->get_accounts();
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$data = array(
 			'title' 		=> 'Bank Account View',
 			'main_content'	=> 'bank_account_view',
 			'accounts'  	=> $accounts,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 
 	public function bank_account_update($id){
@@ -141,15 +157,23 @@ class BankAccount extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$account = $this->bankAccount_model->get_account($id);
 			$data = array(
 				'title' 		=> 'update bank account',
 				'main_content'	=> 'update_bank_account',
 				'account'	    => $account,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
             );
-			$this->load->view('includes/template', $data);
+			if($user_des==5 || $user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -157,14 +181,22 @@ class BankAccount extends CI_Controller
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('equity', 'refresh');
 		}
-		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$result = $this->bankAccount_model->delete_account($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata('error',array('delete_equity_error'=>'Error Occured while deleting equity'));
-		}
 
-		redirect('bankAccount/bank_account_view');
+		$sess_data = $this->session->all_userdata();
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
+		if($user_des==5 || $user_role==1){
+			$result = $this->bankAccount_model->delete_account($id);
+		
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata('error',array('delete_equity_error'=>'Error Occured while deleting equity'));
+			}
+
+			redirect('bankAccount/bank_account_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 }

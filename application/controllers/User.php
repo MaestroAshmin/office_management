@@ -7,7 +7,7 @@ class User extends CI_Controller
 	public function __construct(){
 		parent:: __construct();
 		$this->load->model('user_model');
-		$this->load->library('session');
+		$this->load->library('session'); 
 		$this->load->model('expensestransaction_model');
 		$this->load->model('dashboard_model');
 		$this->load->library(array('sendmail','nepali_date'));
@@ -38,6 +38,8 @@ class User extends CI_Controller
 						'user_id' 			=> $res['id'], 
 						'user_fullname' 	=> $res['name'],
 						'user_role' 		=> $res['role'],
+						'user_dept' 		=> $res['dept_id'],
+						'user_des' 			=> $res['des_id'],
 						'user_logged_in'	=> 1
 				);
 				$this->session->set_userdata($sess_data);
@@ -211,12 +213,12 @@ class User extends CI_Controller
 		$nepali_date = $nepali_year.'-'.$nepali_month;
 		$result 	 =  $this->dashboard_model->get_monthly_target($nepali_date, $user_id);
 		$target = [];
-		$target['new_contact_target'] =  $result['nc_seat_seller_monthly'] + $result['nc_bus_company_monthly'] + $result['nc_merchant_monthly'];
+		$target['new_contact_target'] 	=  $result['nc_seat_seller_monthly'] + $result['nc_bus_company_monthly'] + $result['nc_merchant_monthly'];
 				
-		$target['follow_up_target']=  $result['fu_seat_seller_monthly'] + $result['fu_bus_company_monthly'] + $result['fu_merchant_monthly'];
+		$target['follow_up_target']		=  $result['fu_seat_seller_monthly'] + $result['fu_bus_company_monthly'] + $result['fu_merchant_monthly'];
 				
-		$target['new_live_target'] =  $result['nl_seat_seller_monthly'] + $result['nl_no_of_seats_monthly'] + $result['nl_merchant_monthly'];
-		$target['new_contract_target'] =  $result['m_seat_seller_monthly'] + $result['m_bus_company_monthly'] + $result['m_merchant_monthly'];
+		$target['new_live_target'] 		=  $result['nl_seat_seller_monthly'] + $result['nl_no_of_seats_monthly'] + $result['nl_merchant_monthly'];
+		$target['new_contract_target'] 	=  $result['m_seat_seller_monthly'] + $result['m_bus_company_monthly'] + $result['m_merchant_monthly'];
 		return $target;
 	}
 	public function calculate_performance(){
@@ -277,16 +279,22 @@ class User extends CI_Controller
 			redirect('user', 'refresh');
 		}
 
-		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$user_role = $sess_data['user_role'];
+		$sess_data 	= $this->session->all_userdata();
+		$user_id   	= $sess_data['user_id'];
+		$user_role 	= $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$is_head = $this->user_model->is_head($user_id);
+		
 		$users = $this->dashboard_model->get_marketing_employee($user_role,$user_id,$is_head);
 		$data = array(
 			'title' 						=>	'User Dashbaord',
 			'main_content'					=>	'page-user-dashboard',
 			'role'							=>	$user_role,
-			'users'							=> 		$users
+			'dept'							=>	$user_dept,
+			'des'							=>	$user_des,
+			'users'							=> 	$users
 		);
 		$this->load->view('includes/template', $data);
 	}
@@ -299,13 +307,24 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$data = array(
 			'title' 		=> 'Add',
 			'main_content'	=> 'expenses_add',
-			'role' 			=> $user_role
+			'role' 			=>  $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_dept==1 || $user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
+
 	public function expenses_store(){
 		$post = $this->input->post();
 
@@ -331,8 +350,6 @@ class User extends CI_Controller
 			$this->session->set_flashdata('error',$error);
 			redirect('user/expenses_add');
 		}
-
-
 
 		$image_data 	= array();
 		$document_data 	= array();
@@ -400,13 +417,21 @@ class User extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$transactions = $this->expensestransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$data = array(
 			'title' 		=> 'View',
 			'main_content'	=> 'expenses_view',
 			'transactions'	=> $transactions,
-			'role' 			=> $user_role
+			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_role==1 || $user_role==2 || $user_dept==1){
+			$this->load->view('includes/template', $data);
+		}
 	}
 
 	public function expenses_update($id){
@@ -464,15 +489,23 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$transaction = $this->expensestransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_expenses',
 				'main_content'	=> 'update_expenses',
 				'transaction'	=> $transaction,
-				'role'			=> $user_role
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_des==5 || $user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -480,15 +513,23 @@ class User extends CI_Controller
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
+		
 		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$result = $this->expensestransaction_model->delete_transaction($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata('error',array('delete_expenses_error'=>'Error Occured while deleting Expenses'));
-		}
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 
-		redirect('user/expenses_view');
+		if($user_des==5 || $user_role==1){
+			$result = $this->expensestransaction_model->delete_transaction($id);
+		
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata('error',array('delete_expenses_error'=>'Error Occured while deleting Expenses'));
+			}
+
+			redirect('user/expenses_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	public function view_roles(){
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -497,14 +538,24 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$roles = $this->user_model->view_roles();
 		$data = array(
 			'title' 		=> 'View',
 			'main_content'	=> 'view_roles',
-			'roles'	=> $roles,
-			'role'	=> $user_role
+			'roles'			=> $roles,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
+			'role'			=> $user_role
 		);
-		$this->load->view('includes/template', $data);
+
+		if($user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	public function check_role(){
 		$data = $this->input->post();
@@ -548,15 +599,23 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
 			$roles = $this->user_model->get_roles();
 			$data = array(
 				'title' 		=> 'Add',
 				'main_content'	=> 'add_role',
-				'roles' => $roles,
-				'role'	=> $user_role
+				'roles' 		=> $roles,
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 
@@ -567,14 +626,18 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$result = $this->user_model->delete_role($id);
-	
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata("error",array("error_delete"=>"Delete Failed Error Occured"));
-			redirect("user/add_role");		}
 
-		
-		redirect('user/add_role', 'refresh');
+		if($user_role==1){
+			$result = $this->user_model->delete_role($id);
+	
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata("error",array("error_delete"=>"Delete Failed Error Occured"));
+				redirect("user/add_role");		
+			}			
+			redirect('user/add_role', 'refresh');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	
 	public function check_user_phone(){
@@ -668,16 +731,25 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$departments = $this->user_model->get_departments();
 			$roles = $this->user_model->get_roles();
 			$data = array(
 				'title' 		=> 'Add',
 				'main_content'	=> 'add_user',
-				'roles' => $roles,
-				'role'	=> $user_role,
-				'departments' => $departments
+				'roles' 		=> $roles,
+				'role'			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des,
+				'departments' 	=> $departments
 			);
-			$this->load->view('includes/template', $data);
+			if($user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 		
 	}
@@ -690,6 +762,8 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		$contact = $this->user_model->get_each_contact($post);
 		$follow_ups = $this->user_model->get_follow_ups($post);
 
@@ -697,11 +771,14 @@ class User extends CI_Controller
 			'title' 		=> 'View Contact',
 			'main_content'	=> 'view_each_contact',
 			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
 			'contact'		=> $contact,
 			'follow_ups'	=> $follow_ups
 		);
 		$this->load->view('includes/template', $data);
 	}
+
 	public function report_generate(){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
@@ -709,15 +786,25 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$reports = $this->user_model->generate_report();
-		$data = array(
-			'title' 		=> 'View Reports',
-			'main_content'	=> 'report_generate',
-			'role' 			=> $user_role,
-			'reports'		=> $reports
-		);
-		// echo '<pre>';print_r($data);exit;
-		$this->load->view('includes/template', $data);
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
+		if($user_role==1 || $user_dept==2)
+		{
+			$reports = $this->user_model->generate_report();
+			$data = array(
+				'title' 		=> 'View Reports',
+				'main_content'	=> 'report_generate',
+				'role' 			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des,
+				'reports'		=> $reports
+			);
+			// echo '<pre>';print_r($data);exit;
+			$this->load->view('includes/template', $data);	
+		}else{
+			$this->load->view('includes/pagenotfound');	
+		}		
 	}
 
 	public function get_designations(){
@@ -795,19 +882,26 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
-
-			$user_data = $this->user_model->get_user_data($id);
-			$roles = $this->user_model->get_roles();
-			$departments = $this->user_model->get_departments();
-			$data = array(
-				'title' 		=> 'Update',
-				'main_content'	=> 'update_user',
-				'user_data' => $user_data,
-				'roles' => $roles,
-				'role'	=> $user_role,
-				'departments' => $departments
-			);
-			$this->load->view('includes/template', $data);
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+			if($user_role==1){
+				$user_data = $this->user_model->get_user_data($id);
+				$roles = $this->user_model->get_roles();
+				$departments = $this->user_model->get_departments();
+				$data = array(
+					'title' 		=> 'Update',
+					'main_content'	=> 'update_user',
+					'user_data' 	=> $user_data,
+					'roles'	 		=> $roles,
+					'role'			=> $user_role,
+					'dept'			=>	$user_dept,
+					'des'			=>	$user_des,
+					'departments' => $departments
+				);
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}			
 		}
 	}
 	public function delete_user($id){
@@ -818,29 +912,41 @@ class User extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
 
-		$result = $this->user_model->delete_user($id);
-		$roles = $this->user_model->view_roles();
+		if($user_role==1){
+			$result = $this->user_model->delete_user($id);
+			$roles = $this->user_model->view_roles();
 
-		if($result['status'] == 'failed'){
-			$this->session->set_flashdata("error",array("error_deleting_user"=>"Error occured while deleting user."));
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata("error",array("error_deleting_user"=>"Error occured while deleting user."));
+			}
+
+			redirect("user/view_roles",'refresh');
+		}else{
+			$this->load->view('includes/pagenotfound');
 		}
-
-		redirect("user/view_roles",'refresh');
 	}
+
 	public function update_expenses_status($id){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$result = $this->expensestransaction_model->update_status($id);
-		
-		if($result['status'] == 'failed'){
-			$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));
-		}
+		$user_role   = $sess_data['user_role'];
 
-		redirect('user/expenses_view');
+		if($user_role==1 || $user_role==2){
+			$result = $this->expensestransaction_model->update_status($id);
+			
+			if($result['status'] == 'failed'){
+				$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));
+			}
+
+			redirect('user/expenses_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
+
 	public function view_activity(){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
@@ -848,19 +954,27 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
 		
-		$is_head = $this->user_model->is_head($user_id);
-		$dept = $this->user_model->find_dept($user_id);
-		$activity = $this->user_model->view_activity($user_role,$user_id,$is_head,$dept);
-		$data = array(
-			'title' 		=> 'View Activity',
-			'main_content'	=> 'view_activity',
-			'role' 			=> $user_role,
-			'activity'		=> $activity,
-		);
-		$this->load->view('includes/template', $data);
-	
+		if($user_role==1 || $user_dept==2){
+			$is_head = $this->user_model->is_head($user_id);
+			$dept = $this->user_model->find_dept($user_id);
+			$activity = $this->user_model->view_activity($user_role,$user_id,$is_head,$dept);
+			$data = array(
+				'title' 		=> 'View Activity',
+				'main_content'	=> 'view_activity',
+				'role' 			=> $user_role,
+				'dept'			=> $user_dept,
+				'des'			=> $user_des,
+				'activity'		=> $activity
+			);
+			$this->load->view('includes/template', $data);	
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
+
 	public function add_daily_task(){
 		if($_POST){
 			$data = $this->input->post();
@@ -893,13 +1007,23 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$data = array(
 				'title' 		=> 'Add Activity',
 				'main_content'	=> 'add_daily_task',
-				'user_id'	=> $user_id,
-				'role' 			=> $user_role
+				'user_id'		=> $user_id,
+				'role' 			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+
+			if($user_role==1 || $user_dept==2){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 			
 	}
@@ -909,16 +1033,26 @@ class User extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$user_role = $sess_data['user_role'];;
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$contacts = $this->user_model->view_contacts();
 		$data = array(
 			'title' 		=> 'View Contact Management',
 			'main_content'	=> 'view_contact_management',
 			'role' 			=> $user_role,
+			'dept'			=>	$user_dept,
+			'des'			=>	$user_des,
 			'contacts'		=> $contacts
 		);
-		$this->load->view('includes/template', $data);
+		if($user_role==1 || $user_dept==2){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
+
 	public function add_contact(){
 		if($_POST){
 			$data = $this->input->post();
@@ -937,13 +1071,22 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
+
 			$data = array(
 				'title' 		=> 'Add Contacts',
 				'main_content'	=> 'add_contact',
-				'user_id'	=> $user_id,
-				'role' 			=> $user_role
+				'user_id'		=> $user_id,
+				'role' 			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
 			);
-			$this->load->view('includes/template', $data);
+			if($user_role==1 || $user_dept==2){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
 		}
 	}
 	public function view_target(){
@@ -953,17 +1096,26 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$is_head = $this->user_model->is_head($user_id);
-		$dept = $this->user_model->find_dept($user_id);
-		$targets = $this->user_model->get_targets($user_id,$is_head,$dept);
-		$data = array(
-			'title' 		=> 'View Target',
-			'main_content'	=> 'view_target',
-			'role' 			=> $user_role,
-			'targets'		=> $targets
-		);
-		// echo '<pre>';print_r($data);exit;
-		$this->load->view('includes/template', $data);
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+		
+		if($user_role==1 || $user_dept==2){
+			$is_head = $this->user_model->is_head($user_id);
+			$dept = $this->user_model->find_dept($user_id);
+			$targets = $this->user_model->get_targets($user_id,$is_head,$dept);
+			$data = array(
+				'title' 		=> 'View Target',
+				'main_content'	=> 'view_target',
+				'role' 			=> $user_role,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des,
+				'targets'		=> $targets
+			);
+			// echo '<pre>';print_r($data);exit;
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 
 	public function add_target(){
@@ -1001,23 +1153,33 @@ class User extends CI_Controller
 			$sess_data = $this->session->all_userdata();
 			$user_id   = $sess_data['user_id'];
 			$user_role = $sess_data['user_role'];
-			$management_role = $this->get_all_management_role();
+			$user_dept  = $sess_data['user_dept'];
+			$user_des  	= $sess_data['user_des'];
 
-			$data = array(
-				'title' 			=> 'Add Contacts',
-				'main_content'		=> 'add_target',
-				'user_id'			=> $user_id,
-				'role' 				=> $user_role,
-				'management_role' 	=> $management_role
-			);
-			$this->load->view('includes/template', $data);
-		}
-			
+			if($user_role==1 || $user_dept==2){
+				$management_role = $this->get_all_management_role();
+
+				$data = array(
+					'title' 			=> 'Add Contacts',
+					'main_content'		=> 'add_target',
+					'user_id'			=> $user_id,
+					'role' 				=> $user_role,
+					'dept'				=>	$user_dept,
+					'des'				=>	$user_des,
+					'management_role' 	=> $management_role
+				);
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
+		}			
 	}
+
 	public function get_all_management_role(){
 		$result = $this->user_model->get_all_management_role();
 		return $result;
 	}
+
 	public function get_each_target(){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
@@ -1026,15 +1188,24 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role = $sess_data['user_role'];
-		$target = $this->user_model->get_each_target($post);
-		$data = array(
-			'title' 		=> 'View Target',
-			'main_content'	=> 'view_each_target',
-			'role' 			=> $user_role,
-			'target'		=> $target,
-		);
-		// echo '<pre>';print_r($target);exit;
-		$this->load->view('includes/template', $data);
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
+		if($user_role==1 || $user_dept==2){
+			$target = $this->user_model->get_each_target($post);
+			$data = array(
+				'title' 		=> 'View Target',
+				'main_content'	=> 'view_each_target',
+				'role' 			=> $user_role,
+				'target'		=> $target,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
+			);
+			// echo '<pre>';print_r($target);exit;
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 	public function logout(){
 
@@ -1160,35 +1331,44 @@ class User extends CI_Controller
 			redirect('user', 'refresh');
 		}
 
-		$sess_data = $this->session->all_userdata();
-		$uid 	   = $sess_data['user_id'];
+		$sess_data 		= $this->session->all_userdata();
+		$uid 	   		= $sess_data['user_id'];
+		$user_role 	   	= $sess_data['user_role'];
+		$user_dept 	   	= $sess_data['user_dept'];
+		$user_des 	   	= $sess_data['user_des'];
 
-		if(isset($_GET['generate_report'])){
-			$from_date 	= isset($_GET['from_date']) ? $_GET['from_date'] : '';
-			$to_date 	= isset($_GET['to_date']) ? $_GET['to_date'] : '';
-			$type 		= isset($_GET['type']) ? $_GET['type'] : '';
+		if($user_role==1 || $user_dept==2)
+		{
+			if(isset($_GET['generate_report'])){
+				$from_date 	= isset($_GET['from_date']) ? $_GET['from_date'] : '';
+				$to_date 	= isset($_GET['to_date']) ? $_GET['to_date'] : '';
+				$type 		= isset($_GET['type']) ? $_GET['type'] : '';
 
-			$results    		= $this->user_model->getReport($from_date, $to_date, $type, $uid);
-			$data       		= array();
-			$data['results'] 	= $results;
-			$data['from_date'] 	= $from_date;
-			$data['to_date'] 	= $to_date; 
-			$data['type'] 		= $type; 
-			$data['logo']		= site_url()."/img/logo_12.png";
+				$results    		= $this->user_model->getReport($from_date, $to_date, $type, $uid);
+				$data       		= array();
+				$data['results'] 	= $results;
+				$data['from_date'] 	= $from_date;
+				$data['to_date'] 	= $to_date; 
+				$data['type'] 		= $type; 
+				$data['logo']		= site_url()."/img/logo_12.png";
+				
+				$this->load->library('pdfgenerator');
+				$html = $this->load->view('page-user-report-pdf', $data, true);
+				$this->pdfgenerator->generate($html, time());
+			}
+
+			$days_ago = date('Y-m-d', strtotime('-7 days', strtotime(date('Y-m-d'))));
+
+			$data = array(
+				'title' 		=> 'Generate Report',
+				'main_content'	=> 'page-user-report-list',
+				'records'		=> $this->user_model->getReport($days_ago, date('Y-m-d'), 'Approved',  $uid)
+			);
 			
-			$this->load->library('pdfgenerator');
-			$html = $this->load->view('page-user-report-pdf', $data, true);
-			$this->pdfgenerator->generate($html, time());
+			$this->load->view('includes/template', $data);
 		}
-
-		$days_ago = date('Y-m-d', strtotime('-7 days', strtotime(date('Y-m-d'))));
-
-		$data = array(
-			'title' 		=> 'Generate Report',
-			'main_content'	=> 'page-user-report-list',
-			'records'		=> $this->user_model->getReport($days_ago, date('Y-m-d'), 'Approved',  $uid)
-		);
-		
-		$this->load->view('includes/template', $data);
+		else{
+			$this->load->view('includes/pagenotfound');
+		}
 	}
 }

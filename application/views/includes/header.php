@@ -60,7 +60,7 @@
       </li> -->
 
       <!-- Divider -->
-      <?php if($role==1){?>
+      <?php if($role==1 || $role==2 || $dept==1){?>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
@@ -70,11 +70,15 @@
           </a>
           <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+            <?php if($role==1 || $dept==1){?>
               <a class="collapse-item" href="<?php echo site_url();?>income/income_add">Add</a>
+            <?php }?>
               <a class="collapse-item" href="<?php echo site_url();?>income/income_view">View</a>
             </div>
           </div>
+      <?php } ?>
 
+      <?php if($role==1 || $role==2 || $dept==1){?>
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -83,11 +87,16 @@
           </a>
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+            <?php if($role==1 || $dept==1){?>
               <a class="collapse-item" href="<?php echo site_url();?>user/expenses_add">Add</a>
+            <?php }?>
               <a class="collapse-item" href="<?php echo site_url();?>user/expenses_view">View</a>
             </div>
           </div>
         </li>
+      <?php } ?>
+      
+      <?php if($role==1 || $dept==1){?>
 
          <!-- Nav Item - Pages Collapse Menu -->
          <li class="nav-item">
@@ -136,6 +145,8 @@
         </li>
       <?php }?>
       
+      <?php if($role==1 || $dept==2){?>
+
       <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
             <i class="fas fa-user"></i>
@@ -170,7 +181,7 @@
             </div>
           </div>
         </li>
-        
+      <?php } ?>
     </ul>
     <!-- End of Sidebar -->
      <!-- Content Wrapper -->

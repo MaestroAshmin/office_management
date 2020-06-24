@@ -181,8 +181,8 @@ class Dashboard_model extends CI_Model{
 		}
 	}
 	public function get_marketing_employee($user_role,$user_id,$is_head){
-		if($user_role == 1 || $is_head[0]['is_head']==1){
-			$query = $this->db->select('id,name')->from('tbl_users')->where('dept_id =' , 2)->get();
+		if($user_role == 1 || (isset($is_head[0]) && $is_head[0]['is_head']==1)){
+			$query = $this->db->select('id,name')->from('tbl_users')->where('dept_id =',2)->get();
 			if($query){
 				$result = $query->result_array();
 				return $result;
@@ -192,7 +192,7 @@ class Dashboard_model extends CI_Model{
 			}
 		}
 		else{
-			$query = $this->db->select('id,name')->from('tbl_users')->where('id=' , $user_id)->get();	
+			$query = $this->db->select('id,name')->from('tbl_users')->where('id=' ,$user_id)->get();	
 			if($query){
 				$result = $query->result_array();
 				return $result;

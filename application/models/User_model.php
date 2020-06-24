@@ -5,7 +5,7 @@ class User_model extends CI_Model{
 
 	public function login($email, $password){
 		$password = md5($password);
-		$result= $this->db->select('id, name, email,role')->from('tbl_users')
+		$result= $this->db->select('id, name, email,role,dept_id,des_id')->from('tbl_users')
 					-> where('email', $email)
 					-> where('password', $password)
        				-> limit(1)
