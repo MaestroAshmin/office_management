@@ -7,7 +7,7 @@ class User extends CI_Controller
 	public function __construct(){
 		parent:: __construct();
 		$this->load->model('user_model');
-		$this->load->library('session');
+		$this->load->library('session'); 
 		$this->load->model('expensestransaction_model');
 		$this->load->model('dashboard_model');
 		$this->load->library(array('sendmail','nepali_date'));
@@ -38,6 +38,8 @@ class User extends CI_Controller
 						'user_id' 			=> $res['id'], 
 						'user_fullname' 	=> $res['name'],
 						'user_role' 		=> $res['role'],
+						'user_dept' 		=> $res['dept_id'],
+						'user_des' 			=> $res['des_id'],
 						'user_logged_in'	=> 1
 				);
 				$this->session->set_userdata($sess_data);
@@ -211,12 +213,12 @@ class User extends CI_Controller
 		$nepali_date = $nepali_year.'-'.$nepali_month;
 		$result 	 =  $this->dashboard_model->get_monthly_target($nepali_date, $user_id);
 		$target = [];
-		$target['new_contact_target'] =  $result['nc_seat_seller_monthly'] + $result['nc_bus_company_monthly'] + $result['nc_merchant_monthly'];
+		$target['new_contact_target'] 	=  $result['nc_seat_seller_monthly'] + $result['nc_bus_company_monthly'] + $result['nc_merchant_monthly'];
 				
-		$target['follow_up_target']=  $result['fu_seat_seller_monthly'] + $result['fu_bus_company_monthly'] + $result['fu_merchant_monthly'];
+		$target['follow_up_target']		=  $result['fu_seat_seller_monthly'] + $result['fu_bus_company_monthly'] + $result['fu_merchant_monthly'];
 				
-		$target['new_live_target'] =  $result['nl_seat_seller_monthly'] + $result['nl_no_of_seats_monthly'] + $result['nl_merchant_monthly'];
-		$target['new_contract_target'] =  $result['m_seat_seller_monthly'] + $result['m_bus_company_monthly'] + $result['m_merchant_monthly'];
+		$target['new_live_target'] 		=  $result['nl_seat_seller_monthly'] + $result['nl_no_of_seats_monthly'] + $result['nl_merchant_monthly'];
+		$target['new_contract_target'] 	=  $result['m_seat_seller_monthly'] + $result['m_bus_company_monthly'] + $result['m_merchant_monthly'];
 		return $target;
 	}
 	public function calculate_performance(){
@@ -277,16 +279,22 @@ class User extends CI_Controller
 			redirect('user', 'refresh');
 		}
 
-		$sess_data = $this->session->all_userdata();
-		$user_id   = $sess_data['user_id'];
-		$user_role = $sess_data['user_role'];
+		$sess_data 	= $this->session->all_userdata();
+		$user_id   	= $sess_data['user_id'];
+		$user_role 	= $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
 		$is_head = $this->user_model->is_head($user_id);
+		
 		$users = $this->dashboard_model->get_marketing_employee($user_role,$user_id,$is_head);
 		$data = array(
 			'title' 						=>	'User Dashbaord',
 			'main_content'					=>	'page-user-dashboard',
 			'role'							=>	$user_role,
-			'users'							=> 		$users
+			'dept'							=>	$user_dept,
+			'des'							=>	$user_des,
+			'users'							=> 	$users
 		);
 		$this->load->view('includes/template', $data);
 	}
