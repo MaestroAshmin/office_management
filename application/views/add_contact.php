@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group">
                         <label>Purpose</label>
-                        <select name="Purpose">
+                        <select name="Purpose" class="form-control">
                           <option value="BUS COMPANY">Bus Company</option>
                           <option value="SEAT SELLER">Seat Seller</option>
                           <option value="MERCHANT">Merchant</option>
@@ -56,14 +56,14 @@
                     </div>
                     <div class="form-group">
                         <label>New Contact?</label>
-                        <select name="new_contact">
+                        <select class="form-control" name="new_contact">
                           <option value="YES">Yes</option>
                           <option value="NO">No</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Status</label>
-                        <select name="Status">
+                        <select name="Status" class="form-control">
                           <option value="LEAD">Lead</option>
                           <option value="NEGOTIATION">Negotiation</option>
                           <option value="CONTRACT SIGNED">Contract Signed</option>

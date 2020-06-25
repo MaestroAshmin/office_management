@@ -1470,7 +1470,7 @@ $('.update_user_form').validate({
   });
 
   //add target form validation
-  $('.add_target2_form').validate({
+  $('.add_target_form').validate({
     rules:{
         assigned_to : 'required',
         title       : 'required'
@@ -1478,9 +1478,6 @@ $('.update_user_form').validate({
     messages:{
         assigned_to : 'Please Select Person',
         title       : 'Please Enter the Title'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
 
@@ -1710,7 +1707,67 @@ $('.update_user_form').validate({
     }
   });
   
-  
+   //add contact form validation  
+   $('.add_contact_form').validate({
+    rules:{
+        Name              : 'required',
+        Company           : 'required',
+        Designation       : 'required',
+        Email             : 'required',
+        mobile_number     : 'required',
+        landline_number   : 'required',
+        Address           : 'required',
+        Purpose           : 'required',
+        new_contact       : 'required',
+        Status            : 'required',
+        name_of_bus       : 'required',
+        number_of_bus     : 'required',
+        number_of_seat     : 'required',
+        live_seat         : 'required'
+    },
+    messages:{
+        Name              : 'Please Enter Name',
+        Company           : 'Please Enter Company',
+        Designation       : 'Please Enter Designation',
+        Email             : 'Please Enter Email',
+        mobile_number     : 'Please Enter Mobile Number',
+        landline_number   : 'Please Enter LandLine Number',
+        Address           : 'Please Enter Address',
+        Purpose           : 'Please Select Purpose',
+        new_contact       : 'Please Select New Contact Options',
+        Status            : 'Please Select Status',
+        name_of_bus       : 'Please Enter Name of Bus',
+        number_of_bus     : 'Please Enter Number of Bus',
+        number_of_seat    : 'Please Enter Number of Seats',
+        live_seat         : 'Please Enter Live Seats'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+ 
+    
+   //update contact form validation  
+   $('.update_contact_form').validate({
+    rules:{
+        new_contact       : 'required',
+        Status            : 'required',
+        number_of_bus     : 'required',
+        number_of_seat    : 'required',
+        live_seat         : 'required'
+    },
+    messages:{
+        new_contact       : 'Please Select New Contact Options',
+        Status            : 'Please Select Status',
+        number_of_bus     : 'Please Enter Number of Bus',
+        number_of_seat    : 'Please Enter Number of Seats',
+        live_seat         : 'Please Enter Live Seats'
+    },
+    errorPlacement: function(error, element) {
+          error.insertAfter(element.parent());
+    }
+  });
+
   // if($(".add_target_form #assigned_to").length >= 1){
   //   base_url = window.location.origin;
   //   $.ajax({

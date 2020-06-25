@@ -25,7 +25,7 @@ date_default_timezone_set('Asia/Kathmandu');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/acc/';
+$config['base_url'] = '';
 //$config['base_url'] = 'http://record.unicom.net.np/';
 
 /*

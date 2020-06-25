@@ -144,7 +144,16 @@
           </div>
         </li>
       <?php }?>
-      
+      <?php if($dept==3){ ?>
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo site_url();?>user/view_contact">
+            <i class="fa fa-address-book"></i>
+            <span>View Contacts</span>
+          </a>
+        </li>
+      <?php
+       }
+      ?>
       <?php if($role==1 || $dept==2){?>
 
       <li class="nav-item">
@@ -177,7 +186,9 @@
           <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionSidebar">
             <div class="bg-white py-1 collapse-inner rounded">
               <a class="collapse-item" href="<?php echo site_url();?>user/view_target">View Target</a>
+              <?php if($role==1){ ?>
               <a class="collapse-item" href="<?php echo site_url();?>user/add_target">Add Target</a>
+              <?php } ?>
             </div>
           </div>
         </li>

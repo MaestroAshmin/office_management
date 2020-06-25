@@ -285,6 +285,10 @@ class User extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 
+		if($user_dept==3){
+			redirect('user/view_contact');
+		}
+		
 		$is_head = $this->user_model->is_head($user_id);
 		
 		$users = $this->dashboard_model->get_marketing_employee($user_role,$user_id,$is_head);
@@ -415,11 +419,12 @@ class User extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$transactions = $this->expensestransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 
+		$transactions = $this->expensestransaction_model->get_transactions($user_role);
+		
 		$data = array(
 			'title' 		=> 'View',
 			'main_content'	=> 'expenses_view',
@@ -933,8 +938,9 @@ class User extends CI_Controller
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
 		$user_role   = $sess_data['user_role'];
+		$user_des   = $sess_data['user_des'];
 
-		if($user_role==1 || $user_role==2){
+		if($user_role==1 || $user_des==5){
 			$result = $this->expensestransaction_model->update_status($id);
 			
 			if($result['status'] == 'failed'){
@@ -1046,7 +1052,7 @@ class User extends CI_Controller
 			'des'			=>	$user_des,
 			'contacts'		=> $contacts
 		);
-		if($user_role==1 || $user_dept==2){
+		if($user_role==1 || $user_dept==2 || $user_dept==3){
 			$this->load->view('includes/template', $data);
 		}else{
 			$this->load->view('includes/pagenotfound');
@@ -1056,6 +1062,7 @@ class User extends CI_Controller
 	public function add_contact(){
 		if($_POST){
 			$data = $this->input->post();
+		
 			$result = $this->user_model->add_daily_task($data);
 			if($result['status'] == 'success'){
 				$this->view_contact();
@@ -1063,6 +1070,7 @@ class User extends CI_Controller
 			if($result['status'] == 'failed'){
 				$this->view_contact();
 			}
+			
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -1138,6 +1146,7 @@ class User extends CI_Controller
 			}
 			else{
 				$this->session->set_flashdata('error',$this->form_validation->error_array());
+				redirect('user/add_target');
 			}
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('error'=>'Error while adding target'));
@@ -1156,7 +1165,7 @@ class User extends CI_Controller
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
 
-			if($user_role==1 || $user_dept==2){
+			if($user_role==1){
 				$management_role = $this->get_all_management_role();
 
 				$data = array(

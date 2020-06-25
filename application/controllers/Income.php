@@ -148,8 +148,9 @@ class Income extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
-		$transactions = $this->incometransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
+		$transactions = $this->incometransaction_model->get_transactions($user_role);
+
 		$data = array(
 			'title' 		=> 'Income View',
 			'main_content'	=> 'income_view',
@@ -257,6 +258,28 @@ class Income extends CI_Controller
 				$this->session->set_flashdata('error',array('delete_income_error'=>'Error Occured while deleting income'));
 			}
 	
+			redirect('income/income_view');
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
+	}
+
+	public function update_income_status($id){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role   = $sess_data['user_role'];
+		$user_des   = $sess_data['user_des'];
+
+		if($user_role==1 || $user_des==5){
+			$result = $this->incometransaction_model->update_status($id);
+			
+			if($result['status'] == 'failed'){
+				$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));
+			}
+
 			redirect('income/income_view');
 		}else{
 			$this->load->view('includes/pagenotfound');

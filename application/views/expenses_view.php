@@ -52,7 +52,7 @@
                             <th scope="col">Remarks</th>
                             <th scope="col">Details</th>
                             <th scope="col">Image & Report</th>
-                            <?php if($role==1 || $role ==2){?>
+                            <?php if($role==1 || $dept==1){?>
                                 <th scope="col">Action</th>
                             <?php }?>
                         </tr>
@@ -62,49 +62,6 @@
                     $i=1;
                     foreach ($transactions as $transaction){
                         ?>
-                        <?php if($role ==3){
-                            if($transaction['Status']==1){ ?>
-                                
-                                <tr>
-                                    <td><?php echo $i ?></td>
-                                    <td><?php echo $transaction['english_date']?></h5></td>
-                                    <td><?php echo $transaction['nepali_date']?></h5></td>
-                                    <td><h5><?php echo $transaction['Heading']?></h5></td>
-
-                                    <td><?php echo $transaction['bill_invoice_no']?></td>
-                                    <td><?php echo $transaction['responsible_person']?></td>
-                                    <td><?php echo $transaction['to_person']?></td>
-                                    <td><?php echo $transaction['Amount']?></td>
-                                    <td><?php echo $transaction['Remarks']?></td>
-                                    <td><?php echo $transaction['Details']?></td>
-                                    <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".exampleModal" data-whatever="<?php echo $transaction['Image']?>">
-                                        View Receipt
-                                    </button>
-                                        <?php if($transaction['Excel']!='' || !empty($transaction['Excel'])){?>
-                                            <p>
-                                                <?=anchor('images/'.$transaction['Excel'], 'Download Report')?>
-                                            </p>
-                                        <?php }else{?>
-                                            <p>No File</p>
-                                        <?php }?>
-                                        
-                                        </td>
-                                    <?php if($role==1 || $role ==2){?>
-                                        <td>
-                                        <?php if($transaction['Status']==0){?>
-                                                <a href="<?php echo site_url('user/update_expenses_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
-                                                <i class="fas fa-check"></i></a>
-                                            <?php }if($role == 1){?>
-                                                <a href="<?php echo site_url('user/expenses_update/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block">Edit</a>
-                                                <a onclick="alert('Do you want to delete')" href="<?php echo site_url('user/expenses_delete/'.$transaction['ID']) ?>" class="btn btn-danger" style="display:inline-block">Delete</a>
-                                            <?php }?>
-                                        </td>
-                                    <?php }
-                                    ?>
-                                </tr>
-                        <?php }
-                        }else{?>
                         <tr>
                             <td><?php echo $i ?></td>
                             <td><?php echo $transaction['english_date']?></h5></td>
@@ -129,19 +86,26 @@
                             <?php }?>
                             
                             </td>
-                            <?php if($role==1 || $role ==2){?>
+                            <?php if($role==1 || $dept==1){?>
                                 <td style="display: inline-block; width:150px;">
-                                <?php if($transaction['Status']==0){?>
-                                        <a href="<?php echo site_url('user/update_expenses_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
-                                        <i class="fas fa-check"></i></a>
-                                    <?php }if($role == 1){?>
-                                        <a href="<?php echo site_url('user/expenses_update/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
-                                        <a href="<?php echo site_url('user/expenses_delete/'.$transaction['ID']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
-                                    <?php }?>
+                                    <?php
+                                    if($des==5 || $role==1){
+                                        if($transaction['Status']==0){?>
+                                            <a href="<?php echo site_url('user/update_expenses_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
+                                            <i class="fas fa-check"></i></a>
+                                        <?php }?>
+                                            <a href="<?php echo site_url('user/expenses_update/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
+                                            <a href="<?php echo site_url('user/expenses_delete/'.$transaction['ID']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
+                                    <?php }else{ 
+                                        if($transaction['Status']==0){?>
+                                            <label>UnApproved</label>
+                                        <?php }else{?>
+                                            <label>Approved</label>
+                                    <?php } }?>
                                 </td>
                             <?php }?>
                         </tr>
-                                    <?php }
+                                    <?php 
                                     $i++;
                     } ?>
                         

@@ -28,8 +28,12 @@ class IncomeTransaction_model extends CI_model{
         }
         return $result_status;
     }
-    public function get_transactions(){
-        $query = $this->db->select('*')->from('tbl_income_data')->order_by('created_at', 'DESC')->get();
+    public function get_transactions($role){
+        if($role==2){
+            $query = $this->db->select('*')->from('tbl_income_data')->where('status','1')->order_by('created_at', 'DESC')->get();
+        }else{
+            $query = $this->db->select('*')->from('tbl_income_data')->order_by('created_at', 'DESC')->get();
+        }
         if ($query) {
             $result = $query->result_array();
         } else {

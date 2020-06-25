@@ -52,7 +52,7 @@
                             <th scope="col">Remarks</th>
                             <th scope="col">Details</th>
                             <th scope="col">Image & Report</th>
-                            <?php if($role==1 || $role ==2){?>
+                            <?php if($role==1 || $dept ==1){?>
                                 <th scope="col">Action</th>
                             <?php }?>
                         </tr>
@@ -86,12 +86,21 @@
                                 <?php }?>
                                 
                                 </td>
-                                <?php if($role==1 || $role ==2){?>
+                                <?php if($role==1 || $dept ==1){?>
                                     <td style="display: inline-block; width:150px;">
-                                    <?php if($role == 1){?>
+                                    <?php if($role == 1 || $des==5){?>
+                                        <?php if($transaction['Status']==0){?>
+                                            <a href="<?php echo site_url('income/update_income_status/'.$transaction['ID']) ?>" class="btn btn-success update_pending" style="display: inline-block">
+                                            <i class="fas fa-check"></i></a>
+                                        <?php }?>
                                             <a href="<?php echo site_url('income/income_update/'.$transaction['ID']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
                                             <a href="<?php echo site_url('income/income_delete/'.$transaction['ID']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
-                                    <?php }?>
+                                    <?php }else{ 
+                                        if($transaction['Status']==0){ ?>
+                                            <label>UnApproved</label>
+                                        <?php }else{?>
+                                            <label>Approved</label>
+                                    <?php } }?>
                                     </td>
                                 <?php }?>
                             </tr>

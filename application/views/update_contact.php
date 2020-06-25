@@ -13,7 +13,7 @@
                 }
             }
           ?>
-<div class="form-group">
+    <div class="form-group">
                         <div class="row">
                             <div class="col-md">
                                 <label> Name : </label> <?php echo $contact['Name']?>
@@ -57,20 +57,20 @@
                     </div>
                         </div>
                            
-            <form class="col-md-12 add_contact_form" action="<?php echo site_url();?>contactmanagement/edit_status" method="post"  enctype="multipart/form-data">
+            <form class="update_contact_form" action="<?php echo site_url();?>contactmanagement/edit_status" method="post"  enctype="multipart/form-data">
                     <input type="hidden" name="uploaded_by" class="form-control" value="<?php echo $user_id?>">
                     <input type="hidden" name="id" class="form-control" value="<?php echo $contact['id']?>">
                    
                     <div class="form-group">
                         <label>New Contact?</label>
-                        <select name="new_contact">
+                        <select class="form-control" name="new_contact">
                           <option value="YES" <?php echo ($contact['new_contact'] == 'YES') ? 'selected' : '' ?>>Yes</option>
                           <option value="NO" <?php echo ($contact['new_contact'] == 'NO') ? 'selected' : '' ?>>No</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Status</label>
-                        <select name="Status">
+                        <select class="form-control" name="Status">
                           <option value="LEAD" <?php echo ($contact['Status'] == 'LEAD') ? 'selected' : '' ?>>LEAD</option>    
                           <option value="NEGOTIATION" <?php echo ($contact['Status'] == 'NEGOTIATION') ? 'selected' : '' ?>>Negotiation</option>   
                           <option value="CONTRACT SIGNED" <?php echo ($contact['Status'] == 'CONTRACT SIGNED') ? 'selected' : '' ?>>Contract Signed</option>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="form-group">
                         <label>Live Seats</label>
-                        <input type="number" name="live_seat" class="form-control"value = "<?php echo $contact['live_seat']?>">
+                        <input type="number" name="live_seat" class="form-control" value = "<?php echo $contact['live_seat']?>">
                     </div>
                     <div class = "form-group">
                         <label>Follow Up</label><br>
@@ -115,7 +115,7 @@
                             </table>
                     </div>
                     <div class="form-group float-right">
-                        <button class="btn btn-primary float-left">Update</button>
+                        <button type="submit" class="btn btn-primary float-left">Update</button>
                     </div>
             </form>
         </div>
