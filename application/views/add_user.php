@@ -55,7 +55,7 @@
                     </div>
                     <div class="form-group">
                         <label>Date of Join</label>
-                        <input type="text" id="join_date" name="join_date" class="form-control" style="width:100%;">
+                        <input type="text" id="join_date" name="join_date" autocomplete="off" class="form-control" style="width:100%;">
                     </div>
                     <div class="form-group">
                         <label>User Type</label>

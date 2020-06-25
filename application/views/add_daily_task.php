@@ -18,7 +18,7 @@
             <input type ="hidden" name ="user_id" id="user_id" value="<?php echo $user_id?>">
                     <div class="form-group">
                         <label>Date</label>
-                        <input type="text" name="entry_date" id="join_date" class="form-control">
+                        <input type="text" name="entry_date" id="join_date" autocomplete="off" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Task Undertaken</label>

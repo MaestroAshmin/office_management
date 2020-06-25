@@ -43,7 +43,7 @@
 
   <!-- Page level custom scripts -->
   <script src="<?php echo site_url();?>js/demo/datatables-demo.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.9/datepicker.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.9/datepicker.min.js"></script> -->
   <script src="<?php echo site_url();?>js/nepali.datepicker.v2.2.min.js" ></script>
   <script src ="<?php echo site_url();?>js/calendar1.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
