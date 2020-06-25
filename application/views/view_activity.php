@@ -50,9 +50,10 @@
                             <td scope="col"><?php echo $act['remarks']?></td>
                             <td scope="col"><?php echo $act['name']?></td>
                         </tr>
-                        <?php }
+                    <?php 
                         $i++;
-                        ?>
+                        }
+                    ?>
                     </tbody>
                 </table>       
             </div>

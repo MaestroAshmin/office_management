@@ -963,7 +963,7 @@ class User extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 		
-		if($user_role==1 || $user_dept==2){
+		if($user_role==1 || $user_role==3){
 			$is_head = $this->user_model->is_head($user_id);
 			$dept = $this->user_model->find_dept($user_id);
 			$activity = $this->user_model->view_activity($user_role,$user_id,$is_head,$dept);
@@ -1025,7 +1025,7 @@ class User extends CI_Controller
 				'des'			=>	$user_des
 			);
 
-			if($user_role==1 || $user_dept==2){
+			if($user_role==1 || $user_role==3){
 				$this->load->view('includes/template', $data);
 			}else{
 				$this->load->view('includes/pagenotfound');
