@@ -154,43 +154,45 @@
       <?php
        }
       ?>
-      <?php if($role==1 || $dept==2){?>
+      <?php if($role==1 || $role==3){?>
 
       <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
             <i class="fas fa-user"></i>
             <span>Employee Report</span>
           </a>
-          <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContent">Contact Management</a>
-              <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivity">Activities Report</a>
-              <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTarget">Target Report</a>
 
-              <a class="collapse-item" href="<?php echo site_url();?>user/report_generate">Generate Report</a>
-              <a class="collapse-item" href="<?php echo site_url();?>grossReport/gross_report">Gross Report</a>
+            <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivity">Activities Report</a>
+                <?php if($dept==2 || $role==1){?>
+                  <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContent">Contact Management</a>
+                  <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTarget">Target Report</a>
+                  <a class="collapse-item" href="<?php echo site_url();?>user/report_generate">Generate Report</a>
+                  <a class="collapse-item" href="<?php echo site_url();?>grossReport/gross_report">Gross Report</a>
+                <?php } ?>
+              </div>
             </div>
-          </div>
-          <div id="collapseContact" class="collapse" aria-labelledby="headingContent" data-parent="#accordionSidebar">
-            <div class="bg-white py-1 collapse-inner rounded">
-              <a class="collapse-item" href="<?php echo site_url();?>user/view_contact">View Contacts</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/add_contact">Add Contact</a>
+            <div id="collapseContact" class="collapse" aria-labelledby="headingContent" data-parent="#accordionSidebar">
+              <div class="bg-white py-1 collapse-inner rounded">
+                <a class="collapse-item" href="<?php echo site_url();?>user/view_contact">View Contacts</a>
+                <a class="collapse-item" href="<?php echo site_url();?>user/add_contact">Add Contact</a>
+              </div>
             </div>
-          </div>
-          <div id="collapseActivity" class="collapse" aria-labelledby="headingActivity" data-parent="#accordionSidebar">
-            <div class="bg-white py-1 collapse-inner rounded">
-              <a class="collapse-item" href="<?php echo site_url();?>user/view_activity">View Tasks</a>
-              <a class="collapse-item" href="<?php echo site_url();?>user/add_daily_task">Add Daily Activity</a>
+            <div id="collapseActivity" class="collapse" aria-labelledby="headingActivity" data-parent="#accordionSidebar">
+              <div class="bg-white py-1 collapse-inner rounded">
+                <a class="collapse-item" href="<?php echo site_url();?>user/view_activity">View Tasks</a>
+                <a class="collapse-item" href="<?php echo site_url();?>user/add_daily_task">Add Daily Activity</a>
+              </div>
             </div>
-          </div>
-          <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionSidebar">
-            <div class="bg-white py-1 collapse-inner rounded">
-              <a class="collapse-item" href="<?php echo site_url();?>user/view_target">View Target</a>
-              <?php if($role==1){ ?>
-              <a class="collapse-item" href="<?php echo site_url();?>user/add_target">Add Target</a>
-              <?php } ?>
+            <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionSidebar">
+              <div class="bg-white py-1 collapse-inner rounded">
+                <a class="collapse-item" href="<?php echo site_url();?>user/view_target">View Target</a>
+                <?php if($role==1){ ?>
+                <a class="collapse-item" href="<?php echo site_url();?>user/add_target">Add Target</a>
+                <?php } ?>
+              </div>
             </div>
-          </div>
         </li>
       <?php } ?>
     </ul>

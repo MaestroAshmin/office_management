@@ -279,7 +279,7 @@ class User_model extends CI_Model{
                      else{
                             $this->db->distinct()->select('tbl_users.name,tbl_users.dept_id, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
                             $this->db->join('tbl_users','tbl_users.id = a.user_id');
-                            $this->db->join('tbl_designation','tbl_designation.department_id=tbl_users.dept_id');
+                            // $this->db->join('tbl_designation','tbl_designation.department_id=tbl_users.dept_id');
                             $this->db->where('tbl_users.dept_id',$dept[0]['dept_id']);
                      }     
               }

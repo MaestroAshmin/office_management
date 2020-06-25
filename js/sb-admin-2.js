@@ -1563,9 +1563,6 @@ $('.update_user_form').validate({
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details',
         image                 : 'Please Upload Image'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
