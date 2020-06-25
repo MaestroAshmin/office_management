@@ -8,9 +8,9 @@ class User extends CI_Controller
 		parent:: __construct();
 		$this->load->model('user_model');
 		$this->load->library('session'); 
-		$this->load->model('expensestransaction_model');
+		$this->load->model('ExpensesTransaction_model');
 		$this->load->model('dashboard_model');
-		$this->load->library(array('sendmail','nepali_date'));
+		$this->load->library('Nepali_date');
 	}
 
 
@@ -401,7 +401,7 @@ class User extends CI_Controller
 
 		$post['image'] = isset($image_data[0]['file_name']) ? $image_data[0]['file_name'] : '';
 		$post['excel'] = isset($document_data[0]['file_name']) ? $document_data[0]['file_name'] : '';
-		$result = $this->expensestransaction_model->add_transaction($post);
+		$result = $this->ExpensesTransaction_model->add_transaction($post);
 
 		if($result['status'] == 'failed')
 		{
@@ -423,7 +423,7 @@ class User extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 
-		$transactions = $this->expensestransaction_model->get_transactions($user_role);
+		$transactions = $this->ExpensesTransaction_model->get_transactions($user_role);
 		
 		$data = array(
 			'title' 		=> 'View',
@@ -479,7 +479,7 @@ class User extends CI_Controller
 				$update_data = $update_data1;
 			}
 		
-			$result = $this->expensestransaction_model->update_transaction($update_data);
+			$result = $this->ExpensesTransaction_model->update_transaction($update_data);
 	
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('expense_update_error'=>'Error Occured while updating expense'));
@@ -497,7 +497,7 @@ class User extends CI_Controller
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
 
-			$transaction = $this->expensestransaction_model->get_transaction($id);
+			$transaction = $this->ExpensesTransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_expenses',
 				'main_content'	=> 'update_expenses',
@@ -525,7 +525,7 @@ class User extends CI_Controller
 		$user_des  	= $sess_data['user_des'];
 
 		if($user_des==5 || $user_role==1){
-			$result = $this->expensestransaction_model->delete_transaction($id);
+			$result = $this->ExpensesTransaction_model->delete_transaction($id);
 		
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('delete_expenses_error'=>'Error Occured while deleting Expenses'));
@@ -941,7 +941,7 @@ class User extends CI_Controller
 		$user_des   = $sess_data['user_des'];
 
 		if($user_role==1 || $user_des==5){
-			$result = $this->expensestransaction_model->update_status($id);
+			$result = $this->ExpensesTransaction_model->update_status($id);
 			
 			if($result['status'] == 'failed'){
 				$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));

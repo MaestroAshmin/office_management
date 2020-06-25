@@ -8,8 +8,7 @@ class Equity extends CI_Controller
 		parent:: __construct();
 		$this->load->model('user_model');
 		$this->load->library('session');
-		$this->load->model('equitytransaction_model');
-		$this->load->library('sendmail');
+		$this->load->model('EquityTransaction_model');
     }
     
     public function index(){
@@ -65,7 +64,7 @@ class Equity extends CI_Controller
 			$this->session->set_flashdata('error',$this->form_validation->error_array());
 			redirect('equity/equity_add');
 		}
-		$result = $this->equitytransaction_model->add_transaction($post);
+		$result = $this->EquityTransaction_model->add_transaction($post);
 
 		if($result['status'] == 'failed')
 		{
@@ -85,7 +84,7 @@ class Equity extends CI_Controller
 		$user_id   = $sess_data['user_id'];
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
-		$transactions = $this->equitytransaction_model->get_transactions();
+		$transactions = $this->EquityTransaction_model->get_transactions();
 		$user_role = $sess_data['user_role'];
 		$data = array(
 			'title' 		=> 'equity View',
@@ -139,7 +138,7 @@ class Equity extends CI_Controller
 				$update_data = $update_data1;
 			}
 		
-			$result = $this->equitytransaction_model->update_transaction($update_data);
+			$result = $this->EquityTransaction_model->update_transaction($update_data);
 	
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('equity_update_error'=>'Error Occured while updating equity'));
@@ -157,7 +156,7 @@ class Equity extends CI_Controller
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
 
-			$transaction = $this->equitytransaction_model->get_transaction($id);
+			$transaction = $this->EquityTransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_equity',
 				'main_content'	=> 'update_equity',
@@ -185,7 +184,7 @@ class Equity extends CI_Controller
 		$user_des  	= $sess_data['user_des'];
 
 		if($user_des==5 || $user_role==1){
-			$result = $this->equitytransaction_model->delete_transaction($id);
+			$result = $this->EquityTransaction_model->delete_transaction($id);
 		
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('delete_equity_error'=>'Error Occured while deleting equity'));

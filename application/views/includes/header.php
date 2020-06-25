@@ -159,7 +159,7 @@
       <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
             <i class="fas fa-user"></i>
-            <span>Marketing Section</span>
+            <span>Employee Report</span>
           </a>
           <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -168,7 +168,7 @@
               <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTarget">Target Report</a>
 
               <a class="collapse-item" href="<?php echo site_url();?>user/report_generate">Generate Report</a>
-              <a class="collapse-item" href="<?php echo site_url();?>grossreport/gross_report">Gross Report</a>
+              <a class="collapse-item" href="<?php echo site_url();?>grossReport/gross_report">Gross Report</a>
             </div>
           </div>
           <div id="collapseContact" class="collapse" aria-labelledby="headingContent" data-parent="#accordionSidebar">

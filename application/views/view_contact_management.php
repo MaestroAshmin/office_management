@@ -45,7 +45,7 @@
                                 <a href="<?php echo site_url('user/get_each_contact/'.$contact['id'])?>" class="btn btn-primary">
                                         View Detail
                                 </a>
-                                <a href="<?php echo site_url('contactmanagement/edit_status/'.$contact['id'])?>">
+                                <a href="<?php echo site_url('contactManagement/edit_status/'.$contact['id'])?>">
                                     <i class= "fa fa-edit">
                                     </i>
                                 </a>

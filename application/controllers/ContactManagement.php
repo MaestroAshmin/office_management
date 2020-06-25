@@ -6,7 +6,7 @@ class ContactManagement extends CI_controller{
     public function __construct(){
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('contactmanagement_model');
+        $this->load->model('ContactManagement_model');
         $this->load->model('user_model');
     }
     public function add_contact(){
@@ -29,7 +29,7 @@ class ContactManagement extends CI_controller{
 			$this->form_validation->set_rules("live_seat","LiveSeat","required",array("required"=>"Please Enter Live Seats"));			
 			
 			if($this->form_validation->run()==true){
-                $result= $this->contactmanagement_model->add_contact($data);
+                $result= $this->ContactManagement_model->add_contact($data);
                 if($result['status']=='success'){
                     redirect('user/view_contact');
                 }
@@ -46,7 +46,7 @@ class ContactManagement extends CI_controller{
         if($_POST){
             $data = $this->input->post();
             
-            $result = $this->contactmanagement_model->edit_status($data);
+            $result = $this->ContactManagement_model->edit_status($data);
             if($result['status']=='success'){
                 redirect('user/view_contact');
             }

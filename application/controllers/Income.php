@@ -8,8 +8,7 @@ class Income extends CI_Controller
 		parent:: __construct();
 		$this->load->model('user_model');
 		$this->load->library('session');
-		$this->load->model('incometransaction_model');
-		$this->load->library('sendmail');
+		$this->load->model('IncomeTransaction_model');
     }
     
     public function index(){
@@ -128,7 +127,7 @@ class Income extends CI_Controller
 
 		$post['image'] = isset($image_data[0]['file_name']) ? $image_data[0]['file_name'] : '';
 		$post['excel'] = isset($document_data[0]['file_name']) ? $document_data[0]['file_name'] : '';
-		$result = $this->incometransaction_model->add_transaction($post);
+		$result = $this->IncomeTransaction_model->add_transaction($post);
 
 		if($result['status'] == 'failed')
 		{
@@ -149,7 +148,7 @@ class Income extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 		$user_role = $sess_data['user_role'];
-		$transactions = $this->incometransaction_model->get_transactions($user_role);
+		$transactions = $this->IncomeTransaction_model->get_transactions($user_role);
 
 		$data = array(
 			'title' 		=> 'Income View',
@@ -206,7 +205,7 @@ class Income extends CI_Controller
 				$update_data = $update_data1;
 			}
 		
-			$result = $this->incometransaction_model->update_transaction($update_data);
+			$result = $this->IncomeTransaction_model->update_transaction($update_data);
 	
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('income_update_error'=>'Error Occured while updating income'));
@@ -224,7 +223,7 @@ class Income extends CI_Controller
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
 
-			$transaction = $this->incometransaction_model->get_transaction($id);
+			$transaction = $this->IncomeTransaction_model->get_transaction($id);
 			$data = array(
 				'title' 		=> 'update_income',
 				'main_content'	=> 'update_income',
@@ -252,7 +251,7 @@ class Income extends CI_Controller
 		$user_des  	= $sess_data['user_des'];
 
 		if($user_des==5 || $user_role==1){
-			$result = $this->incometransaction_model->delete_transaction($id);
+			$result = $this->IncomeTransaction_model->delete_transaction($id);
 		
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('delete_income_error'=>'Error Occured while deleting income'));
@@ -274,7 +273,7 @@ class Income extends CI_Controller
 		$user_des   = $sess_data['user_des'];
 
 		if($user_role==1 || $user_des==5){
-			$result = $this->incometransaction_model->update_status($id);
+			$result = $this->IncomeTransaction_model->update_status($id);
 			
 			if($result['status'] == 'failed'){
 				$this->sesstion->set_flashdata('error',array('update_approve_status'=>'Error while updating approve Status'));

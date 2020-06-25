@@ -25,9 +25,16 @@ date_default_timezone_set('Asia/Kathmandu');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
-//$config['base_url'] = 'http://record.unicom.net.np/';
+if ( ! empty($_SERVER['HTTPS']))
+{
+        $config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['SCRIPT_NAME']);
 
+}
+else
+{
+        $config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['SCRIPT_NAME']);
+
+}
 /*
 |--------------------------------------------------------------------------
 | Index File

@@ -8,8 +8,7 @@ class BankAccount extends CI_Controller
 		parent:: __construct();
 		$this->load->model('user_model');
 		$this->load->library('session');
-		$this->load->model('bankAccount_model');
-		$this->load->library('sendmail');
+		$this->load->model('BankAccount_model');
     }
     
     public function index(){
@@ -27,7 +26,7 @@ class BankAccount extends CI_Controller
 	
 	public function check_account_no(){
 		$data = $this->input->post();
-		$result = $this->bankAccount_model->check_account_no($data);
+		$result = $this->BankAccount_model->check_account_no($data);
 		if ($result == TRUE)
         {
             echo json_encode(FALSE);
@@ -76,13 +75,13 @@ class BankAccount extends CI_Controller
 			redirect('bankAccount/bank_account_add');
 		}
 
-		if($this->bankAccount_model->check_account_no($post)){
+		if($this->BankAccount_model->check_account_no($post)){
 			$error["duplicate_account_no"] = "Account number already exists.";
 			$this->session->set_flashdata("error",$error);
 			redirect("bankAccount/bank_account_add");
 		}else{
 
-			$result = $this->bankAccount_model->add_account($post);
+			$result = $this->BankAccount_model->add_account($post);
 
 			if($result['status'] == 'failed')
 			{
@@ -101,7 +100,7 @@ class BankAccount extends CI_Controller
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$accounts = $this->bankAccount_model->get_accounts();
+		$accounts = $this->BankAccount_model->get_accounts();
 		$user_role = $sess_data['user_role'];
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
@@ -135,13 +134,13 @@ class BankAccount extends CI_Controller
 				redirect('bankAccount/bank_account_update/'.$id);
 			}
 
-			if($this->bankAccount_model->check_account_no($update_data) && $update_data['old_account_no']!=$update_data['account_no']){
+			if($this->BankAccount_model->check_account_no($update_data) && $update_data['old_account_no']!=$update_data['account_no']){
 				$error["duplicate_account_no"] = "Account number already exists.";
 				$this->session->set_flashdata("error",$error);
 				redirect('bankAccount/bank_account_update/'.$id);
 			}
 			else{
-				$result = $this->bankAccount_model->update_account($update_data);
+				$result = $this->BankAccount_model->update_account($update_data);
 		
 				if($result['status'] == 'failed'){
 					$this->session->set_flashdata('error',array('equity_update_error'=>'Error Occured while updating equity'));
@@ -160,7 +159,7 @@ class BankAccount extends CI_Controller
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
 
-			$account = $this->bankAccount_model->get_account($id);
+			$account = $this->BankAccount_model->get_account($id);
 			$data = array(
 				'title' 		=> 'update bank account',
 				'main_content'	=> 'update_bank_account',
@@ -188,7 +187,7 @@ class BankAccount extends CI_Controller
 		$user_des  	= $sess_data['user_des'];
 
 		if($user_des==5 || $user_role==1){
-			$result = $this->bankAccount_model->delete_account($id);
+			$result = $this->BankAccount_model->delete_account($id);
 		
 			if($result['status'] == 'failed'){
 				$this->session->set_flashdata('error',array('delete_equity_error'=>'Error Occured while deleting equity'));
