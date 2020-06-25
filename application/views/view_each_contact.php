@@ -63,7 +63,7 @@
                                 <label> Number of Seat : </label> <?php echo $contact['number_of_seat']?>
                             </div>
                             <div class="col-sm">
-                                <label>Uploaded by : </label> <?php echo $contact['Status']?>  
+                                <label>Uploaded by : </label> <?php echo $contact['name']?>  
                             </div>
                         </div> 
                             <table class="table table-follow-up table-bordered table-striped">

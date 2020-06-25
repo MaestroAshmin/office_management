@@ -48,7 +48,9 @@
                             <td><?php echo $report['live_seat'] ?></td>
                             <td><?php echo $report['Name'] ?></td>
                         </tr>
-                    <?php } ?> 
+                    <?php 
+                $i++;
+                } ?> 
                     </tbody>
                 </table>       
             </div>

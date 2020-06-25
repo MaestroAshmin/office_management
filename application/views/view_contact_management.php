@@ -1,4 +1,4 @@
-<div class="container-fluid">
+    <div class="container-fluid">
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -27,6 +27,7 @@
                             <th scope="col">Mobile Number</th></th>
                             <th scope="col">Landline Number</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Submitted By</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -41,6 +42,7 @@
                             <td><?php echo $contact['mobile_number']?></td></th>
                             <td><?php echo $contact['landline_number']?></td>
                             <td><?php echo $contact['Email']?></</td>
+                            <td><?php echo $contact['name']?></</td>
                             <td>
                                 <a href="<?php echo site_url('user/get_each_contact/'.$contact['id'])?>" class="btn btn-primary">
                                         View Detail

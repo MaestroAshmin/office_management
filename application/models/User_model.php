@@ -351,7 +351,7 @@ class User_model extends CI_Model{
               return $result;
        }
        public function view_contacts(){
-              $this->db->select('*')->from('csv_data');
+              $this->db->select('*')->from('csv_data as c')->join('tbl_users as t' ,'t.id=c.uploaded_by');
               $query = $this->db->get();
               if ($query) {
               $result = $query->result_array();
@@ -361,8 +361,9 @@ class User_model extends CI_Model{
               return $result;
        }
        public function get_each_contact($id){
-              $query = $this->db->select('*')->from('csv_data')
-                     ->where('id',$id)->get();
+              $query = $this->db->select('*')->from('csv_data as c')
+              ->join('tbl_users as t','t.id=c.uploaded_by')
+                     ->where('c.id',$id)->get();
               if ($query) {
               $result = $query->row_array();
               } else {
