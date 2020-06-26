@@ -42,9 +42,9 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">S.N</th>
-                            <th scope="col">Bank Name</th>
+                            <th scope="col" style="width:250px;">Bank Name</th>
                             <th scope="col">Bank Account Type</th>
-                            <th scope="col">Account No</th>
+                            <th scope="col" style="width:250px;">Account No</th>
                             <th scope="col">Closing Balance</th>
                             <?php if($role==1 || $role ==2){?>
                                 <th scope="col">Action</th>

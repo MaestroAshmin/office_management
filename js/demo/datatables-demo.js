@@ -2,7 +2,7 @@
 $(document).ready(function() {
   $('#transaction thead tr').clone(true).appendTo( '#transaction thead' );
       $('#transaction thead tr:eq(1) th').each( function (i) {
-          $(this).html( '<input type="text" placeholder="" />' );
+          $(this).html( '<input type="text" class="form-control">' );
   
           $( 'input', this ).on( 'keyup change', function () {
               if ( table.column(i).search() !== this.value ) {

@@ -44,11 +44,11 @@
                     foreach ($activity as $act){ ?>
                         <tr>
                         <td><?php echo $i ?></td>
-                            <td scope="col"><?php echo $act['entry_date']?></td>
-                            <td scope="col"><?php echo $act['task_undertaken']?></td>
+                            <td scope="col" style="width:150px;"><?php echo $act['entry_date']?></td>
+                            <td scope="col" style="width:250px;"><?php echo $act['task_undertaken']?></td>
                             <td scope="col"><?php echo $act['progress']?></td>
-                            <td scope="col"><?php echo $act['remarks']?></td>
-                            <td scope="col"><?php echo $act['name']?></td>
+                            <td scope="col" style="width:150px;"><?php echo $act['remarks']?></td>
+                            <td scope="col" style="width:250px;"><?php echo $act['name']?></td>
                         </tr>
                     <?php 
                         $i++;

@@ -20,7 +20,6 @@ class Income extends CI_Controller
 			redirect('income/income_view', 'refresh');
 		}else{
 			$this->load->view('page-user-login', $data);
-
 		}
     }
 
@@ -34,6 +33,7 @@ class Income extends CI_Controller
 		$user_role = $sess_data['user_role'];
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
+		
 		$data = array(
 			'title' 		=> 'Income Add',
 			'main_content'	=> 'income_add',

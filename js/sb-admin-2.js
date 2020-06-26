@@ -63,10 +63,19 @@
     };
   });
 
+  if ($(window).width() < 768) {
+    $("body").addClass("sidebar-toggled");
+    $(".sidebar").addClass("toggled");
+    if ($(".sidebar").hasClass("toggled")) {
+        $('.sidebar .collapse').collapse('hide');
+      };
+  }
+
   // Close any open menu accordions when window is resized below 768px
   $(window).resize(function() {
     if ($(window).width() < 768) {
       $('.sidebar .collapse').collapse('hide');
+
     };
   });
 
@@ -1353,8 +1362,8 @@ else{
         allow_approve     : "Please Select Allow Approve Option"
     },
     errorPlacement: function(error, element) {
-      if(element.parent('.form-control')) {
-          error.insertAfter(element.parent());
+      if(element.attr("name") == "allow" || element.attr("name") == "allow_approve") {
+            error.insertAfter(element.siblings('label:first-child'));
       } else {
           error.insertAfter(element);
       }
@@ -1441,8 +1450,8 @@ $('.update_user_form').validate({
       allow_approve     : "Please Select Allow Approve Option"
   },
   errorPlacement: function(error, element) {
-    if(element.parent('.form-control')) {
-        error.insertAfter(element.parent());
+    if(element.attr("name") == "allow" || element.attr("name") == "allow_approve") {
+      error.insertAfter(element.siblings('label:first-child'));
     } else {
         error.insertAfter(element);
     }
@@ -1506,9 +1515,6 @@ $('.update_user_form').validate({
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details',
         image                 : 'Please Upload Image'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
@@ -1531,9 +1537,6 @@ $('.update_user_form').validate({
         amount                : 'Please Enter Amount',
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
@@ -1585,9 +1588,6 @@ $('.update_user_form').validate({
         amount                : 'Please Enter Amount',
         remarks               : 'Please Enter Remarks',
         details               : 'Please Enter Details'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
@@ -1608,14 +1608,11 @@ $('.update_user_form').validate({
         status                : 'Please Enter Bill Invoice Number',
         amount                : 'Please Enter Amount',
         remarks               : 'Please Enter Remarks'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
   //update equity form validation  
-  $('.update_equityform').validate({
+  $('.update_equity_form').validate({
     rules:{
       depositor             : 'required',
       status                : 'required',
@@ -1627,9 +1624,6 @@ $('.update_user_form').validate({
       status                : 'Please Enter Bill Invoice Number',
       amount                : 'Please Enter Amount',
       remarks               : 'Please Enter Remarks'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
 
@@ -1660,9 +1654,6 @@ $('.update_user_form').validate({
           remote    :  "Account Number Already Exists"
         },
         closing_balance        : 'Please Enter Closing Balance'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
@@ -1698,9 +1689,6 @@ $('.update_user_form').validate({
         remote    :  "Account Number Already Exists"
       },
       closing_balance        : 'Please Enter Closing Balance'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
   
@@ -1737,9 +1725,6 @@ $('.update_user_form').validate({
         number_of_bus     : 'Please Enter Number of Bus',
         number_of_seat    : 'Please Enter Number of Seats',
         live_seat         : 'Please Enter Live Seats'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
  
@@ -1759,9 +1744,6 @@ $('.update_user_form').validate({
         number_of_bus     : 'Please Enter Number of Bus',
         number_of_seat    : 'Please Enter Number of Seats',
         live_seat         : 'Please Enter Live Seats'
-    },
-    errorPlacement: function(error, element) {
-          error.insertAfter(element.parent());
     }
   });
 

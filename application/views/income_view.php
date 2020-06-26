@@ -41,7 +41,7 @@
                 <table class="table table-bordered" id="transaction">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">S.N</th>
+                            <th scope="col" style="width:40px;">S.N</th>
                             <th scope="col">Date (A.D)</th>
                             <th scope="col">Date (B.S)</th>
                             <th scope="col">Heading</th>

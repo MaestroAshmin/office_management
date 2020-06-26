@@ -22,11 +22,11 @@
                         <tr>
                         <th scope="col">S.N</th>
 
-                            <th scope="col">Name</th>
-                            <th scope="col">Company</th>
+                            <th scope="col" style="width:250px;">Name</th>
+                            <th scope="col" style="width:150px;">Company</th>
                             <th scope="col">Mobile Number</th></th>
                             <th scope="col">Landline Number</th>
-                            <th scope="col">Email</th>
+                            <th scope="col" style="width:250px;">Email</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -42,8 +42,9 @@
                             <td><?php echo $contact['landline_number']?></td>
                             <td><?php echo $contact['Email']?></</td>
                             <td>
-                                <a href="<?php echo site_url('user/get_each_contact/'.$contact['id'])?>" class="btn btn-primary">
-                                        View Detail
+                                <a href="<?php echo site_url('user/get_each_contact/'.$contact['id'])?>">
+                                    <i class= "fa fa-eye">
+                                    </i>
                                 </a>
                                 <a href="<?php echo site_url('contactManagement/edit_status/'.$contact['id'])?>">
                                     <i class= "fa fa-edit">
