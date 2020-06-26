@@ -1237,6 +1237,8 @@ class User extends CI_Controller
 
 		$sess_data = $this->session->all_userdata();
 		$id 	   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
 
 		if(isset($_POST['update_user_details'])){
 
@@ -1253,7 +1255,9 @@ class User extends CI_Controller
 		$data = array(
 			'title' 		=> 'User Settings',
 			'main_content'	=> 'page-user-settings-form',
-			'record'		=> array('id' => $id)
+			'record'		=> array('id' => $id),
+			'role'			=> $user_role,
+			'dept'			=>	$user_dept
 		);
 
 		$this->load->view('includes/template', $data);

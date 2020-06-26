@@ -48,17 +48,6 @@
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo site_url();?>user/dashboard">
         <div class="sidebar-brand-text mx-3">Bonjour Management Pvt. Ltd</div>
   </a>
-
-      <!-- Divider -->
-      <!-- <hr class="sidebar-divider my-0"> -->
-
-      <!-- Nav Item - Dashboard -->
-      <!-- <li class="nav-item active">
-        <a class="nav-link" href="<?php echo site_url();?>user/dashboard">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li> -->
-
       <!-- Divider -->
       <?php if($role==1 || $role==2 || $dept==1){?>
 
@@ -195,6 +184,25 @@
             </div>
         </li>
       <?php } ?>
+      <?php if($role==1 || $role==2 || $dept==1){?>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTax" aria-expanded="true" aria-controls="collapseTax">
+            <i class="fas fa-user"></i>
+            <span>Tax Structure</span>
+          </a>
+          <div id="collapseTax" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <?php if($role==1 || $dept==1){?>
+              <a class="collapse-item" href="<?php echo site_url();?>tax/add_fiscal_year">Add Fiscal Year</a>
+              <a class="collapse-item" href="<?php echo site_url();?>tax/add_tax_structure">Add</a>
+            <?php }?>
+              <a class="collapse-item" href="<?php echo site_url();?>">View</a>
+            </div>
+          </div>
+        </li>
+      <?php } ?>
+
     </ul>
     <!-- End of Sidebar -->
      <!-- Content Wrapper -->
