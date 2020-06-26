@@ -1783,8 +1783,23 @@ if(slider!=null){
       if(!isDown) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 3; //scroll-fast
+      const walk = (x - startX) * 1; //scroll-fast
       slider.scrollLeft = scrollLeft - walk;    
+  });
+}
+
+if($('.drag-scroll').length>0){
+  var dragScroll_distance = $('.drag-scroll').offset().top-50,
+  $window = $(window);
+  
+  $window.scroll(function() {
+      if ( $window.scrollTop() >= dragScroll_distance && $(window).width() < 768 && sessionStorage.getItem("swipe_loader_status")!="true") {
+          $('.swipe-loader').css('display','block');
+          sessionStorage.setItem("swipe_loader_status", "true");
+          setInterval(function() { 
+            $('.swipe-loader').css('display','none');
+          }, 2000);
+      }
   });
 }
 

@@ -16,6 +16,7 @@
 
         <!-- Content Row -->
         <div class="row">
+            <div class="swipe-loader"></div>
             <div class="container table-responsive drag-scroll">
                 <table class="table table-bordered" id="transaction">
                     <thead class="thead-dark">

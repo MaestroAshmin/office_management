@@ -36,7 +36,8 @@
                     <button class="btn reset_btn1">Reset</button>
                 </div>
             </div>
-         
+            
+            <div class="swipe-loader"></div>
             <div class="container table-responsive drag-scroll">
                 <table class="table table-bordered" id="transaction">
                     <thead class="thead-dark">

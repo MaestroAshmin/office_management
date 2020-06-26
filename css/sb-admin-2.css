@@ -11258,7 +11258,7 @@ a:focus {
 }
 
 .sidebar .sidebar-brand .sidebar-brand-text {
-  display: none;
+  font-size: 12px;
 }
 
 .sidebar hr.sidebar-divider {
@@ -11331,6 +11331,7 @@ a:focus {
   }
   .sidebar .sidebar-brand .sidebar-brand-text {
     display: inline;
+    font-size: 16px;
   }
   .sidebar .sidebar-heading {
     text-align: left;
@@ -12109,4 +12110,90 @@ table.dataTable thead .sorting:before,table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_asc:before,table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:before,table.dataTable thead .sorting_desc:after{
   content: '';
+}
+
+.drag-scroll{
+  position: relative;
+}
+
+.drag-scrolled:before{
+  content: '<';
+  position: absolute;
+  top:250px;
+  left:0;
+  height: 40px;
+  width: 40px;
+  color: white;
+  background-color: #00000052;
+  padding-left: 12px;
+  padding-top: 4px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 24px;
+  z-index: 1;
+}
+
+.drag-scrolled:after{
+  content: '>';
+  position: absolute;
+  top:250px;
+  right:0;
+  height: 40px;
+  width: 40px;
+  color: white;
+  background-color: #00000052;
+  padding-left: 16px;
+  padding-top: 4px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 24px;
+  z-index: 1;
+}
+
+.swipe-loader{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000052;
+  z-index: 1;
+  display: none;
+}
+
+.swipe-loader:before{
+  content: '';
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  width: 120px;
+  height: 60px;
+  background: url('../img/arrow.png') center center;
+  background-size: cover;
+  margin: 250px auto;
+  z-index: 1;
+}
+
+.swipe-loader:after{
+  content: '';
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  width: 120px;
+  height: 100px;
+  background: url('../img/hand.png') center center;
+  background-size: cover;
+  margin: 300px auto;
+  -webkit-animation:linear infinite alternate;
+  -webkit-animation-name: run;
+  -webkit-animation-duration: 1s;
+  z-index: 1;
+}
+
+@-webkit-keyframes run {
+  0% { left: 0;}
+  50%{ left : 20%;}
+  100%{ left: 0;}
 }
