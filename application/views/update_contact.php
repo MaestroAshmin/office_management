@@ -13,7 +13,7 @@
                 }
             }
           ?>
-    <div class="form-group">
+    <div class="form-group col-md-6">
                         <div class="row">
                             <div class="col-md">
                                 <label> Name : </label> <?php echo $contact['Name']?>
@@ -58,17 +58,18 @@
                         </div>
                            
             <form class="update_contact_form" action="<?php echo site_url();?>contactmanagement/edit_status" method="post"  enctype="multipart/form-data">
-                    <input type="hidden" name="uploaded_by" class="form-control" value="<?php echo $user_id?>">
-                    <input type="hidden" name="id" class="form-control" value="<?php echo $contact['id']?>">
-                   
-                    <div class="form-group">
+                <input type="hidden" name="uploaded_by" class="form-control" value="<?php echo $user_id?>">
+                <input type="hidden" name="id" class="form-control" value="<?php echo $contact['id']?>">
+                
+                <div class="row">
+                    <div class="form-group col-md-6">
                         <label>New Contact?</label>
                         <select class="form-control" name="new_contact">
                           <option value="YES" <?php echo ($contact['new_contact'] == 'YES') ? 'selected' : '' ?>>Yes</option>
                           <option value="NO" <?php echo ($contact['new_contact'] == 'NO') ? 'selected' : '' ?>>No</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>Status</label>
                         <select class="form-control" name="Status">
                           <option value="LEAD" <?php echo ($contact['Status'] == 'LEAD') ? 'selected' : '' ?>>LEAD</option>    
@@ -77,26 +78,34 @@
                           <option value="LIVE" <?php echo ($contact['Status'] == 'LIVE') ? 'selected' : '' ?>>Live</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>Number of Bus/es</label>
                         <input type="number" name="number_of_bus" class="form-control" value = "<?php echo $contact['number_of_bus']?>">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>Number of Seats</label>
                         <input type="number" name="number_of_seat" class="form-control" value = "<?php echo $contact['number_of_seat']?>">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                         <label>Live Seats</label>
                         <input type="number" name="live_seat" class="form-control" value = "<?php echo $contact['live_seat']?>">
                     </div>
-                    <div class = "form-group">
-                        <label>Follow Up</label><br>
-                        <label>Follow Up Round</label>
-                        <input type="number" name="follow_up_round" class="form-control"><br>
-                        <label>Follow Up Date</label>
-                        <input type ="text" name = "date" id = "nepali-datepicker" class= "form-control">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="form-group col-md-12 text-center">
+                                <label>Follow Up</label>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Follow Up Round</label>
+                                <input type="number" name="follow_up_round" class="form-control"><br>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Follow Up Date</label>
+                                <input type ="text" name="date" id ="nepali-datepicker" class= "form-control">
+                            </div>
+                        </div>
                     </div>
-                    <div class = "form-group">
+                    <div class = "form-group col-md-12">
                     <table class="table table-follow-up table-bordered table-striped">
                                 <thead class="thead-dark">
                                     <tr>
@@ -114,9 +123,10 @@
                                 </tbody>
                             </table>
                     </div>
-                    <div class="form-group float-right">
-                        <button type="submit" class="btn btn-primary float-left">Update</button>
+                    <div class="form-group col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
+                </div>
             </form>
         </div>
         
