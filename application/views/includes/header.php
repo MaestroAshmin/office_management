@@ -195,7 +195,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
             <?php if($role==1 || $dept==1){?>
               <a class="collapse-item" href="<?php echo site_url();?>tax/add_fiscal_year">Add Fiscal Year</a>
-              <a class="collapse-item" href="<?php echo site_url();?>tax/add_tax_structure">Add</a>
+              <a class="collapse-item" href="<?php echo site_url();?>tax/add_tax_structure">Add Tax Structure</a>
             <?php }?>
               <a class="collapse-item" href="<?php echo site_url();?>">View</a>
             </div>

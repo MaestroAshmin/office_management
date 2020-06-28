@@ -7,8 +7,14 @@ i<div class="container-fluid">
     <?php
             if($this->session->flashdata("error"))
             {
-                foreach($this->session->flashdata("error") as $error){
-                    echo '<p class="error">*'.$error.'</p>';
+                if(is_array($this->session->flashdata("error"))){
+                    foreach($this->session->flashdata("error") as $error){
+                        echo '<p class="error">*'.$error.'</p>';
+                    }
+                }
+                else{
+                    echo '<p class="error">*'.$this->session->flashdata("error").'</p>';
+
                 }
             }
     ?>

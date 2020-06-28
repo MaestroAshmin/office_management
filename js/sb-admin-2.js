@@ -1092,17 +1092,17 @@ function callAutocomplete(field_id){
     })
   });
   $('.exampleModal').on('show.bs.modal', function (event) {
-    var url = window.location.origin;
-    var button = $(event.relatedTarget); 
-    var recipient = button.data('whatever'); 
+    let url = window.location.origin;
+    let button = $(event.relatedTarget); 
+    let recipient = button.data('whatever'); 
     console.log(recipient);
-    var modal = $(this);
+    let modal = $(this);
     modal.find('.modal-content img').attr('src',url+'/acc/images/'+recipient);
   });
   // $('.targetModal').on('show.bs.modal', function (event) {
-  //   var link = window.location.origin;
-  //   var button = $(event.relatedTarget); 
-  //   var target_id = button.data('whatever'); 
+  //   let link = window.location.origin;
+  //   let button = $(event.relatedTarget); 
+  //   let target_id = button.data('whatever'); 
   //   console.log(target_id);
   //   $.ajax({
   //     url: link + '/acc/user/get_each_target',
@@ -1118,11 +1118,11 @@ function callAutocomplete(field_id){
   //   });
   // });
   $("#user_type").change(function(){
-    var user_type = $(this).children("option:selected").val();
+    let user_type = $(this).children("option:selected").val();
     if(user_type==3){
       $(".department").show();
     
-      var val = $('option:selected', '.department').attr('value');
+      let val = $('option:selected', '.department').attr('value');
       $.ajax({
         url: "get_designations",
         data:{
@@ -1146,7 +1146,7 @@ function callAutocomplete(field_id){
   });
 
   $("#department").change(function(){
-    var val = $('option:selected', this).attr('value');
+    let val = $('option:selected', this).attr('value');
     
     $('#designation').empty();
 
@@ -1167,12 +1167,12 @@ function callAutocomplete(field_id){
   });
 
   $("#user_type-edit").change(function(){
-    var user_type = $(this).children("option:selected").val();
+    let user_type = $(this).children("option:selected").val();
     if(user_type==3){
       $(".department-edit").show();
       
     base_url = window.location.origin;
-    var val = $('option:selected', '#department-edit').attr('value');
+    let val = $('option:selected', '#department-edit').attr('value');
       $('#designation-edit').empty();
       $.ajax({
         url: base_url + "/acc/user/get_designations",
@@ -1184,7 +1184,7 @@ function callAutocomplete(field_id){
           let objects = JSON.parse(data);
           $(".designation-edit").show();
   
-          var des_user = $("#des_user").val();
+          let des_user = $("#des_user").val();
           $.each( objects, function( key, value ){
             if(des_user==value.id){
               $('#designation-edit').append("<option value ="+value.id+" selected>"+ value.designation +"</option>");
@@ -1203,7 +1203,7 @@ function callAutocomplete(field_id){
 
   $("#department-edit").change(function(){
     base_url = window.location.origin;
-    var val = $('option:selected', this).attr('value');
+    let val = $('option:selected', this).attr('value');
     $('#designation-edit').empty();
     $.ajax({
       url: base_url + "/acc/user/get_designations",
@@ -1215,7 +1215,7 @@ function callAutocomplete(field_id){
         let objects = JSON.parse(data);
         $(".designation-edit").show();
 
-        var des_user = $("#des_user").val();
+        let des_user = $("#des_user").val();
         $.each( objects, function( key, value ){
           if(des_user==value.id){
             $('#designation-edit').append("<option value ="+value.id+" selected>"+ value.designation +"</option>");
@@ -1229,7 +1229,7 @@ function callAutocomplete(field_id){
 }
 
 $(document).ready(function(){
-var val = $("#user_type-edit").children("option:selected").val();
+let val = $("#user_type-edit").children("option:selected").val();
 if(val != 3){
   $(".department").hide();
   $(".designation").hide();
@@ -1238,9 +1238,9 @@ if(val != 3){
 }
 else{
   $(".department-edit").show();
-  var dept = $("#department-edit").children("option:selected").val();
+  let dept = $("#department-edit").children("option:selected").val();
   base_url = window.location.origin;
-    var val = $('option:selected', this).attr('value');
+    let val = $('option:selected', this).attr('value');
     $.ajax({
       url: base_url + "/acc/user/get_designations",
       data:{
@@ -1250,7 +1250,7 @@ else{
       success: function(data){
         let objects = JSON.parse(data);
         $(".designation-edit").show();
-        var des_user = $("#des_user").val();
+        let des_user = $("#des_user").val();
         $.each( objects, function( key, value ){
           if(des_user==value.id){
             $('#designation-edit').append("<option value ="+value.id+" selected>"+ value.designation +"</option>");
@@ -1762,7 +1762,7 @@ $('.update_user_form').validate({
   //   });
   // }
 
-var slider = document.querySelector('.drag-scroll');
+let slider = document.querySelector('.drag-scroll');
 let isDown = false;
 let startX;
 let scrollLeft;
@@ -1788,7 +1788,7 @@ if(slider!=null){
   });
 }
 
-var lineChartData = {
+let lineChartData = {
   datasets: [
     {
       label               : 'Income',
@@ -1812,7 +1812,7 @@ var lineChartData = {
   ]
 }
 
-var lineChartOptions = {
+let lineChartOptions = {
   maintainAspectRatio : true,
   responsive : true,
   legend: {
@@ -1844,7 +1844,7 @@ var lineChartOptions = {
 }
 
 
-var barChartData = {
+let barChartData = {
   datasets: [
     {
       label               : 'Target',
@@ -1874,26 +1874,26 @@ var barChartData = {
   //--------------
 
   if($('#lineChart').length){
-    var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
-    var lineChartOptions = $.extend(true, {}, lineChartOptions);
-    var lineChartData = $.extend(true, {}, lineChartData);
+    let lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+    let lineChartOptions = $.extend(true, {}, lineChartOptions);
+    let lineChartData = $.extend(true, {}, lineChartData);
     lineChartData.datasets[0].fill = false;
     lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false;
-    var total_income_current_year = '';
-    var total_expense_current_year = '';
-    var total_equity_current_year = '';
-    var total_income_total_year = '';
-    var total_expense_total_year = '';
-    var total_equity_total_year = '';
-    var labels_monthly = [];
-    var labels_yearly = [];
-    var income_data_monthly = [];
-    var income_data_yearly = [];
-    var expense_data_monthly = [];
-    var expense_data_yearly = [];
+    let total_income_current_year = '';
+    let total_expense_current_year = '';
+    let total_equity_current_year = '';
+    let total_income_total_year = '';
+    let total_expense_total_year = '';
+    let total_equity_total_year = '';
+    let labels_monthly = [];
+    let labels_yearly = [];
+    let income_data_monthly = [];
+    let income_data_yearly = [];
+    let expense_data_monthly = [];
+    let expense_data_yearly = [];
 
-    var formatter = new Intl.NumberFormat('en-IN', { 
+    let formatter = new Intl.NumberFormat('en-IN', { 
       minimumFractionDigits: 2
     }); 
 
@@ -1957,7 +1957,7 @@ var barChartData = {
         lineChartData.datasets[0].data = income_data_monthly;
         lineChartData.datasets[1].data = expense_data_monthly;
 
-        var lineChart = new Chart(lineChartCanvas, {
+        let lineChart = new Chart(lineChartCanvas, {
           type: 'line',
           data: lineChartData,
           options: lineChartOptions
@@ -1994,7 +1994,7 @@ var barChartData = {
       lineChartData.datasets[0].data = income_data_monthly;
       lineChartData.datasets[1].data = expense_data_monthly;
 
-      var lineChart = new Chart(lineChartCanvas, {
+      let lineChart = new Chart(lineChartCanvas, {
         type: 'line',
         data: lineChartData,
         options: lineChartOptions
@@ -2010,7 +2010,7 @@ var barChartData = {
       lineChartData.datasets[0].data = income_data_yearly;
       lineChartData.datasets[1].data = expense_data_yearly;
 
-      var lineChart = new Chart(lineChartCanvas, {
+      let lineChart = new Chart(lineChartCanvas, {
         type: 'line',
         data: lineChartData,
         options: lineChartOptions
@@ -2027,13 +2027,13 @@ var barChartData = {
     //-------------
     //- BAR CHART -
     //-------------
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChartData = $.extend(true, {}, barChartData)
-    var bar_labels = [];
-    var bar_performance = [];
-    var bar_target = [];
+    let barChartCanvas = $('#barChart').get(0).getContext('2d')
+    let barChartData = $.extend(true, {}, barChartData)
+    let bar_labels = [];
+    let bar_performance = [];
+    let bar_target = [];
 
-    var barChartOptions = {
+    let barChartOptions = {
       responsive              : true,
       maintainAspectRatio     : false,
       datasetFill             : false
@@ -2062,7 +2062,7 @@ var barChartData = {
               //change to sentence case
               let sentence = label.toLowerCase().split(" ");
 
-              for(var i = 0; i< sentence.length; i++){
+              for(let i = 0; i< sentence.length; i++){
                 sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
               }
 
@@ -2137,7 +2137,7 @@ var barChartData = {
           $('#achievement_comment').html(comment);
           $('#achievement_comment').css({'color': color, 'font-size': '20px','font-weight':'bold'});
 
-          var barChart = new Chart(barChartCanvas, {
+          let barChart = new Chart(barChartCanvas, {
             type: 'bar',
             data: barChartData,
             options: barChartOptions
@@ -2146,4 +2146,25 @@ var barChartData = {
       });  
     }
   }
+    $(document).on("click", "a.add" , function(e) {
+      e.preventDefault();
+      tableBody = $("table tbody"); 
+      tableBody.append('<tr><td><input type="number"  name="tax[]"></td>'+
+      '<td><select name="marital_status[]">'+
+      '<option value="0">Married</option>'+
+      '<option value="1">Unmarried</option>'+
+      '</select></td>'+
+      '<td><input type="number"  name="amount[]"></td>'+
+      '<td>'+
+          '<a href="javascript:void(0);" class="add"><i class="fa fa-plus"></i></a>'+
+          '<a href="javascript:void(0);" class="remove" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-times"></i></a>'+
+      '</td>'+
+      '</tr>');
+      //add input box
+    });
+    
+    $(document).on("click", "a.remove" , function(e) { //user click on remove text
+      e.preventDefault();
+        $(this).closest('tr').remove();
+    })
 });

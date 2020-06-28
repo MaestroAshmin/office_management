@@ -45,4 +45,63 @@ class Tax_model extends CI_model
             return $false;
         }
     }
+    public function get_fiscal_year($id){
+        $query = $this->db->select('*')->from('tbl_fiscal_year')->where('id',$id)->get();
+        if($query){
+            $result = $query->row_array();
+            return $result;
+        }
+        else{
+            return $false;
+        }
+    }
+
+    public function edit_fiscal_year($data){
+
+        $is_exists = $this->tax_model->is_exists($data);
+        if(!$is_exists){
+            try{
+                $this->db->where('id',$id);
+                $query = $this->db->update('tbl_fiscal_year',$data);
+                $result_status = array('status' => 'success', 'message' =>"Successfully added Fiscal Year");    
+            }
+            catch(Exception $e){
+                $result_status = array('status'=> 'failed', 'message' => 'Fail to add Fiscal Year');
+            }
+        }
+        else{
+            $result_status = array('status'=> 'failed', 'message' => 'Fiscal Year Already Exists or Cannot have two active Fiscal Year at once');
+        }
+        return $result_status;
+    }
+    public function delete_fiscal_year($id)
+    {
+        try{
+            $this->db->where('id', $id);
+            $this->db->delete('tbl_fiscal_year');
+            $result_status = array('status'=>'success','message'=>'Fiscal Year Deleted Successfully');
+
+        }
+        catch(Exception $e){
+            $result_status = array('status'=>'falied','message'=>'Cannot Delete Fiscal Year');
+        }
+        return $result_status;
+    }
+    public function add_tax_structure($data)
+    {  
+        try{
+            for($i=0;$i<count($data['tax']);$i++){
+                $insertData = [];
+                array_push($insertData,'tax', $data['tax'][$i]);
+                array_push($insertData,'marital_status', $data['marital_status'][$i]);
+                array_push($insertData,'amount', $data['amount'][$i]);
+                echo '<pre>';print_r($insertData);exit;
+            }
+           
+        }
+        catch(Exception $e){
+            $result_status = array('status'=> 'failed','message' => 'Cannot Add Tax Structure');
+        }
+        return $result_status;
+    }
 }   
