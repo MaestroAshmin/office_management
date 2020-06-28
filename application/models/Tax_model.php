@@ -17,21 +17,25 @@ class Tax_model extends CI_model
         else{
             $result_status = array('status'=> 'failed', 'message' => 'Fiscal Year Already Exists or Cannot have two active Fiscal Year at once');
         }
-    }
-    public function is_exists($data){
 
-        $query  =   $this->db->select('*')->from('tbl_fiscal_year')->where('current_fy',1)->get();
-        if($query->num_rows > 0){
+        return $result_status;
+    }
+
+    public function is_exists($data,$id=0){
+        if($data['current_fy']=='1'){
+            $query  =   $this->db->select('*')->from('tbl_fiscal_year')->where("current_fy=1 and id!=".$id)->get();
+            
+            if($query->num_rows() > 0 ){
+                return true;
+            }
+        }
+
+        $query2  =   $this->db->select('*')->from('tbl_fiscal_year')->where("fiscal_year=".$data['fiscal_year']." and id!=".$id)->get();
+        if($query2->num_rows() > 0 ){
             return true;
         }
         else{
-            $query2  =   $this->db->select('*')->from('tbl_fiscal_year')->where('fiscal_year',$data['fiscal_year'])->get();
-            if($query2->num_rows() > 0 ){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return false;
         }
     }
     
@@ -57,16 +61,15 @@ class Tax_model extends CI_model
     }
 
     public function edit_fiscal_year($data){
-
-        $is_exists = $this->tax_model->is_exists($data);
+        $is_exists = $this->tax_model->is_exists($data,$data['id']);
         if(!$is_exists){
             try{
-                $this->db->where('id',$id);
+                $this->db->where('id',$data['id']);
                 $query = $this->db->update('tbl_fiscal_year',$data);
                 $result_status = array('status' => 'success', 'message' =>"Successfully added Fiscal Year");    
             }
             catch(Exception $e){
-                $result_status = array('status'=> 'failed', 'message' => 'Fail to add Fiscal Year');
+                $result_status = array('status'=> 'failed', 'message' => 'Fail to update Fiscal Year');
             }
         }
         else{
@@ -74,6 +77,7 @@ class Tax_model extends CI_model
         }
         return $result_status;
     }
+
     public function delete_fiscal_year($id)
     {
         try{

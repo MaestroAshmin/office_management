@@ -99,9 +99,9 @@
                                             <a href="<?php echo site_url('user/expenses_delete/'.$transaction['ID']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
                                     <?php }else{ 
                                         if($transaction['Status']==0){?>
-                                            <label>UnApproved</label>
+                                            <label id="unapproved">UnApproved</label>
                                         <?php }else{?>
-                                            <label>Approved</label>
+                                            <label id="approved">Approved</label>
                                     <?php } }?>
                                 </td>
                             <?php }?>
