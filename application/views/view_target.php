@@ -12,13 +12,14 @@
                 </style>
           <!-- Content Row -->
         <div class="row">
-            <div class="container col-lg-12">
-                <table class="table table-bordered" id="target" style="width:100%">
+            <div class="swipe-loader"></div>
+            <div class="container table-responsive drag-scroll">
+                <table class="table table-bordered" id="transaction">
                     <thead class="thead-dark">
                         <tr>
                         <th>S.N</th>
-                        <th>Title</th>
-                        <th>Assigned To</th>
+                        <th style="width:500px;">Title</th>
+                        <th style="width:250px;">Assigned To</th>
                         <th>For month</th>
                         <th>Action</th>
                         </tr>
@@ -34,7 +35,7 @@
                             <td><?php echo $target['for_month']?></td>
                             <td>
                                 <a href="<?php echo site_url('user/get_each_target/'.$target['t_id'])?>" class="btn btn-primary">
-                                        View Detail
+                                        <i class="fa fa-eye"></i>
                                 </a>
                             </td>
                         </tr>
