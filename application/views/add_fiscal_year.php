@@ -24,7 +24,7 @@ i<div class="container-fluid">
             <form class="add_role_form" action="<?php echo site_url();?>tax/add_fiscal_year" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Fiscal Year</label><br>
-                    <input type="text" id="fiscal_year" name="fiscal_year" placeholder = "Ex: 2066/67" class="form-control col-sm-7 float-left user_type"><br>
+                    <input type="text" id="fiscal_year" name="fiscal_year" placeholder = "Ex: 2066/067" class="form-control col-sm-7 float-left user_type"><br>
                 </div>
                 <div class="form-group">
                     <label>Current Fiscal Year?</label></br>
@@ -52,7 +52,7 @@ i<div class="container-fluid">
                         <td><?php echo $fy['current_fy']==1 ?   '<i class = "fas fa-check"></i>' :'Inactive' ?></td>
                         <td>
                         <a href="<?php echo site_url('tax/edit_fiscal_year/'.$fy['id']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
-                        <a href="<?php echo site_url('tax/delete_fiscal_year/'.$fy['id']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
+                        <a href="<?php echo site_url('tax/delete_fiscal_year/'.$fy['id']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this Fiscal Year? Deleting this Fiscal Year also deletes the tax structure for this year" style="display:inline-block"><i class="fa fa-trash"></i></a>
                         </td>
 
                     </tr>

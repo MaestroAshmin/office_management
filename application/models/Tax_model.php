@@ -36,7 +36,7 @@ class Tax_model extends CI_model
     }
     
     public function get_fiscal_years(){
-        $query = $this->db->select('*')->from('tbl_fiscal_year')->get();
+        $query = $this->db->select('*')->from('tbl_fiscal_year')->where('status',1)->get();
         if($query){
             $result = $query->result_array();
             return $result;
@@ -77,9 +77,20 @@ class Tax_model extends CI_model
     public function delete_fiscal_year($id)
     {
         try{
-            $this->db->where('id', $id);
-            $this->db->delete('tbl_fiscal_year');
-            $result_status = array('status'=>'success','message'=>'Fiscal Year Deleted Successfully');
+            try{
+                $data = [
+                    'status'    =>  0
+                ];
+                $this->db->where('id', $id);
+                $this->db->update('tbl_fiscal_year',$data);
+
+                $this->db->where('fiscal_year_id',$id);
+                $this->db->delete('tbl_tax_structure',);
+                $result_status = array('status'=>'success','message'=>'Fiscal Year Deleted Successfully');
+            }
+           catch(Exception $e){
+                $result_status = array('status'=>'failed','message'=>'Fiscal Year Cannot be deleted');
+           }
 
         }
         catch(Exception $e){
@@ -89,18 +100,84 @@ class Tax_model extends CI_model
     }
     public function add_tax_structure($data)
     {  
-        try{
-            $insertData = [];
-            for($i=0;$i<count($data['tax']);$i++){
-                array_push($insertData[$i],'tax', $data['tax'][$i]);
-                array_push($insertData[$i],'marital_status', $data['marital_status'][$i]);
-                array_push($insertData[$i],'amount', $data['amount'][$i]);
+        $fy_exists_tax = $this->tax_model->fy_exists_tax($data[0]['fiscal_year_id']);
+        if($fy_exists_tax){
+            $result_status = array('status'=> 'failed', 'message' => 'Tax Structure already exists! Please delete or edit to make changes');
+        }
+        else{
+            try{
+                foreach($data as $d){
+                    $entries [] = array(
+                        'tax_percent' =>    $d['tax_percent'],
+                        'marital_status' =>    $d['marital_status'],
+                        'fiscal_year_id'    =>  $d['fiscal_year_id'],
+                        'amount'    =>  $d['amount'],
+                        'last_modified_by'  =>  $d['last_modified_by']
+                    );
+                }
+                $this->db->insert_batch('tbl_tax_structure', $data);
+                $result_status = array('status' => 'success', 'message' => 'Tax Structure Added Successfully');
             }
-            echo '<pre>';print_r($insertData);exit;
+            catch(Exception $e){
+                $result_status = array('status'=> 'failed','message' => 'Cannot Add Tax Structure');
+            }
+        }
+        
+        return $result_status;
+    }
+    public function fy_exists_tax($data)
+    {
+        $condition = [
+            'fiscal_year_id' => $data,
+            'status'    =>  1
+        ];
+        $query  =   $this->db->select('*')->from('tbl_tax_structure')->where($condition)->get();
+        if($query->num_rows() > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function get_tax_structure($id){
+        try{
+            $condition = [
+                'fiscal_year_id'    =>  $id,
+                'status'            =>  1
+            ];
+            $query = $this->db->select('*')->from('tbl_tax_structure')->where($condition)->get();
+            if($query){
+                $result =   $query->result_array();
+                return $result;
+            }
+            else{
+                return false;
+            }
+        }
+        catch(Exception $e){
+            return false;
+        }
+    }
+    public function edit_tax_structure($data)
+    {
+        try{
+            $this->db->where('fiscal_year_id', $data[0]['fiscal_year_id']);
+            $this->db->delete('tbl_tax_structure');
+            foreach($data as $d){
+                $entries [] = array(
+                    'tax_percent' =>    $d['tax_percent'],
+                    'marital_status' =>    $d['marital_status'],
+                    'fiscal_year_id'    =>  $d['fiscal_year_id'],
+                    'amount'    =>  $d['amount'],
+                    'last_modified_by'  =>  $d['last_modified_by']
+                );
+            }
+            $this->db->insert_batch('tbl_tax_structure', $data);
+            $result_status = array('status' => 'success', 'message' => 'Tax Structure Added Successfully');
         }
         catch(Exception $e){
             $result_status = array('status'=> 'failed','message' => 'Cannot Add Tax Structure');
-        }
+        }  
         return $result_status;
     }
 }   
