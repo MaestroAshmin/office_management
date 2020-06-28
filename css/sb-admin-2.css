@@ -12197,3 +12197,19 @@ table.dataTable thead .sorting_desc:before,table.dataTable thead .sorting_desc:a
   50%{ left : 20%;}
   100%{ left: 0;}
 }
+
+#unapproved{
+  border-radius: 20px;
+  color: red;
+  background-color: #f794946b;
+  padding: 6px 15px;
+  font-weight: 700;
+}
+
+#approved{
+  border-radius: 20px;
+  color: #059a05;
+  background-color: #88e6a180;
+  padding: 6px 25px;
+  font-weight: 700;
+}

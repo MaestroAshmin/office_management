@@ -21,7 +21,7 @@ i<div class="container-fluid">
     <!-- Content Row -->
     <div class="row">       
          <div class="col-sm-12 col-md-5">
-            <form class="add_role_form" action="<?php echo site_url();?>tax/add_fiscal_year" method="post" enctype="multipart/form-data">
+            <form class="add_fiscal_year_form" action="<?php echo site_url();?>tax/add_fiscal_year" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Fiscal Year</label><br>
                     <input type="text" id="fiscal_year" name="fiscal_year" placeholder = "Ex: 2066/067" class="form-control col-sm-7 float-left user_type"><br>
@@ -31,10 +31,10 @@ i<div class="container-fluid">
                     <input type="radio" name="current_fy" value="1">
                     <label for="yes">Yes</label><br>
                     <input type="radio" name="current_fy" value="0">
-                    <label for="no">No</label><br>
+                    <label for="no">No</label>
                 </div>
                 <div class="form-group">    
-                    <button class="btn btn-primary" style="margin-left:10px;">Add Fiscal Year</button>    
+                    <button class="btn btn-primary">Add Fiscal Year</button>    
                 </div>        
             </form>
          <table class="table table-bordered">

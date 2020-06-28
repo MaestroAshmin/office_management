@@ -1747,6 +1747,25 @@ $('.update_user_form').validate({
     }
   });
 
+  //add fiscal year form validation  
+  $('.add_fiscal_year_form').validate({
+  rules:{
+      fiscal_year       : 'required',
+      current_fy        : 'required'
+  },
+  messages:{
+      fiscal_year       : 'Please Enter Fiscal Year',
+      current_fy        : 'Please Select Current Fiscal Year Options'
+  },
+  errorPlacement: function(error,element){
+    if(element.attr("name")=='current_fy'){
+      error.insertAfter(element.parent());
+    }else{
+      error.insertAfter(element);
+    }
+  }
+});
+
   // if($(".add_target_form #assigned_to").length >= 1){
   //   base_url = window.location.origin;
   //   $.ajax({

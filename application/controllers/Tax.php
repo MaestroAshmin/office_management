@@ -21,14 +21,15 @@ class Tax extends CI_Controller
                 $this->session->set_flashdata('error',$this->form_validation->error_array());
                 redirect('tax/add_fiscal_year');
             }
+
             $result = $this->tax_model->add_fiscal_year($data);
+
             if($result['status']=='success'){
                 redirect('tax/add_fiscal_year');
             }
             else{
                 $this->session->set_flashdata('error',$result['message']);
                 redirect('tax/add_fiscal_year');
-
             }
         }
         else{
@@ -72,7 +73,7 @@ class Tax extends CI_Controller
                 $this->session->set_flashdata('error',$this->form_validation->error_array());
                 redirect('tax/edit_fiscal_year');
             }
-            $result = $this->tax_model->edit_fiscal_year($data,$id);
+            $result = $this->tax_model->edit_fiscal_year($data);
             if($result['status']=='success'){
                 redirect('tax/add_fiscal_year');
             }
