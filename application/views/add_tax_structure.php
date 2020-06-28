@@ -46,8 +46,8 @@
                                     <td><input type="number"  name="tax[]" value="1"></td>
                                     <td>
                                         <select name="marital_status[]">
-                                            <option value="0">Married</option>
-                                            <option value="1">Unmarried</option>
+                                            <option value="Married">Married</option>
+                                            <option value="Unmarried">Unmarried</option>
                                         </select>
                                     </td>
                                     <td><input type="number"  name="amount[]"></td>

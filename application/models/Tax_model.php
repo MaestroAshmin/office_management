@@ -90,14 +90,13 @@ class Tax_model extends CI_model
     public function add_tax_structure($data)
     {  
         try{
+            $insertData = [];
             for($i=0;$i<count($data['tax']);$i++){
-                $insertData = [];
-                array_push($insertData,'tax', $data['tax'][$i]);
-                array_push($insertData,'marital_status', $data['marital_status'][$i]);
-                array_push($insertData,'amount', $data['amount'][$i]);
-                echo '<pre>';print_r($insertData);exit;
+                array_push($insertData[$i],'tax', $data['tax'][$i]);
+                array_push($insertData[$i],'marital_status', $data['marital_status'][$i]);
+                array_push($insertData[$i],'amount', $data['amount'][$i]);
             }
-           
+            echo '<pre>';print_r($insertData);exit;
         }
         catch(Exception $e){
             $result_status = array('status'=> 'failed','message' => 'Cannot Add Tax Structure');

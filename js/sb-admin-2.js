@@ -1803,95 +1803,72 @@ if($('.drag-scroll').length>0){
   });
 }
 
-var lineChartData = {
-  datasets: [
-    {
-      label               : 'Income',
-      backgroundColor     : 'rgba(60,100,255,0.9)',
-      borderColor         : 'rgba(60,100,255,0.8)',
-      pointColor          : '#3b8bba',
-      pointStrokeColor    : 'rgba(60,141,188,1)',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(60,141,188,1)'
-    },
-    {
-      label               : 'Expense',
-      backgroundColor     : 'rgba(255, 0, 0, 0.9)',
-      borderColor         : 'rgba(255, 0, 0, 0.8)',
-      pointDotRadius      :  1,
-      pointColor          : 'rgba(210, 214, 222, 1)',
-      pointStrokeColor    : '#c1c7d1',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(220,220,220,1)'
-    },
-  ]
-}
-
-let lineChartOptions = {
-  maintainAspectRatio : true,
-  responsive : true,
-  legend: {
-    display: true,
-    labels: {
-        fontSize: 20,
-    }
-  },
-  scales: {
-    xAxes: [{
-      gridLines : {
-        display : false,
-      },
-      scaleLabel: {
-        display: false,
-        labelString: 'Time'
-      },
-    }],
-    yAxes: [{
-      gridLines : {
-        display : true,
-      },
-      scaleLabel: {
-        display: false,
-        labelString: 'Amount'
-      }
-    }]
-  }
-}
-
-
-let barChartData = {
-  datasets: [
-    {
-      label               : 'Target',
-      backgroundColor     : '#0C9F5F',
-      borderColor         : '#0C9F5F',
-      pointRadius         :  false,
-      pointColor          : '#3b8bba',
-      pointStrokeColor    : 'rgba(60,141,188,1)',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(60,141,188,1)'
-    },
-    {
-      label               : 'Performance',
-      backgroundColor     : 'rgba(60,141,188,0.9)',
-      borderColor         : 'rgba(60,141,188,0.8)',
-      pointRadius         :  false,
-      pointColor          : '#3b8bba',
-      pointStrokeColor    : 'rgba(60,141,188,1)',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(60,141,188,1)'
-    },
-  ]
-}
 
     //-------------
   //- LINE CHART -
   //--------------
 
   if($('#lineChart').length){
+        
+    let lineChartOptions = {
+      maintainAspectRatio : true,
+      responsive : true,
+      legend: {
+        display: true,
+        labels: {
+            fontSize: 20,
+        }
+      },
+      scales: {
+        xAxes: [{
+          gridLines : {
+            display : false,
+          },
+          scaleLabel: {
+            display: false,
+            labelString: 'Time'
+          },
+        }],
+        yAxes: [{
+          gridLines : {
+            display : true,
+          },
+          scaleLabel: {
+            display: false,
+            labelString: 'Amount'
+          }
+        }]
+      }
+    }
+
+    
+    let lineChartData = {
+      datasets: [
+        {
+          label               : 'Income',
+          backgroundColor     : 'rgba(60,100,255,0.9)',
+          borderColor         : 'rgba(60,100,255,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)'
+        },
+        {
+          label               : 'Expense',
+          backgroundColor     : 'rgba(255, 0, 0, 0.9)',
+          borderColor         : 'rgba(255, 0, 0, 0.8)',
+          pointDotRadius      :  1,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)'
+        },
+      ]
+    }
+
     let lineChartCanvas = $('#lineChart').get(0).getContext('2d');
-    let lineChartOptions = $.extend(true, {}, lineChartOptions);
-    let lineChartData = $.extend(true, {}, lineChartData);
+    lineChartOptions = $.extend(true, {}, lineChartOptions);
+    lineChartData = $.extend(true, {}, lineChartData);
     lineChartData.datasets[0].fill = false;
     lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false;
@@ -2042,8 +2019,33 @@ let barChartData = {
     //-------------
     //- BAR CHART -
     //-------------
+    let barChartData = {
+      datasets: [
+        {
+          label               : 'Target',
+          backgroundColor     : '#0C9F5F',
+          borderColor         : '#0C9F5F',
+          pointRadius         :  false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)'
+        },
+        {
+          label               : 'Performance',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius         :  false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)'
+        },
+      ]
+    }
+    
     let barChartCanvas = $('#barChart').get(0).getContext('2d')
-    let barChartData = $.extend(true, {}, barChartData)
+    barChartData = $.extend(true, {}, barChartData)
     let bar_labels = [];
     let bar_performance = [];
     let bar_target = [];
