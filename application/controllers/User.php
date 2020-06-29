@@ -701,6 +701,7 @@ class User extends CI_Controller
 			if($post['user_type']==3){
 				$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
 				$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
+				$this->form_validation->set_rules("emp_code","EmpCode","required",array("required"=>"Please Enter Emp Code"));
 			}
 			// form validation ends //
 
@@ -920,12 +921,8 @@ class User extends CI_Controller
 	
 	public function update_user($id){
 		if($_POST){
-			$data = $this->input->post();
-			if($data['user_type']!=3){
-				unset($data['department']);
-				unset($data['designation']);
-			}
-
+			$post = $this->input->post();
+			//form validation
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
 			$this->form_validation->set_rules("address","Address","required",array("required"=>"Please Enter Address"));
@@ -934,47 +931,68 @@ class User extends CI_Controller
 			$this->form_validation->set_rules("email","Email","required",array("required"=>"Please Enter Email"));
 			$this->form_validation->set_rules("email_office","EmailOffice","required",array("required"=>"Please Enter Office Email"));
 			$this->form_validation->set_rules("gender","Gender","required",array("required"=>"Please Select Your Gender"));
-			$this->form_validation->set_rules("join_date","JoinDate","required",array("required"=>"Please Select Join Date"));
+			$this->form_validation->set_rules("date_of_birth","date_of_birth","required",array("required"=>"Please Select Date of Birth"));
 			$this->form_validation->set_rules("user_type","UserType","required",array("required"=>"Please Select User Type"));
-			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
 			$this->form_validation->set_rules("allow_approve","Allow_approve","required",array("required"=>"Please Select Allow Option"));
-
-			if($data['user_type']==3){
+			if($post['user_type']==3){
 				$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
 				$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
+				$this->form_validation->set_rules("emp_code","EmpCode","required",array("required"=>"Please Enter Emp Code"));
 			}
+			// form validation ends //
 
 			if($this->form_validation->run()==true)
 			{
-				if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
+				if($post['user_type']!=3)
+				{
+					//update user
+					$data = array(
+						'id'				=> $post['id'],
+						'name' 				=> $post['name'],
+						'address' 			=> $post['address'],
+						'contact_person' 	=> $post['contact_person'],
+						'contact_office' 	=> $post['contact_office'],
+						'email' 			=> $post['email'],
+						'email_office'	 	=> $post['email_office'],
+						'gender'		 	=> $post['gender'],
+						'date_of_birth'		=> $post['date_of_birth'],
+						'user_type'			=> $post['user_type'],
+						'allow_approve'		=> $post['allow_approve']
+					);
+					if($post['user_type']==3){
+						$data['department'] = $post['department'];
+						$data['designation'] = $post['designation'];
+						$data['emp_code'] = $post['emp_code'];
+					}
+
+					if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
 					
-					$error = [];
+						$error = [];
 
-					if($this->user_model->check_user_phone($data) && $data['old_contact_person']!=$data['contact_person']){
-						$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
-						$this->session->set_flashdata("error",$error);
-						redirect("user/update_user/$id");
-					}
+						if($this->user_model->check_user_phone($data) && $post['old_contact_person']!=$data['contact_person']){
+							$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
+							$this->session->set_flashdata("error",$error);
+							redirect("user/update_user/$id");
+						}
 						
-					if($this->user_model->check_user_email($data) && $data['old_email']!=$data['email']){
-						$error["duplicate_email_entry"] = "Personal email already exists.";
-						$this->session->set_flashdata("error",$error);
-						redirect("user/update_user/$id");
+						if($this->user_model->check_user_email($data) && $post['old_email']!=$data['email']){
+							$error["duplicate_email_entry"] = "Personal email already exists.";
+							$this->session->set_flashdata("error",$error);
+							redirect("user/update_user/$id");
+						}
+					}
+
+					$result = $this->user_model->update_user($data);
+
+					if($result['status'] == 'success'){
+						redirect("user/view_roles",'refresh');
+					}
+					if($result['status'] == 'failed'){
+						$this->session->set_flashdata("error",array("error_updating_user"=>"Error occured while updating user."));
+						redirect("user/view_roles",'refresh');
 					}
 				}
-
-				$result = $this->user_model->update_user($data);
-
-				if($result['status'] == 'success'){
-					redirect("user/view_roles",'refresh');
-				}
-				if($result['status'] == 'failed'){
-					$this->session->set_flashdata("error",array("error_updating_user"=>"Error occured while updating user."));
-					redirect("user/view_roles",'refresh');
-				}
-
-			}else
-			{
+			}else{
 				$this->session->set_flashdata("error",$this->form_validation->error_array());
 				redirect("user/update_user/$id");
 			}

@@ -1143,7 +1143,7 @@ function callAutocomplete(field_id){
         success: function(data){
           let objects = JSON.parse(data);
           $.each( objects, function( key, value ){
-            $('#designation').append("<option value ="+value.id+">"+ value.designation +"</option>");
+            $('#designation').append("<option value="+value.id+">"+ value.designation +"</option>");
           });
         }
       });
@@ -1177,10 +1177,9 @@ function callAutocomplete(field_id){
   $("#user_type-edit").change(function(){
     let user_type = $(this).children("option:selected").val();
     if(user_type==3){
-      $(".department-edit").show();
-      
-    base_url = window.location.origin;
-    let val = $('option:selected', '#department-edit').attr('value');
+      $(".employee-section").show();
+      base_url = window.location.origin;
+      let val = $('option:selected', '#department-edit').attr('value');
       $('#designation-edit').empty();
       $.ajax({
         url: base_url + "/acc/user/get_designations",
@@ -1204,8 +1203,7 @@ function callAutocomplete(field_id){
       });
     }
     else{
-      $(".department-edit").hide();
-      $(".designation-edit").hide();
+      $(".employee-section").hide();
     }
   });
 
@@ -1221,8 +1219,6 @@ function callAutocomplete(field_id){
       type: "post",
       success: function(data){
         let objects = JSON.parse(data);
-        $(".designation-edit").show();
-
         let des_user = $("#des_user").val();
         $.each( objects, function( key, value ){
           if(des_user==value.id){
@@ -1244,13 +1240,10 @@ $(document).ready(function(){
     $(".employee-section").hide();
   }
 
-  let val = $("#user_type-edit").children("option:selected").val();
-  if(val != 3){
-    $(".department-edit").hide();
-    $(".designation-edit").hide();
-  }
-  else{
-    $(".department-edit").show();
+  let user_type_edit = $("#user_type-edit").children("option:selected").val();
+  if(user_type_edit==3){
+    $(".employee-section").show();
+    
     let dept = $("#department-edit").children("option:selected").val();
     base_url = window.location.origin;
     let val = $('option:selected', this).attr('value');
@@ -1273,7 +1266,11 @@ $(document).ready(function(){
         });
       }
     });
+  }else{
+    $(".employee-section").hide();
   }
+
+  
 
   //add user type form validation
     
@@ -1469,11 +1466,10 @@ $('.update_user_form').validate({
                               required  : true,
                               minlength : 8
                           },
-      join_date         : "required",
+      date_of_birth     : "required",
       user_type         : "required",
       department        : "required",
       designation       : "required",
-      allow             : "required",
       allow_approve     : "required"
   },
   messages:{
@@ -1494,11 +1490,10 @@ $('.update_user_form').validate({
           required: "Please enter password",
           minlength: "Password must contain at least 8 characters"
       },
-      join_date         : "Please provide your join date",
+      date_of_birth     : "Please provide your date of birth",
       user_type         : "Please Select User Type",
       department        : "Please Select Department",
       designation       : "Please Select Designation",
-      allow             : "Please Select Allow Option",
       allow_approve     : "Please Select Allow Approve Option"
   },
   errorPlacement: function(error, element) {

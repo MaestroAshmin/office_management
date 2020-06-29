@@ -164,44 +164,29 @@ class User_model extends CI_Model{
                             $update_data['designation']=null;
                      }
 
-                     if(!empty($update_data['password'])){
-                            $data = array(
-                                   'name' => $update_data['name'],
-                                   'email' => $update_data['email'],
-                                   'address' => $update_data['address'],
-                                   'personal_no' => $update_data['contact_person'],
-                                   'office_no' => $update_data['contact_office'],
-                                   'email_office' => $update_data['email_office'],
-                                   'Gender' => $update_data['gender'],
-                                   'join_date' => $update_data['join_date'],
-                                   'role' => $update_data['user_type'],
-                                   'dept_id' => $update_data['department'],
-                                   'des_id' => $update_data['designation'],
-                                   'allow_user_creation' => $update_data['allow'],
-                                   'is_allowed_to_approve' => $update_data['allow_approve']                                   
-                            );
+                     if(!isset($update_data['emp_code'])){
+                            $update_data['emp_code']=null;
                      }
-                     else{
-                            $data = array(
-                                   'name' => $update_data['name'],
-                                   'email' => $update_data['email'],
-                                   'address' => $update_data['address'],
-                                   'personal_no' => $update_data['contact_person'],
-                                   'office_no' => $update_data['contact_office'],
-                                   'email_office' => $update_data['email_office'],
-                                   'Gender' => $update_data['gender'],
-                                   'join_date' => $update_data['join_date'],
-                                   'role' => $update_data['user_type'],
-                                   'dept_id' => $update_data['department'],
-                                   'des_id' => $update_data['designation'],
-                                   'allow_user_creation' => $update_data['allow'],
-                                   'is_allowed_to_approve' => $update_data['allow_approve']
-                            );
-                     }
+
+                     $data = array(
+                            'name'                  => $update_data['name'],
+                            'email'                 => $update_data['email'],
+                            'address'               => $update_data['address'],
+                            'personal_no'           => $update_data['contact_person'],
+                            'office_no'             => $update_data['contact_office'],
+                            'email_office'          => $update_data['email_office'],
+                            'Gender'                => $update_data['gender'],
+                            'date_of_birth'         => $update_data['date_of_birth'],
+                            'role'                  => $update_data['user_type'],
+                            'dept_id'               => $update_data['department'],
+                            'des_id'                => $update_data['designation'],
+                            'emp_code'              => $update_data['emp_code'],
+                            'is_allowed_to_approve' => $update_data['allow_approve']                          
+                     );
+  
                      $this->db->where('ID',$update_data['id']);
                      $query = $this->db->update('tbl_users',$data);
                      $result_status = array('status' => 'success', 'message' =>"Successfully Edited transaction");
-         
                  }
                  catch (Exception $e){
                      $result_status = array('status' => 'failed', 'message' => $e->getMessage());
