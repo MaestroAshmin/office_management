@@ -22,15 +22,9 @@ class User extends CI_Controller
 			redirect('user/dashboard', 'refresh');
 		}else{
 			$this->load->view('page-user-login', $data);
-
 		}
 	}
 
-	public function sendEmail(){
-		$mail = $this->sendmail->sendEmail("ra9havsh@gmail.com","hello","hi");
-		echo $mail;
-	}
-	
 	public function login(){
 		if(isset($_POST['user_login'])){
 			$email 		= $this->input->post('email_address', true);
@@ -772,6 +766,7 @@ class User extends CI_Controller
 				if($post['user_type']!=3 || ($post['user_type']==3 && $add_emp['status']=='success'))
 				{
 					$this->load->helper('random_password');
+					$login_password = random_password();
 					//add user
 					$data = array(
 						'name' 				=> $post['name'],
@@ -781,7 +776,7 @@ class User extends CI_Controller
 						'email' 			=> $post['email'],
 						'email_office'	 	=> $post['email_office'],
 						'gender'		 	=> $post['gender'],
-						'password'			=> random_password(),
+						'password'			=> $login_password,
 						'date_of_birth'		=> $post['date_of_birth'],
 						'user_type'			=> $post['user_type'],
 						'allow_approve'		=> $post['allow_approve']
@@ -811,6 +806,10 @@ class User extends CI_Controller
 					$result = $this->user_model->add_user($data);
 
 					if($result['status'] == 'success'){
+						$message = "Please Use this password with your email to login to account.<br>\r\n";
+						$message .= "Password : ".$login_password."<br>\r\n";
+						$message .= "Go to <a href='".site_url()."'>Login Page</a>\r\n";
+						$this->sendmail->sendEmail("ra9havsh@gmail.com","Bonjour Management Login Information",$message);
 						redirect("user/view_roles",'refresh');
 					}else{
 						if($post['user_type']==3){

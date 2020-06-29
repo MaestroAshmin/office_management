@@ -11,15 +11,17 @@ class SendMail{
         $CI->email->initialize(array(
           'mailtype' => 'html',
           'protocol' => 'smtp',
-          'smtp_host' => 'smtp.sendgrid.net',
-          'smtp_user' => 'santoshneupane',
-          'smtp_pass' => 'nepal123#',
+          'smtp_host' => 'smtp-relay.sendinblue.com',
+          'smtp_user' => 'info@buskoticket.com',
+          'smtp_pass' => 'WNbzFAp6xhrk1tXD',
           'smtp_port' => 587,
           'crlf' => "\r\n",
           'newline' => "\r\n"
       ));
+      $CI->email->set_mailtype("html");
+      $CI->email->set_newline("\r\n");
     
-      $CI->email->from('noreply@unicom.net.np', 'Unified Communications');
+      $CI->email->from('noreply@unicom.net.np', 'Bonjour Management Pvt. Ltd.');
       $CI->email->to($toEmail);
       $CI->email->subject($subject);
       $CI->email->message($message);

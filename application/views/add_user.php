@@ -66,9 +66,9 @@
                     <div class="form-group col-md-6">
                         <label>Is the user allowed to approve Financial Inserts?  *</label></br>
                         <input type="radio" id="allow_approve" name="allow_approve" value="1">
-                        <label for="allow">Yes</label><br>
+                        <label for="allow_approve">Yes</label><br>
                         <input type="radio" id="dont_allow_approve" name="allow_approve" value="0">
-                        <label for="dont_allow">No</label>
+                        <label for="dont_allow_approve">No</label>
                     </div>
 
 
