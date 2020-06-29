@@ -2239,8 +2239,8 @@ if($('.drag-scroll').length>0){
       tableBody = $("table tbody"); 
       tableBody.append('<tr><td><input type="number"  name="tax[]"></td>'+
       '<td><select name="marital_status[]">'+
-      '<option value="0">Married</option>'+
-      '<option value="1">Unmarried</option>'+
+      '<option value="Married">Married</option>'+
+      '<option value="Unmarried">Unmarried</option>'+
       '</select></td>'+
       '<td><input type="number"  name="amount[]"></td>'+
       '<td>'+
@@ -2254,5 +2254,47 @@ if($('.drag-scroll').length>0){
     $(document).on("click", "a.remove" , function(e) { //user click on remove text
       e.preventDefault();
         $(this).closest('tr').remove();
-    })
+    });
+    
+
+    $('#fiscal_years').change(function(){
+      $('table tbody').empty();
+      let val = $('option:selected', this).attr('value');
+      $.ajax({
+        type: 'post',
+        data: {
+          'id' : val
+        },
+        url : 'get_tax_structure',
+        success : function(response){
+          let obj = JSON.parse(response);
+          let unmarried = '';
+          let married = '';
+          tableBody = $("table tbody");
+          for(x in obj){
+            if(obj[x]['marital_status'] == 'Unmarried')
+            {
+              unmarried = "selected='selected'";
+              married ='';  
+            }
+            else if(obj[x]['marital_status'] == 'Married')
+            {
+              married = "selected='selected'";
+              unmarried = '';
+            }
+            tableBody.append('<tr><td><input type ="number" name=tax[] value ='+ obj[x]['tax_percent']  +'></td>'+ 
+            '<td><select name="marital_status[]">'+
+            '<option value="Married" '+ married +'>Married</option>'+
+            '<option value="Unmarried" '+ unmarried +' >Unmarried</option>'+
+            '</select></td>'+
+            '<td><input type ="number" name=amount[] value ='+ obj[x]['amount'] +'></td>'+
+            '<td>'+
+                '<a href="javascript:void(0);" class="add"><i class="fa fa-plus"></i></a>'+
+                '<a href="javascript:void(0);" class="remove delete" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-times"></i></a>'+
+            '</td>'+
+            '</tr>');
+          }   
+        }
+      });
+    });
 });

@@ -134,7 +134,17 @@ class Tax extends CI_Controller
                 $this->session->set_flashdata('error',$this->form_validation->error_array());
                 redirect('tax/add_tax_structure');
             }
-            $result = $this->tax_model->add_tax_structure($data);
+            $sess_data = $this->session->all_userdata();
+            $user_id   = $sess_data['user_id'];
+            $insertData = [];
+            for($i=0;$i<count($data['tax']);$i++){
+                $insertData[$i]['tax_percent'] = $data['tax'][$i];
+                $insertData[$i]['marital_status'] = $data['marital_status'][$i];
+                $insertData[$i]['fiscal_year_id'] = $data['fiscal_year'];
+                $insertData[$i]['last_modified_by'] = $user_id;
+                $insertData[$i]['amount'] = $data['amount'][$i];
+            }
+            $result = $this->tax_model->add_tax_structure($insertData);
             if($result['status']=='success'){
                 redirect('tax/add_tax_structure');
             }
@@ -169,6 +179,61 @@ class Tax extends CI_Controller
 				$this->load->view('includes/pagenotfound');
 			}
         }
+    }
+    public function view_tax_structure()
+    {
+        if($this->session->userdata('user_logged_in') != '1'){
+            redirect('user', 'refresh');
+        }
+        $sess_data = $this->session->all_userdata();
+        $user_id   = $sess_data['user_id'];
+        $user_role  =   $sess_data['user_role'];
+        $user_dept  =   $sess_data['user_dept'];
+        $user_des  =   $sess_data['user_des'];
+        $fiscal_years   =   $this->tax_model->get_fiscal_years();
 
+        $data = array(
+            'title' 		=> 'Tax Structure',
+            'main_content'	=> 'view_tax_structure',
+            'role'          =>  $user_role,
+            'dept'          =>  $user_dept,
+            'des'           =>  $user_des,
+            'fiscal_years'  =>  $fiscal_years
+        );
+        $this->load->view('includes/template', $data);
+    }
+    public function get_tax_structure(){
+        $id = $this->input->post('id');
+        $result = $this->tax_model->get_tax_structure($id);
+        print_r(json_encode($result));
+    }
+    public function edit_tax_structure()
+    {
+        $data = $this->input->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('fiscal_year','Fiscal_Year','required',array('required' =>'Please Select Fiscal Year'));
+        $this->form_validation->set_rules('tax[]','Tax','required',array('required' =>'Please Add Tax Percent'));
+        if($this->form_validation->run() == false){
+            $this->session->set_flashdata('error',$this->form_validation->error_array());
+            redirect('tax/view_tax_structure');
+        }
+        $sess_data = $this->session->all_userdata();
+        $user_id   = $sess_data['user_id'];
+        $insertData = [];
+        for($i=0;$i<count($data['tax']);$i++){
+            $insertData[$i]['tax_percent'] = $data['tax'][$i];
+            $insertData[$i]['marital_status'] = $data['marital_status'][$i];
+            $insertData[$i]['fiscal_year_id'] = $data['fiscal_year'];
+            $insertData[$i]['last_modified_by'] = $user_id;
+            $insertData[$i]['amount'] = $data['amount'][$i];
+        }
+        $result = $this->tax_model->edit_tax_structure($insertData);
+        if($result['status']=='success'){
+            redirect('tax/view_tax_structure');
+        }
+        else{
+            $this->session->set_flashdata('error',$result['message']);
+            redirect('tax/view_tax_structure');
+        } 
     }
 }
