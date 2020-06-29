@@ -77,14 +77,13 @@ class Tax_model extends CI_model
         }
         return $result_status;
     }
-
+ 
     public function delete_fiscal_year($id)
     {
         try{
             $this->db->where('id', $id);
             $this->db->delete('tbl_fiscal_year');
             $result_status = array('status'=>'success','message'=>'Fiscal Year Deleted Successfully');
-
         }
         catch(Exception $e){
             $result_status = array('status'=>'falied','message'=>'Cannot Delete Fiscal Year');

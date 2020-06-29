@@ -7,10 +7,9 @@ class User extends CI_Controller
 	public function __construct(){
 		parent:: __construct();
 		$this->load->model('user_model');
-		$this->load->library('session'); 
+		$this->load->library(array('session','Nepali_date','sendMail')); 
 		$this->load->model('ExpensesTransaction_model');
 		$this->load->model('dashboard_model');
-		$this->load->library('Nepali_date');
 	}
 
 
@@ -27,6 +26,11 @@ class User extends CI_Controller
 		}
 	}
 
+	public function sendEmail(){
+		$mail = $this->sendmail->sendEmail("ra9havsh@gmail.com","hello","hi");
+		echo $mail;
+	}
+	
 	public function login(){
 		if(isset($_POST['user_login'])){
 			$email 		= $this->input->post('email_address', true);
@@ -671,13 +675,24 @@ class User extends CI_Controller
         }
 	}
 
+	public function check_emp_code(){
+		$data = $this->input->post();
+		$result = $this->user_model->check_emp_code($data);
+		if ($result == TRUE)
+        {
+            echo json_encode(FALSE);
+        }
+        else
+        {
+            echo json_encode(TRUE);
+        }
+	}
+
 	public function add_user(){
 		if($_POST){
-			$data = $this->input->post();
-			if($data['user_type']!=3){
-				unset($data['department']);
-				unset($data['designation']);
-			}
+			$post = $this->input->post();
+
+			//form validation
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
 			$this->form_validation->set_rules("address","Address","required",array("required"=>"Please Enter Address"));
@@ -686,41 +701,127 @@ class User extends CI_Controller
 			$this->form_validation->set_rules("email","Email","required",array("required"=>"Please Enter Email"));
 			$this->form_validation->set_rules("email_office","EmailOffice","required",array("required"=>"Please Enter Office Email"));
 			$this->form_validation->set_rules("gender","Gender","required",array("required"=>"Please Select Your Gender"));
-			$this->form_validation->set_rules("password","Password","required|min_length[8]",array("required"=>"Please Enter Password","min_length"=>"Password must contain at least 8 character"));
-			$this->form_validation->set_rules("join_date","JoinDate","required",array("required"=>"Please Select Join Date"));
+			$this->form_validation->set_rules("date_of_birth","date_of_birth","required",array("required"=>"Please Select Date of Birth"));
 			$this->form_validation->set_rules("user_type","UserType","required",array("required"=>"Please Select User Type"));
-			$this->form_validation->set_rules("allow","Allow","required",array("required"=>"Please Select Allow Option"));
 			$this->form_validation->set_rules("allow_approve","Allow_approve","required",array("required"=>"Please Select Allow Option"));
-
-			if($data['user_type']==3){
+			if($post['user_type']==3){
 				$this->form_validation->set_rules("department","Department","required",array("required"=>"Please Select Department"));
 				$this->form_validation->set_rules("designation","Designation","required",array("required"=>"Please Select Designation"));
 			}
+			// form validation ends //
 
 			if($this->form_validation->run()==true)
 			{
-				if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
+				if($post['user_type']==3){	
+					$address_per = array(
+						'municipality' 		=> $post['municipality'],
+						'ward_number' 		=> $post['ward_number'],
+						'tole'		 		=> $post['tole'],
+						'house_number' 		=> $post['house_number'],
+						'street_name' 		=> $post['street_name'],
+						'district'	 		=> $post['district'],
+						'province'	 		=> $post['province']
+					);
+
+					$address_temp = array(
+						'municipality_temp'		=> $post['municipality_temp'],
+						'ward_number_temp' 		=> $post['ward_number_temp'],
+						'tole_temp'		 		=> $post['tole_temp'],
+						'house_number_temp'		=> $post['house_number_temp'],
+						'street_name_temp' 		=> $post['street_name_temp'],
+						'district_temp'	 		=> $post['district_temp'],
+						'province_temp'	 		=> $post['province_temp']
+					);
+
+					$guardian_details = array(
+						'father_name'			=> $post['father_name'],
+						'grand_father_name'		=> $post['grand_father_name'],
+						'mother_name'			=> $post['mother_name'],
+						'married_status'		=> $post['married_status'],
+						'spouse_name' 			=> $post['spouse_name'],
+						'children_name'	 		=> $post['children_name'],
+						'guardian_name'	 		=> $post['guardian_name'],
+						'guardian_gender' 		=> $post['guardian_gender'],
+						'guardian_relation'		=> $post['guardian_relation']
+					);
 					
-					$error = [];
+					
+					$education_details = array(
+						'last_degree'			=> $post['last_degree'],
+						'institution'			=> $post['institution'],
+						'edu_year'				=> $post['edu_year'],
+						'exp_field'				=> $post['exp_field']
+					);
 
-					if($this->user_model->check_user_phone($data)){
-						$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
-					}
-						
-					if($this->user_model->check_user_email($data)){
-						$error["duplicate_email_entry"] = "Personal email already exists.";
-					}
-
-					$this->session->set_flashdata("error",$error);
-					redirect("user/add_user");
+					$emp_data = array(
+						'emp_code'				=> $post['emp_code'],
+						'citizenship_no'		=> $post['citizenship_no'],
+						'pan_no'				=> $post['pan_no'],
+						'join_date'				=> $post['join_date'],
+						'address_permanent'		=> Serialize($address_per),
+						'address_temporary'		=> Serialize($address_temp),
+						'guardian_details'		=> Serialize($guardian_details),
+						'education_details'		=> Serialize($education_details),
+						'dept_id'				=> $post['department'],
+						'des_id'				=> $post['designation']
+					);
+					
+					$add_emp = $this->user_model->add_employee($emp_data);
 				}
 
-				$result = $this->user_model->add_user($data);
+				if($post['user_type']!=3 || ($post['user_type']==3 && $add_emp['status']=='success'))
+				{
+					$this->load->helper('random_password');
+					//add user
+					$data = array(
+						'name' 				=> $post['name'],
+						'address' 			=> $post['address'],
+						'contact_person' 	=> $post['contact_person'],
+						'contact_office' 	=> $post['contact_office'],
+						'email' 			=> $post['email'],
+						'email_office'	 	=> $post['email_office'],
+						'gender'		 	=> $post['gender'],
+						'password'			=> random_password(),
+						'date_of_birth'		=> $post['date_of_birth'],
+						'user_type'			=> $post['user_type'],
+						'allow_approve'		=> $post['allow_approve']
+					);
+					if($post['user_type']==3){
+						$data['department'] = $post['department'];
+						$data['designation'] = $post['designation'];
+						$data['emp_code'] = $post['emp_code'];
+					}
 
-				if($result['status'] == 'success'){
-					redirect("user/view_roles",'refresh');
+					if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
+						
+						$error = [];
+
+						if($this->user_model->check_user_phone($data)){
+							$error["duplicate_phone_entry"] = "Personal Phone Number already exists.";
+						}
+							
+						if($this->user_model->check_user_email($data)){
+							$error["duplicate_email_entry"] = "Personal email already exists.";
+						}
+
+						$this->session->set_flashdata("error",$error);
+						redirect("user/add_user");
+					}
+
+					$result = $this->user_model->add_user($data);
+
+					if($result['status'] == 'success'){
+						redirect("user/view_roles",'refresh');
+					}else{
+						if($post['user_type']==3){
+							$result = $this->user_model->remove_employee($post['emp_code']);
+						}
+						$this->session->set_flashdata("error",array("error_adding_user"=>"Error occured while adding user."));
+						redirect("user/view_roles",'refresh');
+					}
+					// add user ends
 				}else{
-					$this->session->set_flashdata("error",array("error_adding_user"=>"Error occured while adding user."));
+					$this->session->set_flashdata("error",array("error_adding_user"=>"Error occured while adding employee user."));
 					redirect("user/view_roles",'refresh');
 				}
 			}else

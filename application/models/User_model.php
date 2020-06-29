@@ -85,6 +85,38 @@ class User_model extends CI_Model{
               return $result;
        }
 
+       public function check_emp_code($data){
+              $query = $this->db->select('*')->from('tbl_employee_info')->where('emp_code',$data["emp_code"])->get();
+              if ($query->num_rows()>0) {
+                     $result = true;
+              } else {
+                     $result = false;
+              }
+              return $result;
+       }
+
+       public function add_employee($data){
+              try{
+                     $this->db->insert('tbl_employee_info',$data);
+                     $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
+              }
+              catch(Exception $e){
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+              }
+              return $result_status;
+       }
+       
+       public function remove_employee($data){
+              try{
+                     $this->db->delete('tbl_employee_info',array('emp_code'=>$data));
+                     $result_status = array('status' => 'success', 'message' =>"Successfully deleted employee");
+              }
+              catch(Exception $e){
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+              }
+              return $result_status;
+       }
+
        public function add_user($data){
               try{
                      if(!isset($data['department'])){
@@ -94,21 +126,24 @@ class User_model extends CI_Model{
                      if(!isset($data['designation'])){
                             $data['designation']=null;
                      }
-
+                     
+                     if(!isset($data['emp_code'])){
+                            $data['emp_code']=null;
+                     }
                      $insertData = [
-                         'name' => $data['name'],
-                         'email' => $data['email'],
-                         'address' => $data['address'],
-                         'personal_no' => $data['contact_person'],
-                         'office_no' => $data['contact_office'],
-                         'email_office' => $data['email_office'],
-                         'Gender' => $data['gender'],
-                         'join_date' => $data['join_date'],
-                         'password' => md5($data['password']),
-                         'role' => $data['user_type'],
-                         'dept_id' => $data['department'],
-                         'des_id' => $data['designation'],
-                         'allow_user_creation' => $data['allow'],
+                         'name'                  => $data['name'],
+                         'email'                 => $data['email'],
+                         'address'               => $data['address'],
+                         'personal_no'           => $data['contact_person'],
+                         'office_no'             => $data['contact_office'],
+                         'email_office'          => $data['email_office'],
+                         'Gender'                => $data['gender'],
+                         'date_of_birth'         => $data['date_of_birth'],
+                         'password'              => md5($data['password']),
+                         'role'                  => $data['user_type'],
+                         'dept_id'               => $data['department'],
+                         'des_id'                => $data['designation'],
+                         'emp_code'              => $data['emp_code'],
                          'is_allowed_to_approve' => $data['allow_approve']
                      ];
                      $this->db->insert('tbl_users',$insertData);
