@@ -250,7 +250,7 @@
                                         <select name="guardian_gender" class="form-control">
                                             <option>Male</option>
                                             <option>Female</option>
-                                            </option>other</other>
+                                            <option>other</option>
                                         </select>
                                     </div>
                                 </div>
