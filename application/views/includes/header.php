@@ -198,6 +198,8 @@
               <a class="collapse-item" href="<?php echo site_url();?>tax/add_tax_structure">Add Tax Structure</a>
             <?php }?>
               <a class="collapse-item" href="<?php echo site_url();?>tax/view_tax_structure">View Tax Structure</a>
+              <a class="collapse-item" href="<?php echo site_url();?>tax/salary_table">Salary Table</a>
+
             </div>
           </div>
         </li>

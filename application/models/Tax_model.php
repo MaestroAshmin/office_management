@@ -29,8 +29,7 @@ class Tax_model extends CI_model
                 return true;
             }
         }
-
-        $query2  =   $this->db->select('*')->from('tbl_fiscal_year')->where("fiscal_year=".$data['fiscal_year']." and id!=".$id)->get();
+        $query2  =   $this->db->select('*')->from('tbl_fiscal_year')->where("fiscal_year='".$data['fiscal_year']."' and id!=".$id)->get();
         if($query2->num_rows() > 0 ){
             return true;
         }
