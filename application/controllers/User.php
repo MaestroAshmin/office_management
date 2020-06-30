@@ -732,7 +732,6 @@ class User extends CI_Controller
 						'father_name'			=> $post['father_name'],
 						'grand_father_name'		=> $post['grand_father_name'],
 						'mother_name'			=> $post['mother_name'],
-						'married_status'		=> $post['married_status'],
 						'spouse_name' 			=> $post['spouse_name'],
 						'children_name'	 		=> $post['children_name'],
 						'guardian_name'	 		=> $post['guardian_name'],
@@ -753,6 +752,7 @@ class User extends CI_Controller
 						'citizenship_no'		=> $post['citizenship_no'],
 						'pan_no'				=> $post['pan_no'],
 						'join_date'				=> $post['join_date'],
+						'married_status'		=> $post['married_status'],
 						'address_permanent'		=> Serialize($address_per),
 						'address_temporary'		=> Serialize($address_temp),
 						'guardian_details'		=> Serialize($guardian_details),
@@ -943,7 +943,64 @@ class User extends CI_Controller
 
 			if($this->form_validation->run()==true)
 			{
-				if($post['user_type']!=3)
+				if($post['user_type']==3){	
+					$address_per = array(
+						'municipality' 		=> $post['municipality'],
+						'ward_number' 		=> $post['ward_number'],
+						'tole'		 		=> $post['tole'],
+						'house_number' 		=> $post['house_number'],
+						'street_name' 		=> $post['street_name'],
+						'district'	 		=> $post['district'],
+						'province'	 		=> $post['province']
+					);
+
+					$address_temp = array(
+						'municipality_temp'		=> $post['municipality_temp'],
+						'ward_number_temp' 		=> $post['ward_number_temp'],
+						'tole_temp'		 		=> $post['tole_temp'],
+						'house_number_temp'		=> $post['house_number_temp'],
+						'street_name_temp' 		=> $post['street_name_temp'],
+						'district_temp'	 		=> $post['district_temp'],
+						'province_temp'	 		=> $post['province_temp']
+					);
+
+					$guardian_details = array(
+						'father_name'			=> $post['father_name'],
+						'grand_father_name'		=> $post['grand_father_name'],
+						'mother_name'			=> $post['mother_name'],
+						'spouse_name' 			=> $post['spouse_name'],
+						'children_name'	 		=> $post['children_name'],
+						'guardian_name'	 		=> $post['guardian_name'],
+						'guardian_gender' 		=> $post['guardian_gender'],
+						'guardian_relation'		=> $post['guardian_relation']
+					);
+					
+					
+					$education_details = array(
+						'last_degree'			=> $post['last_degree'],
+						'institution'			=> $post['institution'],
+						'edu_year'				=> $post['edu_year'],
+						'exp_field'				=> $post['exp_field']
+					);
+
+					$emp_data = array(
+						'emp_code'				=> $post['emp_code'],
+						'citizenship_no'		=> $post['citizenship_no'],
+						'pan_no'				=> $post['pan_no'],
+						'join_date'				=> $post['join_date'],
+						'address_permanent'		=> Serialize($address_per),
+						'address_temporary'		=> Serialize($address_temp),
+						'guardian_details'		=> Serialize($guardian_details),
+						'education_details'		=> Serialize($education_details),
+						'married_status'		=> $post['married_status'],
+						'dept_id'				=> $post['department'],
+						'des_id'				=> $post['designation']
+					);
+					
+					$add_emp = $this->user_model->add_employee($emp_data);
+				}
+
+				if($post['user_type']!=3 || ($post['user_type']==3 && $add_emp['status']=='success'))
 				{
 					//update user
 					$data = array(
@@ -991,12 +1048,14 @@ class User extends CI_Controller
 						$this->session->set_flashdata("error",array("error_updating_user"=>"Error occured while updating user."));
 						redirect("user/view_roles",'refresh');
 					}
-				}
+				}else{
+					$this->session->set_flashdata("error",array("error_adding_user"=>"Error occured while adding employee user."));
+					redirect("user/view_roles",'refresh');
+				}  
 			}else{
 				$this->session->set_flashdata("error",$this->form_validation->error_array());
 				redirect("user/update_user/$id");
-			}
-			
+			}			
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -1011,6 +1070,7 @@ class User extends CI_Controller
 				$user_data = $this->user_model->get_user_data($id);
 				$roles = $this->user_model->get_roles();
 				$departments = $this->user_model->get_departments();
+
 				$data = array(
 					'title' 		=> 'Update',
 					'main_content'	=> 'update_user',
@@ -1019,14 +1079,35 @@ class User extends CI_Controller
 					'role'			=> $user_role,
 					'dept'			=>	$user_dept,
 					'des'			=>	$user_des,
-					'departments' => $departments
+					'departments' 	=> $departments
 				);
+
+				if($user_data['role']==3){
+					$emp_info = $this->user_model->get_emp_data($user_data['emp_code']);
+
+					$emp_data = array(
+						'emp_code'				=> $emp_info['emp_code'],
+						'citizenship_no'		=> $emp_info['citizenship_no'],
+						'pan_no'				=> $emp_info['pan_no'],
+						'join_date'				=> $emp_info['join_date'],
+						'address_permanent'		=> unserialize($emp_info['address_permanent']),
+						'address_temporary'		=> unserialize($emp_info['address_temporary']),
+						'guardian_details'		=> unserialize($emp_info['guardian_details']),
+						'education_details'		=> unserialize($emp_info['education_details']),
+						'dept_id'				=> $emp_info['dept_id'],
+						'des_id'				=> $emp_info['des_id']
+					);
+
+					$data['emp_data'] = $emp_data;
+				}
+
 				$this->load->view('includes/template', $data);
 			}else{
 				$this->load->view('includes/pagenotfound');
 			}			
 		}
 	}
+
 	public function delete_user($id){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
