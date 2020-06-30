@@ -2356,4 +2356,12 @@ if($('.drag-scroll').length>0){
         }
       });
     });
+
+    $('#basic_salary ,#house_rent, #food, #conveyance,#other').keyup(function(e){
+        let basic_salary = parseInt($('#basic_salary').val());
+        let house_rent   = parseInt($('#house_rent').val());
+        let conveyance   = parseInt($('#conveyance').val());
+        let other        = parseInt($('#other').val());
+        $('#total_monthly').val(basic_salary+house_rent+conveyance+other);
+    });
 });

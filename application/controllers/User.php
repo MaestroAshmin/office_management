@@ -9,6 +9,7 @@ class User extends CI_Controller
 		$this->load->model('user_model');
 		$this->load->library(array('session','Nepali_date','sendMail')); 
 		$this->load->model('ExpensesTransaction_model');
+		$this->load->model('tax_model');
 		$this->load->model('dashboard_model');
 	}
 
@@ -1120,6 +1121,33 @@ class User extends CI_Controller
 			}else{
 				$this->load->view('includes/pagenotfound');
 			}			
+		}
+	}
+	
+	public function update_employee_record($id){
+		// $emp_record = $this->user_model->get_emp_code($id);
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role  =   $sess_data['user_role'];
+		$user_dept  =   $sess_data['user_dept'];
+		$user_des  =   $sess_data['user_des'];
+		$fiscal_years   =   $this->tax_model->get_fiscal_years();
+
+		$data = array(
+			'title' 		=> 'Update Employee Record',
+			'main_content'	=> 'update_employee_record',
+			'role'          =>  $user_role,
+			'dept'          =>  $user_dept,
+			'des'           =>  $user_des,
+			'fiscal_years'  =>  $fiscal_years
+		);
+		if($user_role==1 || ($user_role==3 && $user_dept=2)){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
 		}
 	}
 

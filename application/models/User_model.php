@@ -95,6 +95,18 @@ class User_model extends CI_Model{
               return $result;
        }
 
+       public function get_emp_record($id){
+              $query = $this->db->select('s.*')->from('tbl_users as u')
+                            ->join('tbl_salary as s','s.emp_code=u.emp_code')       
+                            ->where('u.id',$id)->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array('status' => 'failed',"message" => $this->db->error());
+              }
+              return $result;
+       }
+
        public function add_employee($data){
               try{
                      $this->db->insert('tbl_employee_info',$data);
