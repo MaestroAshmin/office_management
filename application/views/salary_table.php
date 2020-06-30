@@ -2,7 +2,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">View Salary Table</h1>
+        <h1 class="h3 mb-0 text-gray-800">Create Salary Sheet</h1>
     </div>
     <?php
             if($this->session->flashdata("error"))
@@ -21,17 +21,16 @@
     <!-- Content Row -->
     <div class="row">       
         <div class="col-sm-12 col-md-5">
-            <div class="form-group">
-                <label>Salary Table</label><br>
-
-            </div>  
             <div>
-                <table class="table table-bordered">
-                        <thead class="thead-dark">
-                        </thead>
-                        <tbody>   
-                        </tbody>
-                </table>
+                <div class = "form-group col-sm-4">
+                    <label>Employee Name</label>
+                    <select id="employee">
+                        <option value="">---Select Employee---</option>
+                        <?php foreach($employees as $employee){?>
+                            <option value="<?php echo $employee['id']?>"><?php echo $employee['name']?></option>
+                        <?php }?>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

@@ -2285,8 +2285,8 @@ if($('.drag-scroll').length>0){
       tableBody = $("table tbody"); 
       tableBody.append('<tr><td><input type="number"  name="tax[]"></td>'+
       '<td><select name="marital_status[]">'+
-      '<option value="Married">Married</option>'+
-      '<option value="Unmarried">Unmarried</option>'+
+      '<option value="1">Married</option>'+
+      '<option value="0">Unmarried</option>'+
       '</select></td>'+
       '<td><input type="number"  name="amount[]"></td>'+
       '<td>'+
@@ -2318,20 +2318,20 @@ if($('.drag-scroll').length>0){
           let married = '';
           tableBody = $("table tbody");
           for(x in obj){
-            if(obj[x]['marital_status'] == 'Unmarried')
+            if(obj[x]['marital_status'] == 0)
             {
               unmarried = "selected='selected'";
               married ='';  
             }
-            else if(obj[x]['marital_status'] == 'Married')
+            else if(obj[x]['marital_status'] == 1)
             {
               married = "selected='selected'";
               unmarried = '';
             }
             tableBody.append('<tr><td><input type ="number" name=tax[] value ='+ obj[x]['tax_percent']  +'></td>'+ 
             '<td><select name="marital_status[]">'+
-            '<option value="Married" '+ married +'>Married</option>'+
-            '<option value="Unmarried" '+ unmarried +' >Unmarried</option>'+
+            '<option value="1" '+ married +'>Married</option>'+
+            '<option value="0" '+ unmarried +' >Unmarried</option>'+
             '</select></td>'+
             '<td><input type ="number" name=amount[] value ='+ obj[x]['amount'] +'></td>'+
             '<td>'+
@@ -2340,6 +2340,19 @@ if($('.drag-scroll').length>0){
             '</td>'+
             '</tr>');
           }   
+        }
+      });
+    });
+    $('#employee').change(function(){
+      $.ajax({
+        url: 'get_employee_info',
+        type: 'post',
+        data: {
+          'id' :  $('option:selected', this).attr('value')
+        },
+        success : function(response){
+          let obj = JSON.parse(response);
+          console.log(obj);
         }
       });
     });
