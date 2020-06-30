@@ -85,6 +85,38 @@ class User_model extends CI_Model{
               return $result;
        }
 
+       public function check_emp_code($data){
+              $query = $this->db->select('*')->from('tbl_employee_info')->where('emp_code',$data["emp_code"])->get();
+              if ($query->num_rows()>0) {
+                     $result = true;
+              } else {
+                     $result = false;
+              }
+              return $result;
+       }
+
+       public function add_employee($data){
+              try{
+                     $this->db->insert('tbl_employee_info',$data);
+                     $result_status = array('status' => 'success', 'message' =>"Successfully added transaction");
+              }
+              catch(Exception $e){
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+              }
+              return $result_status;
+       }
+       
+       public function remove_employee($data){
+              try{
+                     $this->db->delete('tbl_employee_info',array('emp_code'=>$data));
+                     $result_status = array('status' => 'success', 'message' =>"Successfully deleted employee");
+              }
+              catch(Exception $e){
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+              }
+              return $result_status;
+       }
+
        public function add_user($data){
               try{
                      if(!isset($data['department'])){
@@ -94,21 +126,24 @@ class User_model extends CI_Model{
                      if(!isset($data['designation'])){
                             $data['designation']=null;
                      }
-
+                     
+                     if(!isset($data['emp_code'])){
+                            $data['emp_code']=null;
+                     }
                      $insertData = [
-                         'name' => $data['name'],
-                         'email' => $data['email'],
-                         'address' => $data['address'],
-                         'personal_no' => $data['contact_person'],
-                         'office_no' => $data['contact_office'],
-                         'email_office' => $data['email_office'],
-                         'Gender' => $data['gender'],
-                         'join_date' => $data['join_date'],
-                         'password' => md5($data['password']),
-                         'role' => $data['user_type'],
-                         'dept_id' => $data['department'],
-                         'des_id' => $data['designation'],
-                         'allow_user_creation' => $data['allow'],
+                         'name'                  => $data['name'],
+                         'email'                 => $data['email'],
+                         'address'               => $data['address'],
+                         'personal_no'           => $data['contact_person'],
+                         'office_no'             => $data['contact_office'],
+                         'email_office'          => $data['email_office'],
+                         'Gender'                => $data['gender'],
+                         'date_of_birth'         => $data['date_of_birth'],
+                         'password'              => md5($data['password']),
+                         'role'                  => $data['user_type'],
+                         'dept_id'               => $data['department'],
+                         'des_id'                => $data['designation'],
+                         'emp_code'              => $data['emp_code'],
                          'is_allowed_to_approve' => $data['allow_approve']
                      ];
                      $this->db->insert('tbl_users',$insertData);
@@ -129,44 +164,29 @@ class User_model extends CI_Model{
                             $update_data['designation']=null;
                      }
 
-                     if(!empty($update_data['password'])){
-                            $data = array(
-                                   'name' => $update_data['name'],
-                                   'email' => $update_data['email'],
-                                   'address' => $update_data['address'],
-                                   'personal_no' => $update_data['contact_person'],
-                                   'office_no' => $update_data['contact_office'],
-                                   'email_office' => $update_data['email_office'],
-                                   'Gender' => $update_data['gender'],
-                                   'join_date' => $update_data['join_date'],
-                                   'role' => $update_data['user_type'],
-                                   'dept_id' => $update_data['department'],
-                                   'des_id' => $update_data['designation'],
-                                   'allow_user_creation' => $update_data['allow'],
-                                   'is_allowed_to_approve' => $update_data['allow_approve']                                   
-                            );
+                     if(!isset($update_data['emp_code'])){
+                            $update_data['emp_code']=null;
                      }
-                     else{
-                            $data = array(
-                                   'name' => $update_data['name'],
-                                   'email' => $update_data['email'],
-                                   'address' => $update_data['address'],
-                                   'personal_no' => $update_data['contact_person'],
-                                   'office_no' => $update_data['contact_office'],
-                                   'email_office' => $update_data['email_office'],
-                                   'Gender' => $update_data['gender'],
-                                   'join_date' => $update_data['join_date'],
-                                   'role' => $update_data['user_type'],
-                                   'dept_id' => $update_data['department'],
-                                   'des_id' => $update_data['designation'],
-                                   'allow_user_creation' => $update_data['allow'],
-                                   'is_allowed_to_approve' => $update_data['allow_approve']
-                            );
-                     }
+
+                     $data = array(
+                            'name'                  => $update_data['name'],
+                            'email'                 => $update_data['email'],
+                            'address'               => $update_data['address'],
+                            'personal_no'           => $update_data['contact_person'],
+                            'office_no'             => $update_data['contact_office'],
+                            'email_office'          => $update_data['email_office'],
+                            'Gender'                => $update_data['gender'],
+                            'date_of_birth'         => $update_data['date_of_birth'],
+                            'role'                  => $update_data['user_type'],
+                            'dept_id'               => $update_data['department'],
+                            'des_id'                => $update_data['designation'],
+                            'emp_code'              => $update_data['emp_code'],
+                            'is_allowed_to_approve' => $update_data['allow_approve']                          
+                     );
+  
                      $this->db->where('ID',$update_data['id']);
                      $query = $this->db->update('tbl_users',$data);
                      $result_status = array('status' => 'success', 'message' =>"Successfully Edited transaction");
-         
                  }
                  catch (Exception $e){
                      $result_status = array('status' => 'failed', 'message' => $e->getMessage());

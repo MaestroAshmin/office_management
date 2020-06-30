@@ -833,7 +833,17 @@ if($('#join_date').length > 0){
     showOtherMonths: true,
     showOnFocus: true, 
     showRightIcon: false,
-  });  
+  });    
+}
+
+if($('#date_of_birth').length > 0){
+  $('#date_of_birth').datepicker({
+    uiLibrary: 'bootstrap4',
+    format: 'yyyy-mm-dd', 
+    showOtherMonths: true,
+    showOnFocus: true, 
+    showRightIcon: false,
+  });
 }
 
 if($('#to_date').length > 0){
@@ -1117,10 +1127,11 @@ function callAutocomplete(field_id){
   //     }
   //   });
   // });
+
   $("#user_type").change(function(){
     let user_type = $(this).children("option:selected").val();
     if(user_type==3){
-      $(".department").show();
+      $(".employee-section").show();
     
       let val = $('option:selected', '.department').attr('value');
       $.ajax({
@@ -1131,17 +1142,15 @@ function callAutocomplete(field_id){
         type: "post",
         success: function(data){
           let objects = JSON.parse(data);
-          $(".designation").show();
           $.each( objects, function( key, value ){
-            $('#designation').append("<option value ="+value.id+">"+ value.designation +"</option>");
+            $('#designation').append("<option value="+value.id+">"+ value.designation +"</option>");
           });
         }
       });
 
     }
     else{
-      $(".department").hide();
-      $(".designation").hide();
+      $(".employee-section").hide();
     }
   });
 
@@ -1158,7 +1167,6 @@ function callAutocomplete(field_id){
       type: "post",
       success: function(data){
         let objects = JSON.parse(data);
-        $(".designation").show();
         $.each( objects, function( key, value ){
           $('#designation').append("<option value ="+value.id+">"+ value.designation +"</option>");
         });
@@ -1169,10 +1177,9 @@ function callAutocomplete(field_id){
   $("#user_type-edit").change(function(){
     let user_type = $(this).children("option:selected").val();
     if(user_type==3){
-      $(".department-edit").show();
-      
-    base_url = window.location.origin;
-    let val = $('option:selected', '#department-edit').attr('value');
+      $(".employee-section").show();
+      base_url = window.location.origin;
+      let val = $('option:selected', '#department-edit').attr('value');
       $('#designation-edit').empty();
       $.ajax({
         url: base_url + "/acc/user/get_designations",
@@ -1196,8 +1203,7 @@ function callAutocomplete(field_id){
       });
     }
     else{
-      $(".department-edit").hide();
-      $(".designation-edit").hide();
+      $(".employee-section").hide();
     }
   });
 
@@ -1213,8 +1219,6 @@ function callAutocomplete(field_id){
       type: "post",
       success: function(data){
         let objects = JSON.parse(data);
-        $(".designation-edit").show();
-
         let des_user = $("#des_user").val();
         $.each( objects, function( key, value ){
           if(des_user==value.id){
@@ -1229,17 +1233,19 @@ function callAutocomplete(field_id){
 }
 
 $(document).ready(function(){
-let val = $("#user_type-edit").children("option:selected").val();
-if(val != 3){
-  $(".department").hide();
-  $(".designation").hide();
-  $(".department-edit").hide();
-  $(".designation-edit").hide();
-}
-else{
-  $(".department-edit").show();
-  let dept = $("#department-edit").children("option:selected").val();
-  base_url = window.location.origin;
+  let user_type = $('#user_type').children("option:selected").val();
+  if(user_type==3){
+    $(".employee-section").show();
+  }else{
+    $(".employee-section").hide();
+  }
+
+  let user_type_edit = $("#user_type-edit").children("option:selected").val();
+  if(user_type_edit==3){
+    $(".employee-section").show();
+    
+    let dept = $("#department-edit").children("option:selected").val();
+    base_url = window.location.origin;
     let val = $('option:selected', this).attr('value');
     $.ajax({
       url: base_url + "/acc/user/get_designations",
@@ -1260,7 +1266,11 @@ else{
         });
       }
     });
-}
+  }else{
+    $(".employee-section").hide();
+  }
+
+  
 
   //add user type form validation
     
@@ -1325,16 +1335,39 @@ else{
         },
         email_office      : "required",
         gender            : "required",
-        password          : {
-                                required  : true,
-                                minlength : 8
-                            },
+        date_of_birth     : "required",
         join_date         : "required",
         user_type         : "required",
         department        : "required",
         designation       : "required",
-        allow             : "required",
         allow_approve     : "required",
+        municipality      : "required",
+        ward_number       : "required",
+        district          : "required",
+        province          : "required",
+        father_name       : "required",
+        grand_father_name : "required",
+        mother_name       : "required",
+        married_status    : "required",
+        guardian_name     : "required",
+        guardian_relation : "required",
+        last_degree       : "required",
+        institution       : "required",
+        edu_year          : "required",
+        emp_code          : {
+              required :  true,
+              remote: {
+                url: base_url+"/acc/user/check_emp_code",
+                type: "post",
+                data: {
+                    emp_code : function () {
+                        return $(".add_user_form #emp_code").val();
+                    }
+                }
+              }
+        },
+        citizenship_no    : "required",
+        pan_no            : "required"
     },
     messages:{
         name              : "Please Enter Name",
@@ -1349,17 +1382,32 @@ else{
           remote   : "Personal email already exits"
         },
         email_office      : "Please Enter Office Email",
+        date_of_birth     : "Please Enter Date of Birth",
         gender            : "Please select Your Gender",
-        password:{
-            required: "Please enter password",
-            minlength: "Password must contain at least 8 characters"
-        },
         join_date         : "Please provide your join date",
         user_type         : "Please Select User Type",
         department        : "Please Select Department",
         designation       : "Please Select Designation",
-        allow             : "Please Select Allow Option",
-        allow_approve     : "Please Select Allow Approve Option"
+        allow_approve     : "Please Select Allow Approve Option",
+        municipality      : "Please Enter Municipality",
+        ward_number       : "Please Enter Ward Number",
+        district          : "Please Enter the District",
+        province          : "Please Select Province Option",
+        father_name       : "Please Enter Father's Name",
+        grand_father_name : "Please Enter Grand Father's Name",
+        mother_name       : "Please Enter Mother's Name",
+        married_status    : "Please Select Married Status",
+        guardian_name     : "Please Enter Guardian Name",
+        guardian_relation : "Please Enter Relationship with Guardian",
+        last_degree       : "Please Enter the last degree you achieved",
+        institution       : "Please Enter the institution attended at last",
+        edu_year          : "Please Enter the last year of education",
+        emp_code          : {
+                required  : "Please Enter Emp Code",
+                remote    : "Emp Code Exists Already"
+        },
+        citizenship_no    : "Please Enter Citizenship Number",
+        pan_no            : "Please Enter Pan Number"
     },
     errorPlacement: function(error, element) {
       if(element.attr("name") == "allow" || element.attr("name") == "allow_approve") {
@@ -1369,6 +1417,7 @@ else{
       }
     },
 });
+
 
 //update user form validation
   
@@ -1417,11 +1466,10 @@ $('.update_user_form').validate({
                               required  : true,
                               minlength : 8
                           },
-      join_date         : "required",
+      date_of_birth     : "required",
       user_type         : "required",
       department        : "required",
       designation       : "required",
-      allow             : "required",
       allow_approve     : "required"
   },
   messages:{
@@ -1442,11 +1490,10 @@ $('.update_user_form').validate({
           required: "Please enter password",
           minlength: "Password must contain at least 8 characters"
       },
-      join_date         : "Please provide your join date",
+      date_of_birth     : "Please provide your date of birth",
       user_type         : "Please Select User Type",
       department        : "Please Select Department",
       designation       : "Please Select Designation",
-      allow             : "Please Select Allow Option",
       allow_approve     : "Please Select Allow Approve Option"
   },
   errorPlacement: function(error, element) {
