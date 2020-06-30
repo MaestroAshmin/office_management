@@ -203,6 +203,16 @@ class User_model extends CI_Model{
                  return $result;
        }
 
+       public function get_emp_data($emp_code){
+              $query = $this->db->select('*')->from('tbl_employee_info')->where('emp_code',$emp_code)->get();
+              if ($query) {
+                     $result = $query->row_array();
+              } else {
+                     $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+
        public function delete_user($id){
               try{
                      $this->db->where('id',$id);
