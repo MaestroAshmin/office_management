@@ -92,7 +92,7 @@
 
             <div class="form-group col-12">
                 <a href="#" id="edit_employee_record" class="btn btn-primary">EDIT</a>                
-                <a href="#" id="delete_employee_record" class="btn btn-danger">DELETE</a>                
+                <a href="#" id="delete_employee_record" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?">DELETE</a>                
                 <a href="<?php echo site_url().'user/add_employee_record/'.$emp_id ?>" class="btn btn-success">ADD</a>
             </div>  
     </div>
