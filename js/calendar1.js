@@ -14,4 +14,6 @@ $(document).ready(function(){
                 $('.nepali_date').attr('value',AD2BS(date));
         }
         $('#nepali-datepicker').nepaliDatePicker();
+        $('#resigned_on').nepaliDatePicker();
+        $('#terminated_on').nepaliDatePicker();
 })

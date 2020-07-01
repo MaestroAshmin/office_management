@@ -33,7 +33,7 @@
                             <td><?php echo $role['user_type']?> <?php echo $role['designation'] ? ' - '.$role['designation'] : '' ?></td>
                             <td style="display: inline-block; width: 200px;">              
                                 <?php if($role['role']==3) { ?>          
-                                    <a href="<?php echo site_url('user/update_employee_record/'.$role['id']) ?>" class="btn btn-success" style="display: inline-block"><i class="fa fa-user-circle"></i></a>
+                                    <a href="<?php echo site_url('user/view_employee_record/'.$role['id']) ?>" class="btn btn-success" style="display: inline-block"><i class="fa fa-user-circle"></i></a>
                                 <?php } ?>
                                 <a href="<?php echo site_url('user/update_user/'.$role['id']) ?>" class="btn btn-primary" style="display: inline-block"><i class="fa fa-edit"></i></a>
                                 <a href="<?php echo site_url('user/delete_user/'.$role['id']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>

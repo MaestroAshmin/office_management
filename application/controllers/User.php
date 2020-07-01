@@ -1123,29 +1123,163 @@ class User extends CI_Controller
 			}			
 		}
 	}
-	
-	public function update_employee_record($id){
+
+	public function get_employee_record(){
+		$post = $this->input->post();
+		$emp_code = $post['emp_code'];
+		$fy_id    = $post['fy_id'];
+
+		$result = $this->user_model->get_emp_record($emp_code,$fy_id);
+		
+		echo json_encode($result);
+	}
+
+	public function check_fiscal_year(){
+		$post = $this->input->post();
+		$emp_code = $post['emp_code'];
+		$fy_id    = $post['fy_id'];
+
+		$result = $this->user_model->check_fiscal_year($emp_code,$fy_id);
+		
+		if ($result == TRUE)
+        {
+            echo json_encode(FALSE);
+        }
+        else
+        {
+            echo json_encode(TRUE);
+        }
+	}
+
+	public function view_employee_record($id){
 		// $emp_record = $this->user_model->get_emp_code($id);
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+
+		$sess_data			=   $this->session->all_userdata();
+		$user_id   			=   $sess_data['user_id'];
+		$user_role  		=   $sess_data['user_role'];
+		$user_dept  		=   $sess_data['user_dept'];
+		$user_des  			=   $sess_data['user_des'];
+		$emp_code	        =   $this->user_model->get_emp_code($id)[0]['emp_code'];
+		$emp_fiscal_years   =   $this->user_model->get_emp_fiscal_years($emp_code);
+		
+		$data = array(
+			'title' 		=> 'View Employee Record',
+			'main_content'	=> 'view_employee_record',
+			'role'          =>  $user_role,
+			'dept'          =>  $user_dept,
+			'des'           =>  $user_des,
+			'emp_code'		=>	$emp_code,
+			'emp_id'		=>  $id,
+			'fiscal_years'  =>  $emp_fiscal_years
+		);
+		if($user_role==1){
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
+	}
+	
+	public function add_employee_record($id){
+		// $emp_record = $this->user_model->get_emp_code($id);
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+
+		if($_POST){
+			$post = $this->input->post();
+			$result = $this->user_model->add_emp_record($post);
+
+			if($result['status']=='failed'){
+				$this->session->set_flashdata("error",array('add_employee_record_error'=>"Error while adding employee record"));
+			}
+			redirect('user/view_employee_record/'.$id);
+		}else{
+			$sess_data		= $this->session->all_userdata();
+			$user_id   		= $sess_data['user_id'];
+			$user_role  	=   $sess_data['user_role'];
+			$user_dept  	=   $sess_data['user_dept'];
+			$user_des  		=   $sess_data['user_des'];
+			$emp_code       =   $this->user_model->get_emp_code($id)[0]['emp_code'];
+			$fiscal_years   =   $this->tax_model->get_fiscal_years();
+
+			$data = array(
+				'title' 		=> 'Add Employee Record',
+				'main_content'	=> 'add_employee_record',
+				'role'          =>  $user_role,
+				'dept'          =>  $user_dept,
+				'des'           =>  $user_des,
+				'emp_code'		=>	$emp_code,
+				'fiscal_years'  =>  $fiscal_years
+			);
+			if($user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
+		}
+	}
+
+	public function edit_employee_record($eid,$rid){
+		// $emp_record = $this->user_model->get_emp_code($id);
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+
+		if($_POST){
+			$post = $this->input->post();
+			$result = $this->user_model->update_emp_record($post);
+
+			if($result['status']=='failed'){
+				$this->session->set_flashdata("error",array('edit_employee_record_error'=>"Error while updating employee record"));
+			}
+			redirect('user/view_employee_record/'.$eid);
+		}else{
+			$sess_data		= 	$this->session->all_userdata();
+			$user_id   		= 	$sess_data['user_id'];
+			$user_role  	=   $sess_data['user_role'];
+			$user_dept  	=   $sess_data['user_dept'];
+			$user_des  		=   $sess_data['user_des'];
+			$emp_code       =   $this->user_model->get_emp_code($eid)[0]['emp_code'];
+			$emp_record     =   $this->user_model->get_emp_record_by_id($rid)[0];
+			$fiscal_years   =   $this->tax_model->get_fiscal_years();
+
+			$data = array(
+				'title' 		=> 'Edit Employee Record',
+				'main_content'	=> 'edit_employee_record',
+				'role'          =>  $user_role,
+				'dept'          =>  $user_dept,
+				'des'           =>  $user_des,
+				'emp_code'		=>	$emp_code,
+				'emp_record'	=>	$emp_record,
+				'fiscal_years'  =>  $fiscal_years
+			);
+			if($user_role==1){
+				$this->load->view('includes/template', $data);
+			}else{
+				$this->load->view('includes/pagenotfound');
+			}
+		}
+	}
+
+	public function delete_employee_record($eid,$rid){
 		if($this->session->userdata('user_logged_in') != '1'){
 			redirect('user', 'refresh');
 		}
 		$sess_data = $this->session->all_userdata();
 		$user_id   = $sess_data['user_id'];
-		$user_role  =   $sess_data['user_role'];
-		$user_dept  =   $sess_data['user_dept'];
-		$user_des  =   $sess_data['user_des'];
-		$fiscal_years   =   $this->tax_model->get_fiscal_years();
+		$user_role = $sess_data['user_role'];
 
-		$data = array(
-			'title' 		=> 'Update Employee Record',
-			'main_content'	=> 'update_employee_record',
-			'role'          =>  $user_role,
-			'dept'          =>  $user_dept,
-			'des'           =>  $user_des,
-			'fiscal_years'  =>  $fiscal_years
-		);
-		if($user_role==1 || ($user_role==3 && $user_dept=2)){
-			$this->load->view('includes/template', $data);
+		if($user_role==1){
+			$result = $this->user_model->delete_emp_record($rid);
+
+			if($result['status'] == 'failed'){
+				$this->session->set_flashdata("error",array("error_deleting_user"=>"Error occured while deleting employee record."));
+			}
+
+			redirect('user/view_employee_record/'.$eid);
 		}else{
 			$this->load->view('includes/pagenotfound');
 		}
