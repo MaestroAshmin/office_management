@@ -42,4 +42,8 @@ class Salary extends CI_Controller{
         $result = $this->salary_model->get_employee_info($id);
         print_r(json_encode($result));
     }
+    public function calculate_tax(){
+        $data = $this->input->post();
+        echo '<pre>';print_r($data);exit;
+    }
 }

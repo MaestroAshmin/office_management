@@ -2293,6 +2293,9 @@ if($('.drag-scroll').length>0){
       });
     });
     $('#employee').change(function(){
+      $('.pan-no').empty();
+      $('.emp-code').empty();
+      $('.marital-status').empty();
       $.ajax({
         url: 'get_employee_info',
         type: 'post',
@@ -2301,8 +2304,59 @@ if($('.drag-scroll').length>0){
         },
         success : function(response){
           let obj = JSON.parse(response);
-          console.log(obj);
+          if(obj[0]['marital_status'] == 0)
+            {
+              marital_status = 'Unmarried';
+            }
+            else if(obj[0]['marital_status'] == 1)
+            {
+             marital_status = 'Married'
+            }
+          if(obj.length > 0){
+            $('.pan-no').append(
+              '<laber>Pan Number</label>'+
+              '<input type="text" name="pan_no" class ="form-control" value ='+obj[0]['pan_no']+' readonly>'+
+              '</input>'
+            );
+            $('.emp-code').append(
+              '<laber>Employee Code</label>'+
+              '<input type="text" name="emp_code" class ="form-control" value ='+obj[0]['emp_code']+' readonly >'+
+              '</input>'
+            );
+            $('.marital-status').append(
+              '<laber>Marital Status</label>'+
+              '<input type="text" name="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
+              '</input>'
+              );
+              $('.salary-breakup').append(
+                '<div class = "form-group col-sm-6">'+
+                    '<h3>Salary Breakup</h3><br>'+
+                    '<label class = "control-label" >Basic Salary<input type = "number" class ="basic_salary form-control" value ='+obj[0]['basic_salary']+' readonly> </label><br>'+
+                    '<label class = "control-label" >House Rent<input type = "number" class ="house_rent form-control" value ='+ obj[0]['house_rent']+' readonly></label><br>'+
+                    '<label class = "control-label" >Food Allowance<input type = "number" class ="food form-control" value ='+obj[0]['food']+' readonly><br>'+
+                    '<label class = "control-label" >Conveyance Allowance<input type = "number" class ="conveyance form-control" value ='+obj[0]['conveyance']+' readonly><br>'+
+                    '<label class = "control-label" >Other Allowance<input type = "number" class ="other form-control" value ='+obj[0]['other']+' readonly></label><br>'+
+                    '<label class = "control-label" >Monthly Total<input type = "number" class ="total_monthly form-control" value ='+obj[0]['total_monthly']+' readonly> </label><br>'+
+                '</div>'
+              );
+          }      
         }
       });
+    });
+    $(".annual-deduction input, .no_of_months").keyup(function(){
+      var monthly_salary = $(".total_monthly"). val();
+      $.fn.calculate = function () {
+        let insurance = $(".insurance"). val();
+        let pf = $(".pf"). val();
+        let cit = $(".cit"). val();
+        let ss  = $(".ss"). val();
+        var no_of_months = $(".no_of_months").val();
+        var annual_salary = parseInt(no_of_months)*parseInt(monthly_salary);
+        var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
+        $('.te').attr('value',total);
+        var annual_tax_exemption = parseInt(annual_salary) - parseInt(total);
+        $('.annual_tax_exemption').attr('value',annual_tax_exemption);
+      };
+      $.fn.calculate();
     });
 });
