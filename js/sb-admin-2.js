@@ -2494,7 +2494,6 @@ if($('.drag-scroll').length>0){
         }
       });
     });
-<<<<<<< HEAD
 
     $('#basic_salary ,#house_rent, #food, #conveyance,#other').keyup(function(e){
         let basic_salary = parseInt($('#basic_salary').val());
@@ -2541,7 +2540,6 @@ if($('.drag-scroll').length>0){
         change_emp_record();
       });
     }
-=======
     $(".annual-deduction input, .no_of_months").keyup(function(){
       var monthly_salary = $(".total_monthly"). val();
       $.fn.calculate = function () {
@@ -2558,5 +2556,4 @@ if($('.drag-scroll').length>0){
       };
       $.fn.calculate();
     });
->>>>>>> 8054eaef6bd2dca39f7487439c2abf873cb5b94e
 });
