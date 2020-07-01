@@ -996,7 +996,13 @@ class User extends CI_Controller
 						'dept_id'				=> $post['department'],
 						'des_id'				=> $post['designation']
 					);
-					
+					if(!empty($post['old_emp_code'])){
+						$delete_emp = $this->user_model->remove_employee($post['old_emp_code']);
+						if($delete_emp['status'] == 'failed'){
+							$this->session->set_flashdata("error",array("error_updating_user"=>"Error occured while updating employee."));
+							redirect("user/view_roles",'refresh');
+						}
+					}
 					$add_emp = $this->user_model->add_employee($emp_data);
 				}
 
@@ -1020,6 +1026,14 @@ class User extends CI_Controller
 						$data['department'] = $post['department'];
 						$data['designation'] = $post['designation'];
 						$data['emp_code'] = $post['emp_code'];
+					}else{
+						if(!empty($post['old_emp_code'])){
+							$delete_emp = $this->user_model->remove_employee($post['old_emp_code']);
+							if($delete_emp['status'] == 'failed'){
+								$this->session->set_flashdata("error",array("error_updating_user"=>"Error occured while updating user role."));
+								redirect("user/view_roles",'refresh');
+							}
+						}
 					}
 
 					if($this->user_model->check_user_phone($data) || $this->user_model->check_user_email($data)){
@@ -1094,6 +1108,7 @@ class User extends CI_Controller
 						'address_temporary'		=> unserialize($emp_info['address_temporary']),
 						'guardian_details'		=> unserialize($emp_info['guardian_details']),
 						'education_details'		=> unserialize($emp_info['education_details']),
+						'married_status'		=> $emp_info['married_status'],
 						'dept_id'				=> $emp_info['dept_id'],
 						'des_id'				=> $emp_info['des_id']
 					);

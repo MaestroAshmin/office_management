@@ -1410,7 +1410,7 @@ $(document).ready(function(){
         pan_no            : "Please Enter Pan Number"
     },
     errorPlacement: function(error, element) {
-      if(element.attr("name") == "allow" || element.attr("name") == "allow_approve") {
+      if(element.attr("name") == "allow_approve") {
             error.insertAfter(element.siblings('label:first-child'));
       } else {
           error.insertAfter(element);
@@ -1470,7 +1470,39 @@ $('.update_user_form').validate({
       user_type         : "required",
       department        : "required",
       designation       : "required",
-      allow_approve     : "required"
+      allow_approve     : "required", 
+      municipality      : "required",
+      ward_number       : "required",
+      district          : "required",
+      province          : "required",
+      father_name       : "required",
+      grand_father_name : "required",
+      mother_name       : "required",
+      married_status    : "required",
+      guardian_name     : "required",
+      guardian_relation : "required",
+      last_degree       : "required",
+      institution       : "required",
+      edu_year          : "required",
+      emp_code          : {
+            required :  true,
+            remote: {
+              param : {
+                url: base_url+"/acc/user/check_emp_code",
+                type: "post",
+                data: {
+                    emp_code : function () {
+                        return $(".update_user_form #emp_code").val();
+                    }
+                }  
+              },
+              depends: function(element){
+                  return ($(element).val() !== $('.update_user_form #old_emp_code').val());
+              }
+            }
+      },
+      citizenship_no    : "required",
+      pan_no            : "required"
   },
   messages:{
       name              : "Please Enter Name",
@@ -1494,10 +1526,29 @@ $('.update_user_form').validate({
       user_type         : "Please Select User Type",
       department        : "Please Select Department",
       designation       : "Please Select Designation",
-      allow_approve     : "Please Select Allow Approve Option"
+      allow_approve     : "Please Select Allow Approve Option",
+      municipality      : "Please Enter Municipality",
+      ward_number       : "Please Enter Ward Number",
+      district          : "Please Enter the District",
+      province          : "Please Select Province Option",
+      father_name       : "Please Enter Father's Name",
+      grand_father_name : "Please Enter Grand Father's Name",
+      mother_name       : "Please Enter Mother's Name",
+      married_status    : "Please Select Married Status",
+      guardian_name     : "Please Enter Guardian Name",
+      guardian_relation : "Please Enter Relationship with Guardian",
+      last_degree       : "Please Enter the last degree you achieved",
+      institution       : "Please Enter the institution attended at last",
+      edu_year          : "Please Enter the last year of education",
+      emp_code          : {
+              required  : "Please Enter Emp Code",
+              remote    : "Emp Code Exists Already"
+      },
+      citizenship_no    : "Please Enter Citizenship Number",
+      pan_no            : "Please Enter Pan Number"
   },
   errorPlacement: function(error, element) {
-    if(element.attr("name") == "allow" || element.attr("name") == "allow_approve") {
+    if(element.attr("name") == "allow_approve") {
       error.insertAfter(element.siblings('label:first-child'));
     } else {
         error.insertAfter(element);
