@@ -1233,7 +1233,9 @@ function callAutocomplete(field_id){
 }
 
 $(document).ready(function(){
+  let site_url = $('.footer').attr('data-siteurl');
   let user_type = $('#user_type').children("option:selected").val();
+
   if(user_type==3){
     $(".employee-section").show();
   }else{
@@ -1864,6 +1866,104 @@ $('.update_user_form').validate({
   }
 });
 
+//add employee record form validation  
+$('.add_employee_record').validate({
+  rules:{
+      fy_id                  :  {
+              required :  true,
+              remote: {
+                url: base_url+"/acc/user/check_fiscal_year",
+                type: "post",
+                data: {
+                    id : function () {
+                        return $(".add_employee_record #fy_id").val();
+                    },
+                    emp_code : function(){
+                      return $(".add_employee_record #emp_code").val();
+                    }
+                }
+              }
+      },
+      total_monthly          : 'required',
+      basic_salary           : 'required',
+      food                   : 'required',
+      house_rent             : 'required',
+      conveyance             : 'required',
+      other                  : 'required',
+      annual_leave_permitted : 'required',
+      annual_company_leave   : 'required',
+      holidays               : 'required'
+  },
+  messages:{
+      fy_id                  : {
+                required  : "Please Select Fiscal Year",
+                remote    : "Fiscal year Exists Already"
+      },
+      total_monthly          : 'Please Enter Total Monthly Salary',
+      basic_salary           : 'Please Enter Basic Salary',
+      food                   : 'Please Enter Food Allowance',
+      house_rent             : 'Please Enter House Rent Allowance',
+      conveyance             : 'Please Enter Conveyance Allowance',
+      other                  : 'Please Enter Other Allowance',
+      annual_leave_permitted : 'Please Enter Annual leave Permitted',
+      annual_company_leave   : 'Please Enter Company leave',
+      holidays               : 'Please Enter Holidays'
+  }
+});
+
+
+//update employee record form validation  
+$('.update_employee_record').validate({
+  rules:{
+      fy_id                  :  {
+              required :  true,
+              remote: {
+                param: {
+                  url: base_url+"/acc/user/check_fiscal_year",
+                  type: "post",
+                  data: {
+                      id : function () {
+                          return $(".update_employee_record #fy_id").val();
+                      },
+                      emp_code : function(){
+                        return $(".update_employee_record #emp_code").val();
+                      }
+                  }
+                },
+                depends : function(element){
+                  return ($(element).val() !== $('.update_employee_record #old_fy_id').val());
+                }
+              }
+      },
+      total_monthly          : 'required',
+      basic_salary           : 'required',
+      food                   : 'required',
+      house_rent             : 'required',
+      conveyance             : 'required',
+      other                  : 'required',
+      annual_leave_permitted : 'required',
+      annual_company_leave   : 'required',
+      holidays               : 'required'
+  },
+  messages:{
+      fy_id                  : {
+                required  : "Please Select Fiscal Year",
+                remote    : "Fiscal year Exists Already"
+      },
+      total_monthly          : 'Please Enter Total Monthly Salary',
+      basic_salary           : 'Please Enter Basic Salary',
+      food                   : 'Please Enter Food Allowance',
+      house_rent             : 'Please Enter House Rent Allowance',
+      conveyance             : 'Please Enter Conveyance Allowance',
+      other                  : 'Please Enter Other Allowance',
+      annual_leave_permitted : 'Please Enter Annual leave Permitted',
+      annual_company_leave   : 'Please Enter Company leave',
+      holidays               : 'Please Enter Holidays'
+  }
+});
+
+
+
   // if($(".add_target_form #assigned_to").length >= 1){
   //   base_url = window.location.origin;
   //   $.ajax({
@@ -2394,6 +2494,52 @@ if($('.drag-scroll').length>0){
         }
       });
     });
+
+    $('#basic_salary ,#house_rent, #food, #conveyance,#other').keyup(function(e){
+        let basic_salary = parseInt($('#basic_salary').val());
+        let house_rent   = parseInt($('#house_rent').val());
+        let food         = parseInt($('#food').val());
+        let conveyance   = parseInt($('#conveyance').val());
+        let other        = parseInt($('#other').val());
+        let total        = basic_salary+house_rent+food+conveyance+other;
+
+        $('#total_monthly, #total_monthly_disabled').val(total);
+    });
+
+    if($('#fy_id_view').length>0){
+      change_emp_record();
+      function change_emp_record(){
+        $.ajax({
+          url: '../get_employee_record',
+          type: 'post',
+          data: {
+            'emp_code' :  $('#emp_code').val(),
+            'fy_id'    :  $('#fy_id_view').val()
+          },
+          success : function(response){
+            let obj = JSON.parse(response);
+            $('#total_monthly').html(obj[0].total_monthly);
+            $('#basic_salary').html(obj[0].basic_salary);
+            $('#house_rent').html(obj[0].house_rent);
+            $('#food').html(obj[0].food);
+            $('#conveyance').html(obj[0].conveyance);
+            $('#other').html(obj[0].other);
+            $('#leave_permitted').html(obj[0].annual_leave_permitted);
+            $('#company_leave').html(obj[0].annual_company_leave);
+            $('#holidays').html(obj[0].holidays);
+            $('#resigned_on').html(obj[0].resigned_on);
+            $('#terminated_on').html(obj[0].terminated_on);
+            $('#increment_details').html(obj[0].increment_details);
+            $('#promotion_details').html(obj[0].promotion_details);
+            $('#edit_employee_record').attr('href',site_url+'user/edit_employee_record/'+$('#emp_id').val()+'/'+obj[0].id);
+            $('#delete_employee_record').attr('href',site_url+'user/delete_employee_record/'+$('#emp_id').val()+'/'+obj[0].id);
+          }
+        });
+      }
+      $('#fy_id_view').change(function(){
+        change_emp_record();
+      });
+    }
     $(".annual-deduction input, .no_of_months").keyup(function(){
       var monthly_salary = $(".total_monthly"). val();
       $.fn.calculate = function () {

@@ -95,6 +95,100 @@ class User_model extends CI_Model{
               return $result;
        }
 
+       public function check_fiscal_year($emp_code,$fy_id){
+              $query = $this->db->select('*')->from('tbl_salary')->where('emp_code',$emp_code)
+              ->where('fy_id',$fy_id)->get();
+
+              if ($query->num_rows()>0) {
+                     $result = true;
+              } else {
+                     $result = false;
+              }
+              return $result;
+       }
+
+       public function get_emp_record($emp_code,$fy_id){
+              $query = $this->db->select('*')->from('tbl_salary')
+                            ->where('emp_code',$emp_code)
+                            ->where('fy_id',$fy_id)->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array('status' => 'failed',"message" => $this->db->error());
+              }
+              return $result;
+       }
+
+       public function get_emp_record_by_id($id){
+              $query = $this->db->select('*')->from('tbl_salary')
+                            ->where('id',$id)->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array('status' => 'failed',"message" => $this->db->error());
+              }
+              return $result;
+       }
+
+       public function get_emp_fiscal_years($emp_code){
+              $query = $this->db->select('f.*')->from('tbl_fiscal_year as f')
+                            ->join('tbl_salary as s','s.fy_id=f.id')       
+                            ->where('s.emp_code',$emp_code)
+                            ->where('f.status',1)->order_by("f.fiscal_year", "desc")->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array('status' => 'failed',"message" => $this->db->error());
+              }
+
+              return $result;
+       }
+       
+       public function add_emp_record($data){
+              $query = $this->db->insert('tbl_salary',$data);
+              if ($query) {
+                     $result_status = array('status' => 'success', 'message' =>"Successfully added employee record");
+              } else {
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+              }
+              return $result_status;
+       }
+
+       public function update_emp_record($data){
+              $this->db->where('id',$data['id']);
+              $query = $this->db->update('tbl_salary',$data);
+              if ($query) {
+                     $result_status = array('status' => 'success', 'message' =>"Successfully update employee record");
+              } else {
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+              }
+              return $result_status;
+       }
+
+       public function delete_emp_record($id){
+              try{
+                     $this->db->where('id',$id);
+                     $query = $this->db->delete('tbl_salary');
+                     $result_status = array('status' => 'success', 'message' =>"Successfully Deleted Employee Record");
+                     return $result_status;
+                 }
+                 catch(Exception $e){
+                     $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+                     return $result_status;
+                 }
+       }
+
+       public function get_emp_code($id){
+              $query = $this->db->select('emp_code')->from('tbl_users')
+                            ->where('id',$id)->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array('status' => 'failed',"message" => $this->db->error());
+              }
+              return $result;
+       }
+
        public function add_employee($data){
               try{
                      $this->db->insert('tbl_employee_info',$data);
