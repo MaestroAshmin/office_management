@@ -32,22 +32,30 @@ class Salary_model extends CI_model{
             return false;
         }
     }
-    public function get_tax_structure($id){
+    public function get_tax_structure($id, $marital_status){
         $condition = [
-            
-            'fy.status'    =>  1,
-            'fy.current_fy'   =>  1,
-            't.status'      => 1
+            'fy.status'     =>  1,
+            'fy.current_fy' =>  1,
+            't.status'      =>  1,
+            'fy.id'         => $id,
+            't.marital_status'  =>  $marital_status
         ];
         $this->db->distinct();
         $query = $this->db->select('*')->from('tbl_tax_structure as t')
                             ->join('tbl_fiscal_year as fy','fy.id=t.fiscal_year_id')
-                            ->join('tbl_salary as s','s.fy_id=fy.id')
-                            ->join('tbl_employee_info as e','s.emp_code=e.emp_code')
-                            ->join('tbl_users as u','u.emp_code=e.emp_code')
                 ->where($condition)->get();
         if($query){
             $result = $query->result_array();
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+    public function get_employee($id){
+        $query = $this->db->select('name')->from('tbl_users')->where('id',$id)->get();
+        if($query){
+            $result = $query->row_array();
             return $result;
         }
         else{

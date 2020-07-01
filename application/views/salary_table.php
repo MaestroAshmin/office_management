@@ -20,7 +20,7 @@
     ?>
     <!-- Content Row -->
     <div class="container">       
-        <form class="salary-sheet" action="calculate_tax" method="post"  enctype="multipart/form-data">
+        <form class="salary-sheet" action ="calculate_tax" method="post"  enctype="multipart/form-data">
         <div class="row">
                 <div class = "form-group col-sm">
                     <label>Employee Name</label>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group col-sm">
                     <label>Select Fiscal Year</label><br>
-                    <select id= "fiscal_years" class = "form-control" name= "fiscal_year">
+                    <select id= "fiscal_year" class = "form-control" name= "fiscal_year">
                         <option value ="">---Select Fiscal Year---</option>
                         <?php foreach($fiscal_years as $fy){?>   
                             <option value="<?php echo $fy['id']?>">Fiscal Year - <?php echo $fy['fiscal_year']?></option>
@@ -41,7 +41,7 @@
                     </select>
                 </div>
                 <div class = "form-group col-sm">
-                    <label class = "control-label" >No. of Months<input type = "number" class ="form-control no_of_months" value = "0"></label><br>
+                    <label class = "control-label" >No. of Months<input type = "number" class ="form-control no_of_months" name = "no_of_months" value = "0"></label><br>
                 </div>
             </div>
             <div class="row">
@@ -54,7 +54,7 @@
             </div>
             <div class = "row salary-breakup">
                 <div class ="form-group col-sm annual-deduction">
-                    <h3>Annual Deductions</h3>
+                    <h3>Monthly Deductions</h3>
                     <div class = "form-group col-sm">
                         <label class = "control-label" >Insurance<input type = "number" class ="form-control insurance" name="insurance" value = "0"></label><br>
                     </div>
@@ -71,7 +71,10 @@
                         <label class = "control-label" >Total Exemption<input type = "number" class ="form-control te" value = "0" name="te" readonly></label><br>
                     </div>
                     <div class = "form-group col-sm">
-                        <label class = "control-label" >Annual Tax Exemption<input type = "number" class ="form-control annual_tax_exemption" name ="annual_tax_exemption" readonly></label><br>
+                        <label class = "control-label" >Taxable For Selected Month<input type = "number" class ="form-control annual_tax_exemption" name ="annual_tax_exemption" readonly></label><br>
+                    </div>
+                    <div class = "form-group col-sm">
+                        <label class = "control-label" >Taxable For Month<input type = "number" class ="form-control taxable_for_month" name ="taxable_for_month" readonly></label><br>
                     </div>
                 </div>
             </div>
@@ -82,4 +85,24 @@
     </div>
 </div>
 
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tax Sheet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="tax-data form-row">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
         

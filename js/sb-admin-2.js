@@ -2365,29 +2365,29 @@ if($('.drag-scroll').length>0){
             }
           if(obj.length > 0){
             $('.pan-no').append(
-              '<laber>Pan Number</label>'+
+              '<label>Pan Number</label>'+
               '<input type="text" name="pan_no" class ="form-control" value ='+obj[0]['pan_no']+' readonly>'+
               '</input>'
             );
             $('.emp-code').append(
-              '<laber>Employee Code</label>'+
+              '<label>Employee Code</label>'+
               '<input type="text" name="emp_code" class ="form-control" value ='+obj[0]['emp_code']+' readonly >'+
               '</input>'
             );
             $('.marital-status').append(
-              '<laber>Marital Status</label>'+
+              '<label>Marital Status</label>'+
               '<input type="text" name="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
               '</input>'
               );
               $('.salary-breakup').append(
                 '<div class = "form-group col-sm-6">'+
                     '<h3>Salary Breakup</h3><br>'+
-                    '<label class = "control-label" >Basic Salary<input type = "number" class ="basic_salary form-control" value ='+obj[0]['basic_salary']+' readonly> </label><br>'+
-                    '<label class = "control-label" >House Rent<input type = "number" class ="house_rent form-control" value ='+ obj[0]['house_rent']+' readonly></label><br>'+
-                    '<label class = "control-label" >Food Allowance<input type = "number" class ="food form-control" value ='+obj[0]['food']+' readonly><br>'+
-                    '<label class = "control-label" >Conveyance Allowance<input type = "number" class ="conveyance form-control" value ='+obj[0]['conveyance']+' readonly><br>'+
-                    '<label class = "control-label" >Other Allowance<input type = "number" class ="other form-control" value ='+obj[0]['other']+' readonly></label><br>'+
-                    '<label class = "control-label" >Monthly Total<input type = "number" class ="total_monthly form-control" value ='+obj[0]['total_monthly']+' readonly> </label><br>'+
+                    '<label class = "control-label" >Basic Salary<input type = "number" class ="basic_salary form-control" name ="basic_salary" value ='+obj[0]['basic_salary']+' readonly> </label><br>'+
+                    '<label class = "control-label" >House Rent<input type = "number" class ="house_rent form-control" name ="house_rent" value ='+ obj[0]['house_rent']+' readonly></label><br>'+
+                    '<label class = "control-label" >Food Allowance<input type = "number" class ="food form-control" name ="food" value ='+obj[0]['food']+' readonly><br>'+
+                    '<label class = "control-label" >Conveyance Allowance<input type = "number" class ="conveyance form-control" name ="conveyance" value ='+obj[0]['conveyance']+' readonly><br>'+
+                    '<label class = "control-label" >Other Allowance<input type = "number" class ="other form-control" name ="other" value ='+obj[0]['other']+' readonly></label><br>'+
+                    '<label class = "control-label" >Monthly Total<input type = "number" class ="total_monthly form-control" name ="monthly_total" value ='+obj[0]['total_monthly']+' readonly> </label><br>'+
                 '</div>'
               );
           }      
@@ -2397,17 +2397,51 @@ if($('.drag-scroll').length>0){
     $(".annual-deduction input, .no_of_months").keyup(function(){
       var monthly_salary = $(".total_monthly"). val();
       $.fn.calculate = function () {
+        var no_of_months = $(".no_of_months").val();
         let insurance = $(".insurance"). val();
         let pf = $(".pf"). val();
         let cit = $(".cit"). val();
-        let ss  = $(".ss"). val();
-        var no_of_months = $(".no_of_months").val();
+        let ss  = $(".ss"). val();    
         var annual_salary = parseInt(no_of_months)*parseInt(monthly_salary);
-        var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
+        var total =  (parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss))*parseInt(no_of_months);
         $('.te').attr('value',total);
         var annual_tax_exemption = parseInt(annual_salary) - parseInt(total);
         $('.annual_tax_exemption').attr('value',annual_tax_exemption);
+        taxable_for_month = parseInt(annual_tax_exemption)/parseInt(no_of_months);
+        $('.taxable_for_month').attr('value',taxable_for_month)
       };
       $.fn.calculate();
     });
+
+    // $('.salary-sheet').submit(function(e){
+    //   e.preventDefault();
+    //   $.ajax({
+    //     url: 'calculate_tax',
+    //     type: 'post',
+    //     data: $(".salary-sheet" ).serialize(),
+    //     success : function(response){
+    //       let obj = JSON.parse(response);
+    //       $('.tax-data').append(
+    //         '<div class = "form-group col-sm-6"><label>Employee Details</label><br>'+
+    //         'Employee Name: ' +obj['employee_name']+'<br>'+
+    //         'Pan Number: ' +obj['pan_no']+'<br>'+
+    //         'Employee Code: ' +obj['emp_code']+'<br>'+
+
+    //         // '<div class = "text-left"><label>Employee Name</label><input type ="name" value = ' + obj['employee_name'] +' readonly></div><br>'+
+    //         // '<div class = "text-left"><label>Pan Number </label><input type ="name" value = ' + obj['pan_no'] +' readonly></div><br>'+
+    //         // '<div class = "text-left"><label>Employee Code </label><input type ="name" value = ' + obj['emp_code'] +' readonly></div><br>'+
+    //         // '<div class = "text-left"><label>Fiscal Year </label><input type ="name" value = ' + obj['pan_no'] +' readonly></div><br>'+
+    //         '</div><br>'+
+    //        '<div class="form-group col-sm-6"><label>Deduction for '+obj['no_of_months'] + 'Month/s </label><br>'+
+    //        'Insurance: Rs '+ obj['insurance']+'<br>'+
+    //        'Citizen Investment Trust: Rs '+ obj['cit']+'<br>'+
+    //        'Providend Fund: Rs '+ obj['pf']+'<br>'+
+    //        'Social Security: Rs '+ obj['ss']+'<br>'+
+    //        'Monthly Total: Rs '+ obj['monthly_total']+'<br>'+
+    //        '</div>'
+    //       );
+    //       $('#exampleModal').modal('show'); 
+    //     }
+    //   });
+    // });
 });
