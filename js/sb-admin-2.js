@@ -2027,7 +2027,7 @@ if($('.drag-scroll').length>0){
 
   if($('#lineChart').length){
         
-    let lineChartOptions = {
+    var lineChartOptions = {
       maintainAspectRatio : true,
       responsive : true,
       legend: {
@@ -2059,7 +2059,7 @@ if($('.drag-scroll').length>0){
     }
 
     
-    let lineChartData = {
+    var lineChartData = {
       datasets: [
         {
           label               : 'Income',
@@ -2083,24 +2083,24 @@ if($('.drag-scroll').length>0){
       ]
     }
 
-    let lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
     lineChartOptions = $.extend(true, {}, lineChartOptions);
     lineChartData = $.extend(true, {}, lineChartData);
     lineChartData.datasets[0].fill = false;
     lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false;
-    let total_income_current_year = '';
-    let total_expense_current_year = '';
-    let total_equity_current_year = '';
-    let total_income_total_year = '';
-    let total_expense_total_year = '';
-    let total_equity_total_year = '';
-    let labels_monthly = [];
-    let labels_yearly = [];
-    let income_data_monthly = [];
-    let income_data_yearly = [];
-    let expense_data_monthly = [];
-    let expense_data_yearly = [];
+    var total_income_current_year = '';
+    var total_expense_current_year = '';
+    var total_equity_current_year = '';
+    var total_income_total_year = '';
+    var total_expense_total_year = '';
+    var total_equity_total_year = '';
+    var labels_monthly = [];
+    var labels_yearly = [];
+    var income_data_monthly = [];
+    var income_data_yearly = [];
+    var expense_data_monthly = [];
+    var expense_data_yearly = [];
 
     let formatter = new Intl.NumberFormat('en-IN', { 
       minimumFractionDigits: 2
