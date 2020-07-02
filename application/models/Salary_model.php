@@ -66,7 +66,7 @@ class Salary_model extends CI_model{
         $insertData = [
             'user_id'   =>  $data['employee'],
             'fiscal_year_id'    =>   $data['fiscal_year'],
-            'no_of_months'      =>   $data['month'],
+            'month'      =>   $data['month'],
             'pan_no'            =>   $data['pan_no'],
             'emp_code'          =>   $data['emp_code'],
             'marital_status'    =>   $data['marital'],
@@ -82,7 +82,12 @@ class Salary_model extends CI_model{
             'conveyance'        =>   $data['conveyance'],
             'other'             =>   $data['other'],
             'monthly_total'     =>   $data['monthly_total'],
-            'monthly_tax'        =>   $data['monthly_tax']
+            'monthly_tax'        =>   $data['monthly_tax'],
+            'total_payable'     => $data['total_payable'],
+            'working_days'      =>  $data['wd'],
+            'unpaid_leaves'     =>  $data['ul'],
+            'previous_advance'  =>  $data['pa'],
+            'deductions'        =>  $data['deductions']
         ];
         $query = $this->db->insert('tbl_salary_sheet',$insertData);
         if ($query) {
@@ -91,5 +96,19 @@ class Salary_model extends CI_model{
                 $result_status = array('status' => 'failed', 'message' => $e->getMessage());
         }
         return $result_status;
+    }
+    public function get_salary_details(){
+        $query = $this->db->select('fy.fiscal_year,ss.month,u.name,d.Designation,ss.monthly_total,ss.total_exemption,ss.monthly_tax,ss.previous_advance,ss.deductions,ss.total_payable')->from('tbl_salary_sheet as ss')
+                            ->join('tbl_fiscal_year as fy','fy.id=ss.fiscal_year_id')
+                            ->join('tbl_users as u','u.id=ss.user_id')
+                            ->join('tbl_designation as d', 'd.id=u.des_id')
+                            ->order_by('ss.created_at','DESC')->get();
+        if($query){
+            $result = $query->result_array();
+            return $result;
+        }
+        else{
+            return false;
+        }
     }
 }

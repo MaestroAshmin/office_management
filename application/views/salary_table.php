@@ -43,18 +43,18 @@
                 <div class = "form-group col-sm">
                     <label>Select Month</label>
                     <select class="form-control" id="month" name="month">
-                        <option value="01" selected>Baisakh</option>
-                        <option value="02">Jestha</option>
-                        <option value="03">Asar</option>
-                        <option value="04">Shrawan</option>
-                        <option value="05">Bhadra</option>
-                        <option value="06">Ashoj</option>
-                        <option value="07">Kartik</option>
-                        <option value="08">Mangsir</option>
-                        <option value="09">Poush</option>
-                        <option value="10">Magh</option>
-                        <option value="11">Falgun</option>
-                        <option value="12">Chaitra</option>
+                        <option value="Baishak" selected>Baisakh</option>
+                        <option value="Jestha">Jestha</option>
+                        <option value="Asar">Asar</option>
+                        <option value="Shrawan">Shrawan</option>
+                        <option value="Bhadra">Bhadra</option>
+                        <option value="Ashoj">Ashoj</option>
+                        <option value="Kartik">Kartik</option>
+                        <option value="Mangsir">Mangsir</option>
+                        <option value="Poush">Poush</option>
+                        <option value="Magh">Magh</option>
+                        <option value="Falgun">Falgun</option>
+                        <option value="Chaitra">Chaitra</option>
                     </select>
                 </div>
             </div>
@@ -93,9 +93,6 @@
                     <div class = "form-group col-md-3">
                         <label class = "control-label" >Total Exemption<input type = "number" class ="form-control te" value = "0" name="te" readonly></label><br>
                     </div>
-                    <!-- <div class = "form-group col-md-3">
-                        <label class = "control-label" >Taxable For Selected Month<input type = "number" class ="form-control annual_tax_exemption" name ="annual_tax_exemption" readonly></label><br>
-                    </div> -->
                     <div class = "form-group col-md-3">
                         <label class = "control-label" >Taxable For Month<input type = "number" class ="form-control taxable_for_month" name ="taxable_for_month" readonly></label><br>
                     </div>
@@ -105,6 +102,8 @@
                     <div class = "form-group col-md-3">
                         <label class = "control-label" >Total Payable<input type = "number" class ="form-control total_payable" name ="total_payable" value="" readonly></label><br>
                     </div>
+                </div>
+                <div class ="row col-12 salary-breakup1">
                 </div>
             </div>
             <div class="form-group">    

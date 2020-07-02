@@ -199,6 +199,7 @@
             <?php }?>
               <a class="collapse-item" href="<?php echo site_url();?>tax/view_tax_structure">View Tax Structure</a>
               <a class="collapse-item" href="<?php echo site_url();?>salary/salary_table">Salary Table</a>
+              <a class="collapse-item" href="<?php echo site_url();?>salary/view_salary_details">View/Print Salary Details</a>
 
             </div>
           </div>

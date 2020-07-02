@@ -2447,6 +2447,7 @@ if($('.drag-scroll').length>0){
       $('.pan-no').empty();
       $('.emp-code').empty();
       $('.marital-status').empty();
+      $('.salary-breakup1').empty();
       $.ajax({
         url: 'get_employee_info',
         type: 'post',
@@ -2479,7 +2480,7 @@ if($('.drag-scroll').length>0){
               '<input type="text" name="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
               '</input>'
               );
-              $('.salary-breakup').append(
+              $('.salary-breakup1').append(
                 '<div class="form-group col-sm-12 d-inline-block">'+
                     '<h3>Salary Breakup</h3><br>'+
                     '<label>Basic Salary</label><input type = "number" class ="basic_salary form-control" name ="basic_salary" value ='+obj[0]['basic_salary']+' readonly>'+
@@ -2565,7 +2566,9 @@ if($('.drag-scroll').length>0){
         data : $('.salary-sheet').serialize(),
         success: function(response){
           let obj = JSON.parse(response);
-          $('.total_payable').attr('value',obj['monthly_tax']);
+          let deduction = $('.deductions').val();
+          let total_payable = parseInt(monthly_salary) - parseInt(deduction) - obj;
+          $('.total_payable').attr('value',total_payable);
         }
       });
     });

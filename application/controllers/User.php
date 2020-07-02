@@ -753,7 +753,7 @@ class User extends CI_Controller
 						'citizenship_no'		=> $post['citizenship_no'],
 						'pan_no'				=> $post['pan_no'],
 						'join_date'				=> $post['join_date'],
-						'married_status'		=> $post['married_status'],
+						'marital_status'		=> $post['married_status'],
 						'address_permanent'		=> Serialize($address_per),
 						'address_temporary'		=> Serialize($address_temp),
 						'guardian_details'		=> Serialize($guardian_details),
@@ -1109,7 +1109,7 @@ class User extends CI_Controller
 						'address_temporary'		=> unserialize($emp_info['address_temporary']),
 						'guardian_details'		=> unserialize($emp_info['guardian_details']),
 						'education_details'		=> unserialize($emp_info['education_details']),
-						'married_status'		=> $emp_info['married_status'],
+						'marital_status'		=> $emp_info['married_status'],
 						'dept_id'				=> $emp_info['dept_id'],
 						'des_id'				=> $emp_info['des_id']
 					);

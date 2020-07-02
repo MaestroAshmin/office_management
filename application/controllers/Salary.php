@@ -44,6 +44,7 @@ class Salary extends CI_Controller{
     }
     public function calculate_tax(){
         $data = $this->input->post();
+        echo '<pre>';print_r($data);
         $this->load->library('form_validation');
         $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
         $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
@@ -79,18 +80,18 @@ class Salary extends CI_Controller{
         if($length ==  count($taxes)){
             if($remaining <= $taxes[$i]['amount']){
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $monthly_tax;
+                return $monthly_tax/12;
             }
             else{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
                 $remaining = $remaining -  $taxes[$i]['amount'];
-                return $monthly_tax;
+                return $monthly_tax/12;
             }   
         }
         else{
             if($remaining <= $taxes[$i]['amount']){
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $monthly_tax;
+                return $monthly_tax/12;
             }
             else{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
@@ -121,5 +122,25 @@ class Salary extends CI_Controller{
         $rem = $data['taxable_for_month'] *12;
         $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem);
         print_r(json_encode($data['monthly_tax']));
+    }
+    public function view_salary_details(){
+        if($this->session->userdata('user_logged_in') != '1'){
+            redirect('user', 'refresh');
+        }
+        $sess_data = $this->session->all_userdata();
+        $user_id   = $sess_data['user_id'];
+        $user_role  =   $sess_data['user_role'];
+        $user_dept  =   $sess_data['user_dept'];
+        $user_des  =   $sess_data['user_des'];
+        $salary_data    =   $this->salary_model->get_salary_details();
+        $data = array(
+            'title' 		=> 'View / Print Salary Details',
+            'main_content'	=> 'view_salary_details',
+            'role'          =>  $user_role,
+            'dept'          =>  $user_dept,
+            'des'           =>  $user_des,
+            'salary_data'   =>  $salary_data
+        );
+        $this->load->view('includes/template', $data);
     }
 }
