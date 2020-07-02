@@ -7,7 +7,7 @@ class User extends CI_Controller
 	public function __construct(){
 		parent:: __construct();
 		$this->load->model('user_model');
-		$this->load->library(array('session','Nepali_date','sendMail')); 
+		$this->load->library(array('session','Nepali_date','sendMail','Pdfgenerator')); 
 		$this->load->model('ExpensesTransaction_model');
 		$this->load->model('tax_model');
 		$this->load->model('dashboard_model');
@@ -48,6 +48,15 @@ class User extends CI_Controller
 				redirect('user', 'refresh');
 			}
 		}
+	}
+
+	public function template(){
+		$this->load->view('template_salary');
+	}
+
+	public function generatepdf(){
+		$html = $this->load->view('template_salary','',true);
+		$this->pdfgenerator->generate($html,'rara');
 	}
 
 	private function get_monthly_income_expense($data_type){
