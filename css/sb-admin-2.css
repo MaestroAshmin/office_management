@@ -12217,3 +12217,13 @@ table.dataTable thead .sorting_desc:before,table.dataTable thead .sorting_desc:a
 .sidebar, .emloyee-section-title{
   background-color: rgba(0, 128,128,1);; 
 }
+
+.nav-link-second:after{
+  content: '>';   
+  width: 1rem;
+  text-align: center;
+  float: right;
+  vertical-align: 0;
+  border: 0;
+  font-weight: 900;
+}

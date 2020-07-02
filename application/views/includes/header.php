@@ -86,20 +86,20 @@
 
       <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmployee" aria-expanded="true" aria-controls="collapseEmployee">Employee Report</a>
+          <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmployee" aria-expanded="true" aria-controls="collapseEmployee">Employee Report</a>
           <?php if($dept==2 || $role==1){?>
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGenerate" aria-expanded="true" aria-controls="collapseGenerate">Generate Report</a>
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGross" aria-expanded="true" aria-controls="collapseTarget">Gross Report</a>
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGenerate" aria-expanded="true" aria-controls="collapseGenerate">Generate Report</a>
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGross" aria-expanded="true" aria-controls="collapseTarget">Gross Report</a>
           <?php } ?>
         </div>
       </div>
       <div id="collapseEmployee" class="collapse" aria-labelledby="headingEmployee" data-parent="#accordionSidebar">
         <div class="bg-white py-1 collapse-inner rounded">
         <?php if($dept==2 || $role==1){?>
-          <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTasks">Tasks/Target</a>
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContact">Contacts</a>
+          <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTasks">Tasks/Target</a>
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContact">Contacts</a>
         <?php }?>
-        <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivities">Activities</a>
+        <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivities">Activities</a>
            
         </div>
       </div>
@@ -148,17 +148,17 @@
       <div id="collapseFinancial" class="collapse" aria-labelledby="headingFinancial" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
         <?php if($role==1 || $dept==1){?>
-          <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTax" aria-expanded="true" aria-controls="collapseTax">Salary/Tax</a>
+          <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTax" aria-expanded="true" aria-controls="collapseTax">Salary/Tax</a>
         
         <?php }?>
           <?php if($role==1 || $role==2 || $dept==1){?>
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseIncome" aria-expanded="true" aria-controls="collapseIncome">Income</a>
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExpense" aria-expanded="true" aria-controls="collapseExpense">Expense</a>
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseIncome" aria-expanded="true" aria-controls="collapseIncome">Income</a>
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExpense" aria-expanded="true" aria-controls="collapseExpense">Expense</a>
           <?php } ?>  
           <?php if($role==1 || $dept==1){?>
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEquity" aria-expanded="true" aria-controls="collapseEquity">Equity</a>
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEquity" aria-expanded="true" aria-controls="collapseEquity">Equity</a>
          
-            <a class="collapse-item" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBank" aria-expanded="true" aria-controls="collapseEquity">Bank Account</a>   
+            <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBank" aria-expanded="true" aria-controls="collapseEquity">Bank Account</a>   
             <?php  }?>
         </div>
       </div>
