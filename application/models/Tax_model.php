@@ -87,7 +87,7 @@ class Tax_model extends CI_model
                 $this->db->where('id', $id);
                 $this->db->update('tbl_fiscal_year',$data);
                 $this->db->where('fiscal_year_id',$id);
-                $this->db->delete('tbl_tax_structure',);
+                $this->db->delete('tbl_tax_structure');
                 $result_status = array('status'=>'success','message'=>'Fiscal Year Deleted Successfully');
             }
            catch(Exception $e){
