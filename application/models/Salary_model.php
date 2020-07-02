@@ -62,4 +62,34 @@ class Salary_model extends CI_model{
             return false;
         }
     }
+    public function salary_sheet($data){
+        $insertData = [
+            'user_id'   =>  $data['employee'],
+            'fiscal_year_id'    =>   $data['fiscal_year'],
+            'no_of_months'      =>   $data['month'],
+            'pan_no'            =>   $data['pan_no'],
+            'emp_code'          =>   $data['emp_code'],
+            'marital_status'    =>   $data['marital'],
+            'insurance'         =>   $data['insurance'],
+            'cit'               =>   $data['cit'],
+            'pf'                =>   $data['pf'],
+            'ss'                =>   $data['ss'],
+            'total_exemption'             =>   $data['te'],
+            'taxable_for_month' =>   $data['taxable_for_month'],
+            'basic_salary'      =>   $data['basic_salary'],
+            'house_rent'        =>   $data['house_rent'],
+            'food'              =>   $data['food'],
+            'conveyance'        =>   $data['conveyance'],
+            'other'             =>   $data['other'],
+            'monthly_total'     =>   $data['monthly_total'],
+            'monthly_tax'        =>   $data['monthly_tax']
+        ];
+        $query = $this->db->insert('tbl_salary_sheet',$insertData);
+        if ($query) {
+            $result_status = array('status' => 'success', 'message' =>"Successfully Created Salary Sheet");
+        } else {
+                $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+        }
+        return $result_status;
+    }
 }

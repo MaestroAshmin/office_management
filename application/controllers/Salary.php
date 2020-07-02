@@ -46,7 +46,7 @@ class Salary extends CI_Controller{
         $data = $this->input->post();
         $this->load->library('form_validation');
         $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
-        $this->form_validation->set_rules("no_of_months","No_of_months","required",array("required"=>"Please Select No. of months"));
+        $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
         $this->form_validation->set_rules("employee","Employee","required",array("required"=>"Please Select Employee"));
         if($this->form_validation->run()==false){
             $this->session->set_flashdata('error',$this->form_validation->error_array());
@@ -62,35 +62,64 @@ class Salary extends CI_Controller{
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
         $employee = $this->salary_model->get_employee($data['employee']);
         $data['employee_name'] = $employee['name'];
-        $data['yearly_tax'] = $this->calculate_tax_by_recursion($yearly_tax = 0, $i = 0, $taxes, $data['annual_tax_exemption']);
+        $rem = $data['taxable_for_month'] *12;
+        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem);
         $result = $this->salary_model->salary_sheet($data);
-        echo '<pre>'; print_r($data);
+        if($result['status'] == 'success'){
+            redirect('salary/salary_table');
+        }
+        else{
+            $this->session->set_flashdata('error',$result['message']);
+            redirect('salary/salary_table');
+        }
     }
 
-    public function calculate_tax_by_recursion($yearly_tax, $i, $taxes,$remaining){
+    public function calculate_tax_by_recursion($monthly_tax, $i, $taxes,$remaining){
         $length = $i+1;
         if($length ==  count($taxes)){
             if($remaining <= $taxes[$i]['amount']){
-                $yearly_tax = $yearly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $yearly_tax;
+                $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
+                return $monthly_tax;
             }
             else{
-                $yearly_tax = $yearly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
+                $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
                 $remaining = $remaining -  $taxes[$i]['amount'];
-                return $yearly_tax;
+                return $monthly_tax;
             }   
         }
         else{
             if($remaining <= $taxes[$i]['amount']){
-                $yearly_tax = $yearly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $yearly_tax;
+                $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
+                return $monthly_tax;
             }
             else{
-                $yearly_tax = $yearly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
+                $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
                 $remaining = $remaining -  $taxes[$i]['amount'];
                 $i++;
-                return $this->calculate_tax_by_recursion($yearly_tax,$i,$taxes,$remaining);
+                return $this->calculate_tax_by_recursion($monthly_tax,$i,$taxes,$remaining);
             }   
         }
+    }
+    public function get_tax_amount_yearly(){
+        $data = $this->input->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
+        $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
+        $this->form_validation->set_rules("employee","Employee","required",array("required"=>"Please Select Employee"));
+        if($this->form_validation->run()==false){
+            $this->session->set_flashdata('error',$this->form_validation->error_array());
+            redirect('salary/salary_table');
+        }
+        if($data['marital_status']  == 'Married'){
+            $marital_status     =   1;
+        }
+        else{
+            $marital_status     =   0;
+        }
+        $data['marital']    =   $marital_status;
+        $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
+        $rem = $data['taxable_for_month'] *12;
+        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem);
+        print_r(json_encode($data['monthly_tax']));
     }
 }

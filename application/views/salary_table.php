@@ -41,7 +41,21 @@
                     </select>
                 </div>
                 <div class = "form-group col-sm">
-                    <label class = "control-label" >No. of Months<input type = "number" class ="form-control no_of_months" name = "no_of_months" value = "0"></label><br>
+                    <label>Select Month</label>
+                    <select class="form-control" id="month" name="month">
+                        <option value="01" selected>Baisakh</option>
+                        <option value="02">Jestha</option>
+                        <option value="03">Asar</option>
+                        <option value="04">Shrawan</option>
+                        <option value="05">Bhadra</option>
+                        <option value="06">Ashoj</option>
+                        <option value="07">Kartik</option>
+                        <option value="08">Mangsir</option>
+                        <option value="09">Poush</option>
+                        <option value="10">Magh</option>
+                        <option value="11">Falgun</option>
+                        <option value="12">Chaitra</option>
+                    </select>
                 </div>
             </div>
             <div class="row">
@@ -53,28 +67,43 @@
                 </div>
             </div>
             <div class = "row salary-breakup">
-                <div class ="form-group col-sm annual-deduction">
-                    <h3>Monthly Deductions</h3>
-                    <div class = "form-group col-sm">
+                <div class ="row col-12 annual-deduction">
+                    <h3  class ="col-12">Monthly Deductions</h3>
+                    <div class = "form-group col-md-3">
+                        <label class = "control-label" >Working Days<input type = "number" class ="form-control wd" name = "wd" value = "0"></label><br>
+                    </div>
+                    <div class = "form-group col-md-3">
+                        <label class = "control-label" >Unpaid Leaves<input type = "number" class ="form-control ul" name = "ul" value = "0"></label><br>
+                    </div>
+                    <div class = "form-group col-md-3">
+                        <label class = "control-label" >Previous Advance<input type = "number" class ="form-control pa" name = "pa" value = "0"></label><br>
+                    </div>
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Insurance<input type = "number" class ="form-control insurance" name="insurance" value = "0"></label><br>
                     </div>
-                    <div class = "form-group col-sm">
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Citizen Investment Trust<input type = "number" class ="form-control cit" name = "cit" value = "0"></label><br>
                     </div>
-                    <div class = "form-group col-sm">
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Providend Fund<input type = "number" class ="form-control pf" name = "pf" value = "0"></label><br>
                     </div>
-                    <div class = "form-group col-sm">
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Social Security<input type = "number" class ="form-control ss" name ="ss" value = "0"></label><br>
                     </div>
-                    <div class = "form-group col-sm">
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Total Exemption<input type = "number" class ="form-control te" value = "0" name="te" readonly></label><br>
                     </div>
-                    <div class = "form-group col-sm">
+                    <!-- <div class = "form-group col-md-3">
                         <label class = "control-label" >Taxable For Selected Month<input type = "number" class ="form-control annual_tax_exemption" name ="annual_tax_exemption" readonly></label><br>
-                    </div>
-                    <div class = "form-group col-sm">
+                    </div> -->
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Taxable For Month<input type = "number" class ="form-control taxable_for_month" name ="taxable_for_month" readonly></label><br>
+                    </div>
+                    <div class = "form-group col-md-3">
+                        <label class = "control-label" >Deductions<input type = "number" class ="form-control deductions" name ="deductions" value = "0" readonly></label><br>
+                    </div>
+                    <div class = "form-group col-md-3">
+                        <label class = "control-label" >Total Payable<input type = "number" class ="form-control total_payable" name ="total_payable" value="" readonly></label><br>
                     </div>
                 </div>
             </div>
