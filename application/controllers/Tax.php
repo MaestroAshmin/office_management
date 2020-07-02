@@ -66,7 +66,6 @@ class Tax extends CI_Controller
         if($_POST){
            
             $data = $this->input->post();
-            // echo print_r($data);exit;
             $this->load->library('form_validation');
             $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
             $this->form_validation->set_rules("current_fy","Current_FY","required",array("required"=>"Please Select Status of Fiscal Year"));
