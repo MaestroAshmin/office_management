@@ -95,7 +95,7 @@
                         }
                     ?>
                     <div class="row employee-section col-12">
-                        <div class="form-group col-12 bg-gradient-primary text-white text-center">
+                        <div class="form-group col-12 emloyee-section-title text-white text-center">
                             <h4>Employee Details</h4>
                         </div>
 

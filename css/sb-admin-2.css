@@ -12213,3 +12213,7 @@ table.dataTable thead .sorting_desc:before,table.dataTable thead .sorting_desc:a
   padding: 6px 25px;
   font-weight: 700;
 }
+
+.sidebar, .emloyee-section-title{
+  background-color: rgba(0, 128,128,1);; 
+}

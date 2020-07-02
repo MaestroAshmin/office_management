@@ -9,12 +9,10 @@ class Pdfgenerator {
 
   public function generate($html, $filename='', $stream=TRUE, $paper = 'A4', $orientation = "portrait")
   {
-
     $dompdf = new DOMPDF();
     $dompdf->loadHtml($html);
     $dompdf->setPaper($paper, $orientation);
-
-    $dompdf->set_option('defaultMediaType', 'all');
+    $dompdf->set_option('defaultMediaType','all');
     $dompdf->set_option('isFontSubsettingEnabled', true);
     $dompdf->set_option('isRemoteEnabled',true);  
 
