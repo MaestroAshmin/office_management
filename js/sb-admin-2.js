@@ -2573,4 +2573,17 @@ if($('.drag-scroll').length>0){
       });
     });
 
+    if($('#print_salary').length>0){
+      $('#print_salary').on('click',function(){
+        let to_be_printed = [];
+        $('input[name="print"]:checked').each(function() {
+          to_be_printed.push(this.value);
+        });
+       
+        if(to_be_printed.length>0){
+          location.href = site_url+'salary/get_salary_details_by_id?id='+to_be_printed;
+        }
+      });
+    }
+
 });

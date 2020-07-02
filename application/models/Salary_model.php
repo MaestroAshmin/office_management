@@ -98,10 +98,26 @@ class Salary_model extends CI_model{
         return $result_status;
     }
     public function get_salary_details(){
-        $query = $this->db->select('fy.fiscal_year,ss.month,u.name,d.Designation,ss.monthly_total,ss.total_exemption,ss.monthly_tax,ss.previous_advance,ss.deductions,ss.total_payable')->from('tbl_salary_sheet as ss')
+        $query = $this->db->select('ss.id,fy.fiscal_year,ss.month,u.name,d.Designation,ss.monthly_total,ss.total_exemption,ss.monthly_tax,ss.previous_advance,ss.deductions,ss.total_payable')->from('tbl_salary_sheet as ss')
                             ->join('tbl_fiscal_year as fy','fy.id=ss.fiscal_year_id')
                             ->join('tbl_users as u','u.id=ss.user_id')
                             ->join('tbl_designation as d', 'd.id=u.des_id')
+                            ->order_by('ss.created_at','DESC')->get();
+        if($query){
+            $result = $query->result_array();
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function get_salary_details_by_id($data){
+        $query = $this->db->select('ss.id,fy.fiscal_year,ss.month,u.name,d.Designation,ss.monthly_total,ss.basic_salary,ss.house_rent, ss.food,ss.conveyance,ss.other,ss.total_exemption,ss.monthly_tax,ss.deductions,ss.total_payable,ss.previous_advance')->from('tbl_salary_sheet as ss')
+                            ->join('tbl_fiscal_year as fy','fy.id=ss.fiscal_year_id')
+                            ->join('tbl_users as u','u.id=ss.user_id')
+                            ->join('tbl_designation as d', 'd.id=u.des_id')
+                            ->where('ss.id IN ('.$data['id'].')')
                             ->order_by('ss.created_at','DESC')->get();
         if($query){
             $result = $query->result_array();

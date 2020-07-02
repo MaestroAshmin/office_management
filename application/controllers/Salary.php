@@ -6,12 +6,11 @@ class Salary extends CI_Controller{
     public function __construct(){
 
         parent::__construct();
-        $this->load->library('session');
+        $this->load->library(array('session','Pdfgenerator'));
         $this->load->model('salary_model');
         $this->load->model('tax_model');
 
     }
-
        
     public function salary_table()
     {
@@ -143,4 +142,31 @@ class Salary extends CI_Controller{
         );
         $this->load->view('includes/template', $data);
     }
+    public function get_salary_details_by_id(){
+        $get = $this->input->get();
+        $salary_data    =   $this->salary_model->get_salary_details_by_id($get);
+        $data = array(
+            'salary_data'=> $salary_data
+        );
+		$html = $this->load->view('template_salary',$data,true);
+        $this->pdfgenerator->generate($html,'salary');
+    }
+
+	// public function template(){
+    //     $user_data = array("id"=>array('1','2'));
+    //     $salary_data    =   $this->salary_model->get_salary_details_by_id($user_data);
+    //     $data = array(
+    //         'salary_data' => $salary_data 
+    //     );
+	// 	$this->load->view('template_salary',$data);
+	// }
+
+	// public function generate_salarypdf(){ 
+    //     $user_data = $this->input->post();
+    //     $data = array(
+    //         'user_data' => $user_data 
+    //     );
+	// 	$html = $this->load->view('template_salary',$data,true);
+    //     $this->pdfgenerator->generate($html,'salary');
+	// }
 }

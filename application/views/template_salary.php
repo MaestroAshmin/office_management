@@ -3,7 +3,7 @@
     <title>Template</title>
 </head>
 <body>
-        <?php for($i=0;$i<7;$i++){    
+        <?php for($i=0;$i<count($salary_data);$i++){    
             if($i%2==0 && $i!=0){
                 echo "<div style='clear:both'></div>";
             }
@@ -17,75 +17,71 @@
                 </tr>
                 <tr>
                     <td>Employee Name : </td>
-                    <td>Ram Bahadur<?php echo $i; ?></td>
+                    <td><?php echo $salary_data[$i]['name'] ?></td>
+                </tr>
+                <tr>
+                    <td>Designation : </td>
+                    <td><?php echo $salary_data[$i]['Designation'] ?></td>
                 </tr>
                 <tr>
                     <td>Fiscal Year : </td>
-                    <td>2056</td>
+                    <td><?php echo $salary_data[$i]['fiscal_year'] ?></td>
                 </tr>
                 <tr>
                     <td>Month : </td>
-                    <td>Baisakh</td>
+                    <td><?php echo $salary_data[$i]['month'] ?></td>
                 </tr>
                 <tr>
-                    <td>Working Days : </td>
-                    <td>25</td>
+                    <td>Monthly Gross Salary : </td>
+                    <td><?php echo $salary_data[$i]['monthly_total'] ?></td>
                 </tr>
                 <tr>
-                    <td>Unpaid Leaves : </td>
-                    <td>2</td>
+                    <td>Basic Salary</td>
+                    <td><?php echo $salary_data[$i]['basic_salary'] ?></td>
                 </tr>
                 <tr>
-                    <td>Remain Advances : </td>
-                    <td>2</td>
+                    <td>House Rent Allowance</td>
+                    <td><?php echo $salary_data[$i]['house_rent'] ?></td>
                 </tr>
                 <tr>
-                    <td>Insurance : </td>
-                    <td>20000</td>
+                    <td>Food Allowance</td>
+                    <td><?php echo $salary_data[$i]['food'] ?></td>
                 </tr>
                 <tr>
-                    <td>Citizen Investment Trust : </td>
-                    <td>20000</td>
+                    <td>Conveyance Allowance</td>
+                    <td><?php echo $salary_data[$i]['conveyance'] ?></td>
                 </tr>
                 <tr>
-                    <td>Providend Fund : </td>
-                    <td>20000</td>
+                    <td>Other Allowance</td>
+                    <td><?php echo $salary_data[$i]['other'] ?></td>
                 </tr>
                 <tr>
-                    <td>Social Security : </td>
-                    <td>20000</td>
+                    <td>Total</td>
+                    <td><?php echo $salary_data[$i]['monthly_total'] ?></td>
                 </tr>
                 <tr>
-                    <td>Total Exception : </td>
-                    <td>60000</td>
+                    <td>Previous Advances : </td>
+                    <td><?php echo $salary_data[$i]['previous_advance'] ?></td>
                 </tr>
                 <tr>
-                    <td>Annual Total Exception : </td>
-                    <td>1000000</td>
+                    <td>Deductions : </td>
+                    <td><?php echo $salary_data[$i]['deductions'] ?></td>
                 </tr>
                 <tr>
-                    <td>Insurance : </td>
-                    <td>20000</td>
+                    <td>Total Exemption : </td>
+                    <td><?php echo $salary_data[$i]['total_exemption'] ?></td>
                 </tr>
                 <tr>
-                    <td>Citizen Investment Trust : </td>
-                    <td>20000</td>
+                    <td>Monthly Tax : </td>
+                    <td><?php echo $salary_data[$i]['monthly_tax'] ?></td>
                 </tr>
                 <tr>
-                    <td>Providend Fund : </td>
-                    <td>20000</td>
+                    <td>Total Payable : </td>
+                    <td><?php echo $salary_data[$i]['total_payable'] ?></td>
                 </tr>
                 <tr>
-                    <td>Social Security : </td>
-                    <td>20000</td>
-                </tr>
-                <tr>
-                    <td>Total Exception : </td>
-                    <td>60000</td>
-                </tr>
-                <tr>
-                    <td>Annual Total Exception : </td>
-                    <td>1000000</td>
+                    <td>Paid Amount : </td>
+                    <td><?php echo $salary_data[$i]['monthly_total'] ?></td>
                 </tr>
             </table>
         </div>

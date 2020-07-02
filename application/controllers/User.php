@@ -50,15 +50,6 @@ class User extends CI_Controller
 		}
 	}
 
-	public function template(){
-		$this->load->view('template_salary');
-	}
-
-	public function generatepdf(){
-		$html = $this->load->view('template_salary','',true);
-		$this->pdfgenerator->generate($html,'rara');
-	}
-
 	private function get_monthly_income_expense($data_type){
 		$year 	= date('Y');
 		$month  = date('m');

@@ -20,10 +20,12 @@
           ?>
           <!-- Content Row -->
         <div class="row">
-            
+            <div class="container form-group col-12">
+                <button class="btn btn-primary float-right" id="print_salary">Print</button>
+            </div>
             <div class="swipe-loader"></div>
             <div class="container table-responsive drag-scroll">
-                <table class="table table-bordered" width = "100%" id="">
+                <table class="table table-bordered calculated_salary_table" width = "100%" id="transaction">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">S.N</th>
@@ -56,8 +58,11 @@
                            <td><?php echo $data['deductions'] ?></td>
                            <td><?php echo $data['total_payable'] ?></td>
                            <td><?php echo $data['monthly_total'] ?></td>
+                           <td>
+                                <input type="checkbox" name="print" value="<?php echo $data['id'] ?>">
+                           </td>
                         </tr>
-                    <?php } ?>   
+                    <?php $i++; } ?>   
                     </tbody>
                 </table>       
             </div>
