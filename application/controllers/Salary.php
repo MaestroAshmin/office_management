@@ -10,6 +10,20 @@ class Salary extends CI_Controller{
         $this->load->model('salary_model');
         $this->load->model('tax_model');
 
+        $sess_data = $this->session->all_userdata();
+        $user_id   = $sess_data['user_id'];
+        $user_role  =   $sess_data['user_role'];
+        $user_dept  =   $sess_data['user_dept'];
+        $user_des  =   $sess_data['user_des'];
+        $user_logged_in  =   $sess_data['user_logged_in'];
+
+        if($user_logged_in != '1'){
+            redirect('user', 'refresh');
+        }
+
+        if($user_role != '1' && $user_dept!='1'){
+            redirect('user', 'refresh');
+        }
     }
        
     public function salary_table()

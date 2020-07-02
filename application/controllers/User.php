@@ -993,7 +993,7 @@ class User extends CI_Controller
 						'address_temporary'		=> Serialize($address_temp),
 						'guardian_details'		=> Serialize($guardian_details),
 						'education_details'		=> Serialize($education_details),
-						'married_status'		=> $post['married_status'],
+						'marital_status'		=> $post['married_status'],
 						'dept_id'				=> $post['department'],
 						'des_id'				=> $post['designation']
 					);
@@ -1109,7 +1109,7 @@ class User extends CI_Controller
 						'address_temporary'		=> unserialize($emp_info['address_temporary']),
 						'guardian_details'		=> unserialize($emp_info['guardian_details']),
 						'education_details'		=> unserialize($emp_info['education_details']),
-						'marital_status'		=> $emp_info['married_status'],
+						'marital_status'		=> $emp_info['marital_status'],
 						'dept_id'				=> $emp_info['dept_id'],
 						'des_id'				=> $emp_info['des_id']
 					);

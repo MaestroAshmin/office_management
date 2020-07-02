@@ -240,8 +240,8 @@
                             <div>
                                 <select name="married_status" class="form-control">
                                     <option value="">Select</option>
-                                    <option value="0" <?php echo $emp_data['married_status']=='0' ? 'selected' : '' ?>>Unmarried</option>
-                                    <option value="1" <?php echo $emp_data['married_status']=='1' ? 'selected' : '' ?>>Married</option>
+                                    <option value="0" <?php echo $emp_data['marital_status']=='0' ? 'selected' : '' ?>>Unmarried</option>
+                                    <option value="1" <?php echo $emp_data['marital_status']=='1' ? 'selected' : '' ?>>Married</option>
                                 </select>
                             </div>
                         </div>
