@@ -37,8 +37,8 @@ i<div class="container-fluid">
                     <button class="btn btn-primary">Add Fiscal Year</button>    
                 </div>        
             </form>
-         <table class="table table-bordered">
-                <thead class="thead-dark">  
+         <table class="table" id="table">
+                <thead>  
                     <tr>
                         <th scope="col">Fiscal Year</th>
                         <th scope="col" class="text-center">Status</th>

@@ -22,8 +22,8 @@
           <div class="row">
          
             <div class="container table-responsive drag-scroll">
-                <table class="table table-bordered" id="">
-                    <thead class="thead-dark">
+                <table class="table" id="transaction">
+                    <thead>
                         <tr>
                             <th scope="col">S.N</th>
                             <th scope="col">Bus Company</th>

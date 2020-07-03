@@ -18,7 +18,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="theme-color">
   <div class="container">
 
     <!-- Outer Row -->
@@ -30,8 +30,8 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-              <div class="col-lg-6">
-                <img src="<?php echo site_url();?>img/download.jpg" class="mx-auto d-block pt-5">
+              <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                <img src="<?php echo site_url();?>img/download.jpg" width="300" height="150">
               </div>
               <div class="col-lg-6">
                 <div class="p-5">

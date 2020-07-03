@@ -16,9 +16,9 @@
 
         <!-- Content Row -->
         <div class="row">
-            <div class="container col-lg-12">
-                <table class="table report table-reponsive table-bordered">
-                    <thead class="thead-dark">
+            <div class="container table-responsive drag-scroll">
+                <table class="table report" id="transaction">
+                    <thead>
                         <tr>
                             <th scope="col">S.N</th>
                             <th scope="col">Date</th>

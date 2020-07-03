@@ -25,8 +25,8 @@
             </div>
             <div class="swipe-loader"></div>
             <div class="container table-responsive drag-scroll">
-                <table class="table table-bordered calculated_salary_table" width = "100%" id="transaction">
-                    <thead class="thead-dark">
+                <table class="table calculated_salary_table" width = "100%" id="transaction">
+                    <thead>
                         <tr>
                             <th scope="col">S.N</th>
                             <th scope="col">Date (FY Month)</th>

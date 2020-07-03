@@ -32,8 +32,8 @@
                     </select>
                 </div>  
                 <div>
-                    <table class="table table-bordered">
-                            <thead class="thead-dark">
+                    <table class="table" id="table">
+                            <thead>
                                 <tr>
                                     <th scope ="col">Tax %</th>
                                     <th scope ="col">Marital Status</th>

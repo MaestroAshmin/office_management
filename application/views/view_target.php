@@ -14,8 +14,8 @@
         <div class="row">
             <div class="swipe-loader"></div>
             <div class="container table-responsive drag-scroll">
-                <table class="table table-bordered" id="transaction">
-                    <thead class="thead-dark">
+                <table class="table" id="transaction">
+                    <thead>
                         <tr>
                         <th>S.N</th>
                         <th style="width:500px;">Title</th>

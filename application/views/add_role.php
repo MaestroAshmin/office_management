@@ -15,8 +15,8 @@
     <!-- Content Row -->
     <div class="row">       
          <div class="col-sm-12 col-md-5">
-            <table class="table table-bordered">
-                <thead class="thead-dark">
+            <table class="table" id="table-role">   
+                <thead>
                     <tr>
                         <td colspan="2">
                             <form class="add_role_form" action="<?php echo site_url();?>user/add_role" method="post" enctype="multipart/form-data">
@@ -26,7 +26,7 @@
                                 </div>        
                             </form>
                         </td>
-                    </tr>    
+                    </tr> 
                     <tr>
                         <th scope="col">User Type</th>
                         <th scope="col" class="text-center">Action</th>
