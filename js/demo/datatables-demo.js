@@ -24,8 +24,6 @@ minDateFilter = "";
 maxDateFilter = "";
 $(function () {
 $('.reset_btn1').click(function () {
-    $("#from_date").val('');
-    $("#to_date").val('');
     minDateFilter = '';
     maxDateFilter = '';
 

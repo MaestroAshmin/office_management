@@ -1,7 +1,6 @@
 (function($) {
   "use strict"; // Start of use strict
-  let site_url = $('.footer').attr('data-siteurl');
-
+  let site_url = $('.footer').attr('data-siteurl')+'/acc';
 
   $('.delete').on("click", function (e) {
     e.preventDefault();
@@ -1107,7 +1106,7 @@ function callAutocomplete(field_id){
     let recipient = button.data('whatever'); 
     console.log(recipient);
     let modal = $(this);
-    modal.find('.modal-content img').attr('src',url+'/acc/images/'+recipient);
+    modal.find('.modal-content img').attr('src',url+'/images/'+recipient);
   });
   // $('.targetModal').on('show.bs.modal', function (event) {
   //   let link = window.location.origin;
@@ -1115,7 +1114,7 @@ function callAutocomplete(field_id){
   //   let target_id = button.data('whatever'); 
   //   console.log(target_id);
   //   $.ajax({
-  //     url: link + '/acc/user/get_each_target',
+  //     url: link + '/user/get_each_target',
   //     type: 'post',
   //     data: {
   //       'id': target_id
@@ -1182,7 +1181,7 @@ function callAutocomplete(field_id){
       let val = $('option:selected', '#department-edit').attr('value');
       $('#designation-edit').empty();
       $.ajax({
-        url: base_url + "/acc/user/get_designations",
+        url: site_url + "/user/get_designations",
         data:{
           'id': val
         },
@@ -1212,7 +1211,7 @@ function callAutocomplete(field_id){
     let val = $('option:selected', this).attr('value');
     $('#designation-edit').empty();
     $.ajax({
-      url: base_url + "/acc/user/get_designations",
+      url: site_url + "/user/get_designations",
       data:{
         'id': val
       },
@@ -1247,10 +1246,9 @@ $(document).ready(function(){
     $(".employee-section").show();
     
     let dept = $("#department-edit").children("option:selected").val();
-    base_url = window.location.origin;
     let val = $('option:selected', this).attr('value');
     $.ajax({
-      url: base_url + "/acc/user/get_designations",
+      url: site_url + "/user/get_designations",
       data:{
         'id': dept
       },
@@ -1282,7 +1280,7 @@ $(document).ready(function(){
         user_type : {
             required :  true,
             remote: {
-              url: base_url+"/acc/user/check_role",
+              url: site_url+"/user/check_role",
               type: "post",
               data: {
                   user_type : function () {
@@ -1313,7 +1311,7 @@ $(document).ready(function(){
         contact_person    : {
                             required :  true,
                             remote: {
-                              url: base_url+"/acc/user/check_user_phone",
+                              url: site_url+"/user/check_user_phone",
                               type: "post",
                               data: {
                                   contact_person : function () {
@@ -1326,7 +1324,7 @@ $(document).ready(function(){
         email             :  {
                               required :  true,
                               remote: {
-                                url: base_url+"/acc/user/check_user_email",
+                                url: site_url+"/user/check_user_email",
                                 type: "post",
                                 data: {
                                     email : function () {
@@ -1359,7 +1357,7 @@ $(document).ready(function(){
         emp_code          : {
               required :  true,
               remote: {
-                url: base_url+"/acc/user/check_emp_code",
+                url: site_url+"/user/check_emp_code",
                 type: "post",
                 data: {
                     emp_code : function () {
@@ -1431,7 +1429,7 @@ $('.update_user_form').validate({
               required :  true,
               remote   : {
                 param: {
-                  url: base_url+"/acc/user/check_user_phone",
+                  url: site_url+"/user/check_user_phone",
                   type: "post",
                   data: {
                       contact_person : function () {
@@ -1449,7 +1447,7 @@ $('.update_user_form').validate({
                 required :  true,
                 remote   : {
                   param: {
-                    url: base_url+"/acc/user/check_user_email",
+                    url: site_url+"/user/check_user_email",
                     type: "post",
                     data: {
                         email : function () {
@@ -1490,7 +1488,7 @@ $('.update_user_form').validate({
             required :  true,
             remote: {
               param : {
-                url: base_url+"/acc/user/check_emp_code",
+                url: site_url+"/user/check_emp_code",
                 type: "post",
                 data: {
                     emp_code : function () {
@@ -1735,7 +1733,7 @@ $('.update_user_form').validate({
         account_no            :  {
           required :  true,
           remote: {
-            url: base_url+"/acc/bankAccount/check_account_no",
+            url: site_url+"/bankAccount/check_account_no",
             type: "post",
             data: {
                 email : function () {
@@ -1766,7 +1764,7 @@ $('.update_user_form').validate({
         required :  true,
         remote   : {
           param: {
-            url: base_url+"/acc/bankAccount/check_account_no",
+            url: site_url+"/bankAccount/check_account_no",
             type: "post",
             data: {
                 contact_person : function () {
@@ -1872,7 +1870,7 @@ $('.add_employee_record').validate({
       fy_id                  :  {
               required :  true,
               remote: {
-                url: base_url+"/acc/user/check_fiscal_year",
+                url: site_url+"/user/check_fiscal_year",
                 type: "post",
                 data: {
                     id : function () {
@@ -1919,7 +1917,7 @@ $('.update_employee_record').validate({
               required :  true,
               remote: {
                 param: {
-                  url: base_url+"/acc/user/check_fiscal_year",
+                  url: site_url+"/user/check_fiscal_year",
                   type: "post",
                   data: {
                       id : function () {
@@ -1965,9 +1963,9 @@ $('.update_employee_record').validate({
 
 
   // if($(".add_target_form #assigned_to").length >= 1){
-  //   base_url = window.location.origin;
+  //   site_url = window.location.origin;
   //   $.ajax({
-  //     url: base_url + "/acc/user/get_all_management_role",
+  //     url: site_url + "/user/get_all_management_role",
   //     type: 'post',
   //     success: function(response){
   //       let objects = JSON.parse(response);
@@ -2102,7 +2100,7 @@ if($('.drag-scroll').length>0){
     var expense_data_monthly = [];
     var expense_data_yearly = [];
 
-    let formatter = new Intl.NumberFormat('en-IN', { 
+    var formatter = new Intl.NumberFormat('en-IN', { 
       minimumFractionDigits: 2
     }); 
 

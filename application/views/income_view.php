@@ -25,22 +25,14 @@
                     <input type="radio" name="filtertable" value="day" />Today
                     <input type="radio" name="filtertable"  value="month"/>This Month
                     <input type="radio" name="filtertable"  value="year"/>This Year
-                </div>
-                <div id="date_filter">
-                    <!-- <span id="date-label-from" class="date-label">Date From (A.D): 
-                    </span>
-                    <input class="date_range_filter date" id="from_date" type="text"/>
-                    <span id="date-label-to" class="date-label">To: 
-                    </span> -->
-                    <!-- <input class="date_range_filter date datepicker_to" id="to_date" type="text"/> -->
-                    <button class="btn reset_btn1">Reset</button>
+                    <button class="reset_btn1">Reset</button>
                 </div>
             </div>
          
             <div class="swipe-loader"></div>
             <div class="container table-responsive drag-scroll">
-                <table class="table table-bordered" id="transaction">
-                    <thead class="thead-dark">
+                <table class="table" id="transaction">
+                    <thead>
                         <tr>
                             <th scope="col" style="width:40px;">S.N</th>
                             <th scope="col">Date (A.D)</th>
@@ -64,7 +56,7 @@
                     foreach ($transactions as $transaction){
                         ?>
                             <tr>
-                                <td><?php echo $i ?></td>
+                                <td ><?php echo $i ?></td>
                                 <td><?php echo $transaction['english_date']?></h5></td>
                                 <td><?php echo $transaction['nepali_date']?></h5></td>
                                 <td><h5><?php echo $transaction['Heading']?></h5></td>
@@ -74,14 +66,12 @@
                                 <td><?php echo $transaction['Amount']?></td>
                                 <td><?php echo $transaction['Remarks']?></td>
                                 <td><?php echo $transaction['Details']?></td>
-                                <td style="white-space: nowrap;">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".exampleModal" data-whatever="<?php echo $transaction['Image']?>">
-                                    View Receipt
+                                <td>
+                                <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target=".exampleModal" data-whatever="<?php echo $transaction['Image']?>">
+                                    <i class="fa fa-eye"></i>
                                 </button>
                                 <?php if($transaction['Excel']!='' || !empty($transaction['Excel'])){?>
-                                    <p>
-                                        <?=anchor('images/'.$transaction['Excel'], 'Download Report')?>
-                                    </p>
+                                    <a class="btn btn-success" style="margin-left:5px;" href="<?php echo site_url().'images/'.$transaction['Excel']?>"><i class="fas fa-file-excel"></i></a>
                                 <?php }else{?>
                                     <p>No File</p>
                                 <?php }?>

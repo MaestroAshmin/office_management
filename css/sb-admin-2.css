@@ -12062,9 +12062,8 @@ body.sidebar-toggled footer.sticky-footer {
 }
 .form-control {
   border: 1px solid #ccc;
-  border-radius: 3px;
+  border-radius: 0px;
   box-shadow: none;
-  margin-bottom: 15px;
 }
 
 .ui-autocomplete {
@@ -12215,5 +12214,20 @@ table.dataTable thead .sorting_desc:before,table.dataTable thead .sorting_desc:a
 }
 
 .sidebar, .emloyee-section-title{
-  background-color: rgba(0, 128,128,1);; 
+  background-color: #009976;
+}
+
+#transaction {
+  white-space: nowrap;
+}
+
+#transaction thead tr:first-child{
+  background: #009976;
+  color:white;
+}
+.reset_btn1{
+  border: none;
+  background: #009976;
+  color: white;
+  outline: none;
 }
