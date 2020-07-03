@@ -147,13 +147,13 @@
                             <div>
                                 <select name="province" class="form-control">
                                     <option value=''>Select Province</option>
-                                    <option value='1' <?php echo $address_per['province']=='1' ? 'selected' : '' ?>>Pradesh 1</option>
-                                    <option value='2' <?php echo $address_per['province']=='2' ? 'selected' : '' ?>>Pradesh 2</option>
-                                    <option value='3' <?php echo $address_per['province']=='3' ? 'selected' : '' ?>>Bagmati Pradesh</option>
-                                    <option value='4' <?php echo $address_per['province']=='4' ? 'selected' : '' ?>>Pradesh 4</option>
-                                    <option value='5' <?php echo $address_per['province']=='5' ? 'selected' : '' ?>>Pradesh 5</option>
-                                    <option value='6' <?php echo $address_per['province']=='6' ? 'selected' : '' ?>>Pradesh 6</option>
-                                    <option value='7' <?php echo $address_per['province']=='7' ? 'selected' : '' ?>>Pradesh 7</option>
+                                    <option value='1' <?php echo $address_per['province']=='1' ? 'selected' : '' ?>>Province 1</option>
+                                    <option value='2' <?php echo $address_per['province']=='2' ? 'selected' : '' ?>>Province 2</option>
+                                    <option value='3' <?php echo $address_per['province']=='3' ? 'selected' : '' ?>>Bagmati</option>
+                                    <option value='4' <?php echo $address_per['province']=='4' ? 'selected' : '' ?>>Gandaki</option>
+                                    <option value='5' <?php echo $address_per['province']=='5' ? 'selected' : '' ?>>Province 5</option>
+                                    <option value='6' <?php echo $address_per['province']=='6' ? 'selected' : '' ?>>Karnali</option>
+                                    <option value='7' <?php echo $address_per['province']=='7' ? 'selected' : '' ?>>Sudurpaschim</option>
                                 </select>
                             </div>
                         </div>

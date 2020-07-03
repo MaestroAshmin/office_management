@@ -33,7 +33,7 @@
                     <label>Total Montly Salary</label>
                     <div>
                         <input type="hidden" name="total_monthly" id="total_monthly" value="<?php echo $emp_record['total_monthly']; ?>">
-                        <input type="number" name="total_monthly" id="total_monthly_disabled" class="form-control" value="<?php echo $emp_record['total_monthly']; ?>" disabled>
+                        <input type="number"  id="total_monthly_disabled" class="form-control" value="<?php echo $emp_record['total_monthly']; ?>" disabled>
                     </div>
                 </div>     
 
@@ -77,19 +77,20 @@
                 <div class="form-group col-md-4">
                     <label>Annual Leave Permitted *</label>
                     <div>
-                        <input type="number" name="annual_leave_permitted" value="<?php echo $emp_record['annual_leave_permitted']; ?>" class="form-control">
+                        <input type="hidden" name="annual_leave_permitted" id="annual_leave_permitted" value="<?php echo $emp_record['annual_leave_permitted']; ?>" class="form-control">
+                        <input type="number" name="annual_leave_permitted_de" id="annual_leave_permitted_disabled" value="<?php echo $emp_record['annual_leave_permitted']; ?>" class="form-control" disabled>
                     </div>
                 </div>     
                 <div class="form-group col-md-4">
                     <label>Annual Company Leave *</label>
                     <div>
-                        <input type="number" name="annual_company_leave" value="<?php echo $emp_record['annual_company_leave']; ?>" class="form-control">
+                        <input type="number" name="annual_company_leave" id="annual_company_leave" value="<?php echo $emp_record['annual_company_leave']; ?>" class="form-control">
                     </div>
                 </div>     
                 <div class="form-group col-md-4">
                     <label>Holidays *</label>
                     <div>
-                        <input type="number" name="holidays" value="<?php echo $emp_record['holidays']; ?>" class="form-control">
+                        <input type="number" name="holidays" id="holidays" value="<?php echo $emp_record['holidays']; ?>" class="form-control">
                     </div>
                 </div>     
 

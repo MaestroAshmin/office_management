@@ -125,13 +125,13 @@
                             <div>
                                 <select name="province" class="form-control">
                                     <option value=''>Select Province</option>
-                                    <option value='1'>Pradesh 1</option>
-                                    <option value='2'>Pradesh 2</option>
-                                    <option value='3'>Bagmati Pradesh</option>
-                                    <option value='4'>Pradesh 4</option>
-                                    <option value='5'>Pradesh 5</option>
-                                    <option value='6'>Pradesh 6</option>
-                                    <option value='7'>Pradesh 7</option>
+                                    <option value='1'>Province 1</option>
+                                    <option value='2'>Province 2</option>
+                                    <option value='3'>Bagmati</option>
+                                    <option value='4'>Gandaki</option>
+                                    <option value='5'>Province 5</option>
+                                    <option value='6'>Karnali</option>
+                                    <option value='7'>Sudurpaschim</option>
                                 </select>
                             </div>
                         </div>

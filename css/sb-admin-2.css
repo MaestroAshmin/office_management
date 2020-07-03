@@ -12225,6 +12225,31 @@ table.dataTable thead .sorting_desc:before,table.dataTable thead .sorting_desc:a
   background: #009976;
   color:white;
 }
+
+#table-role {
+  white-space: nowrap;
+}
+
+#table-role thead tr:nth-child(2){
+  background: #009976;
+  color:white;
+}
+
+
+#table {
+  white-space: nowrap;
+}
+
+#table thead tr:first-child{
+  background: #009976;
+  color:white;
+}
+
+.theme-color{
+  background: #009976;
+  color:white;
+}
+
 .reset_btn1{
   border: none;
   background: #009976;

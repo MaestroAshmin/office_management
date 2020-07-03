@@ -2506,11 +2506,19 @@ if($('.drag-scroll').length>0){
         $('#total_monthly, #total_monthly_disabled').val(total);
     });
 
+    $('#annual_company_leave,#holidays').keyup(function(e){
+      let annual_company_leave = parseInt($('#annual_company_leave').val());
+      let holidays             = parseInt($('#holidays').val());
+      let total                = annual_company_leave+holidays;
+
+      $('#annual_leave_permitted,#annual_leave_permitted_disabled').val(total);
+  });
+
     if($('#fy_id_view').length>0){
       change_emp_record();
       function change_emp_record(){
         $.ajax({
-          url: '../get_employee_record',
+          url: site_url+'user/get_employee_record',
           type: 'post',
           data: {
             'emp_code' :  $('#emp_code').val(),
