@@ -57,7 +57,6 @@ class Salary extends CI_Controller{
     }
     public function calculate_tax(){
         $data = $this->input->post();
-        echo '<pre>';print_r($data);
         $this->load->library('form_validation');
         $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
         $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
