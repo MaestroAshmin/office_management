@@ -19,10 +19,10 @@
 </head>
 
 <body class="theme-color">
-  <div class="container">
+  <div class="container d-flex align-items-center" style="height:100vh;">
 
     <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <div class="row col-12 justify-content-center">
 
       <div class="col-xl-10 col-lg-12 col-md-9">
 
