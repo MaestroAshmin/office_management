@@ -22,6 +22,7 @@ class User_model extends CI_Model{
               $this->db->join('tbl_role','tbl_users.role = tbl_role.role_id');
               $this->db->join('tbl_designation','tbl_users.des_id = tbl_designation.id','left');
               $this->db->where('tbl_users.role!=',1);
+              $this->db->order_by('tbl_users.created_at','DESC');
               $query = $this->db->get(); 
               if ($query) {
               $result = $query->result_array();

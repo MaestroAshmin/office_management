@@ -2400,6 +2400,59 @@ if($('.drag-scroll').length>0){
         $(this).closest('tr').remove();
     });
     
+    $('#basic_salary ,#house_rent, #food, #conveyance,#other').keyup(function(e){
+        let basic_salary = parseInt($('#basic_salary').val());
+        let house_rent   = parseInt($('#house_rent').val());
+        let food         = parseInt($('#food').val());
+        let conveyance   = parseInt($('#conveyance').val());
+        let other        = parseInt($('#other').val());
+        let total        = basic_salary+house_rent+food+conveyance+other;
+
+        $('#total_monthly, #total_monthly_disabled').val(total);
+    });
+
+    $('#annual_company_leave,#holidays').keyup(function(e){
+      let annual_company_leave = parseInt($('#annual_company_leave').val());
+      let holidays             = parseInt($('#holidays').val());
+      let total                = annual_company_leave+holidays;
+
+      $('#annual_leave_permitted,#annual_leave_permitted_disabled').val(total);
+    });
+
+    if($('#fy_id_view').length>0){
+      change_emp_record();
+      function change_emp_record(){
+        $.ajax({
+          url: site_url+'user/get_employee_record',
+          type: 'post',
+          data: {
+            'emp_code' :  $('#emp_code').val(),
+            'fy_id'    :  $('#fy_id_view').val()
+          },
+          success : function(response){
+            let obj = JSON.parse(response);
+            $('#total_monthly').html(obj[0].total_monthly);
+            $('#basic_salary').html(obj[0].basic_salary);
+            $('#house_rent').html(obj[0].house_rent);
+            $('#food').html(obj[0].food);
+            $('#conveyance').html(obj[0].conveyance);
+            $('#other').html(obj[0].other);
+            $('#leave_permitted').html(obj[0].annual_leave_permitted);
+            $('#company_leave').html(obj[0].annual_company_leave);
+            $('#holidays').html(obj[0].holidays);
+            $('#resigned_on').html(obj[0].resigned_on);
+            $('#terminated_on').html(obj[0].terminated_on);
+            $('#increment_details').html(obj[0].increment_details);
+            $('#promotion_details').html(obj[0].promotion_details);
+            $('#edit_employee_record').attr('href',site_url+'user/edit_employee_record/'+$('#emp_id').val()+'/'+obj[0].id);
+            $('#delete_employee_record').attr('href',site_url+'user/delete_employee_record/'+$('#emp_id').val()+'/'+obj[0].id);
+          }
+        });
+      }
+      $('#fy_id_view').change(function(){
+        change_emp_record();
+      });
+    }
 
     $('#fiscal_years').change(function(){
       $('table tbody').empty();
@@ -2441,143 +2494,123 @@ if($('.drag-scroll').length>0){
         }
       });
     });
-    $('#employee').change(function(){
-      $('.pan-no').empty();
-      $('.emp-code').empty();
-      $('.marital-status').empty();
-      $('.salary-breakup1').empty();
-      $.ajax({
-        url: 'get_employee_info',
-        type: 'post',
-        data: {
-          'id' :  $('option:selected', this).attr('value')
-        },
-        success : function(response){
-          let obj = JSON.parse(response);
-          if(obj[0]['marital_status'] == 0)
-            {
-              marital_status = 'Unmarried';
-            }
-            else if(obj[0]['marital_status'] == 1)
-            {
-             marital_status = 'Married'
-            }
-          if(obj.length > 0){
-            $('.pan-no').append(
-              '<label>Pan Number</label>'+
-              '<input type="text" name="pan_no" class ="form-control" value ='+obj[0]['pan_no']+' readonly>'+
-              '</input>'
-            );
-            $('.emp-code').append(
-              '<label>Employee Code</label>'+
-              '<input type="text" name="emp_code" class ="form-control" value ='+obj[0]['emp_code']+' readonly >'+
-              '</input>'
-            );
-            $('.marital-status').append(
-              '<label>Marital Status</label>'+
-              '<input type="text" name="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
-              '</input>'
-              );
-              $('.salary-breakup1').append(
-                '<div class="form-group col-sm-12 d-inline-block">'+
-                    '<h3>Salary Breakup</h3><br>'+
-                    '<label>Basic Salary</label><input type = "number" class ="basic_salary form-control" name ="basic_salary" value ='+obj[0]['basic_salary']+' readonly>'+
-                    '<label>House Rent</label><input type = "number" class ="house_rent form-control" name ="house_rent" value ='+ obj[0]['house_rent']+' readonly>'+
-                    '<label>Food Allowance</label><input type = "number" class ="food form-control" name ="food" value ='+obj[0]['food']+' readonly><br>'+
-                    '<label>Conveyance Allowance</label><input type = "number" class ="conveyance form-control" name ="conveyance" value ='+obj[0]['conveyance']+' readonly>'+
-                    '<label>Other Allowance</label><input type = "number" class ="other form-control" name ="other" value ='+obj[0]['other']+' readonly>'+
-                    '<label>Monthly Total</label><input type = "number" class ="total_monthly form-control" name ="monthly_total" value ='+obj[0]['total_monthly']+' readonly>'+
-                '</div>'
-              );
-              $('.taxable_for_month').attr('value',obj[0]['total_monthly']);
-          }      
-        }
-      });
-    });
 
-    $('#basic_salary ,#house_rent, #food, #conveyance,#other').keyup(function(e){
-        let basic_salary = parseInt($('#basic_salary').val());
-        let house_rent   = parseInt($('#house_rent').val());
-        let food         = parseInt($('#food').val());
-        let conveyance   = parseInt($('#conveyance').val());
-        let other        = parseInt($('#other').val());
-        let total        = basic_salary+house_rent+food+conveyance+other;
-
-        $('#total_monthly, #total_monthly_disabled').val(total);
-    });
-
-    $('#annual_company_leave,#holidays').keyup(function(e){
-      let annual_company_leave = parseInt($('#annual_company_leave').val());
-      let holidays             = parseInt($('#holidays').val());
-      let total                = annual_company_leave+holidays;
-
-      $('#annual_leave_permitted,#annual_leave_permitted_disabled').val(total);
-  });
-
-    if($('#fy_id_view').length>0){
-      change_emp_record();
-      function change_emp_record(){
+    if($('.salary-sheet').length>0){
+      var employee_data = [];
+      function employee_change(){
+        $('.pan-no').empty();
+        $('.emp-code').empty();
+        $('.marital-status').empty();
+        $('.salary-breakup1').empty();
         $.ajax({
-          url: site_url+'user/get_employee_record',
+          url: 'get_employee_info',
           type: 'post',
           data: {
-            'emp_code' :  $('#emp_code').val(),
-            'fy_id'    :  $('#fy_id_view').val()
+            'id' :  $('option:selected', this).attr('value')
           },
           success : function(response){
             let obj = JSON.parse(response);
-            $('#total_monthly').html(obj[0].total_monthly);
-            $('#basic_salary').html(obj[0].basic_salary);
-            $('#house_rent').html(obj[0].house_rent);
-            $('#food').html(obj[0].food);
-            $('#conveyance').html(obj[0].conveyance);
-            $('#other').html(obj[0].other);
-            $('#leave_permitted').html(obj[0].annual_leave_permitted);
-            $('#company_leave').html(obj[0].annual_company_leave);
-            $('#holidays').html(obj[0].holidays);
-            $('#resigned_on').html(obj[0].resigned_on);
-            $('#terminated_on').html(obj[0].terminated_on);
-            $('#increment_details').html(obj[0].increment_details);
-            $('#promotion_details').html(obj[0].promotion_details);
-            $('#edit_employee_record').attr('href',site_url+'user/edit_employee_record/'+$('#emp_id').val()+'/'+obj[0].id);
-            $('#delete_employee_record').attr('href',site_url+'user/delete_employee_record/'+$('#emp_id').val()+'/'+obj[0].id);
+            employee_data = obj;
+            if(obj[0]['marital_status'] == 0)
+              {
+                marital_status = 'Unmarried';
+              }
+              else if(obj[0]['marital_status'] == 1)
+              {
+               marital_status = 'Married'
+              }
+            if(obj.length > 0){
+              $('.salary-sheet #fiscal_year').empty();
+              $.each( obj, function( key, value ){
+                $('.salary-sheet #fiscal_year').append("<option value="+obj[key]['fiscal_id']+">"+ obj[key]['fiscal_year'] +"</option>");
+              });
+              $('.pan-no').append(
+                '<label>Pan Number</label>'+
+                '<input type="text" name="pan_no" class ="form-control" value ='+obj[0]['pan_no']+' readonly>'+
+                '</input>'
+              );
+              $('.emp-code').append(
+                '<label>Employee Code</label>'+
+                '<input type="text" name="emp_code" class ="form-control" value ='+obj[0]['emp_code']+' readonly >'+
+                '</input>'
+              );
+              $('.marital-status').append(
+                '<label>Marital Status</label>'+
+                '<input type="text" name="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
+                '</input>'
+                );
+                $('.salary-breakup1').append(
+                  '<div class="form-group col-sm-12 d-inline-block">'+
+                      '<h3>Salary Breakup</h3><br>'+
+                      '<label>Basic Salary</label><input type = "number" class ="basic_salary form-control" name="basic_salary" id="basic_salary" value ='+obj[0]['basic_salary']+' readonly>'+
+                      '<label>House Rent</label><input type = "number" class ="house_rent form-control" name="house_rent" id="house_rent" value ='+ obj[0]['house_rent']+' readonly>'+
+                      '<label>Food Allowance</label><input type = "number" class ="food form-control" name ="food" id="food" value ='+obj[0]['food']+' readonly><br>'+
+                      '<label>Conveyance Allowance</label><input type = "number" class ="conveyance form-control" name="conveyance" id="conveyance" value ='+obj[0]['conveyance']+' readonly>'+
+                      '<label>Other Allowance</label><input type = "number" class ="other form-control" name="other" id="other" value ='+obj[0]['other']+' readonly>'+
+                      '<label>Monthly Total</label><input type = "number" class ="total_monthly form-control" name ="monthly_total" id="monthly_total" value ='+obj[0]['total_monthly']+' readonly>'+
+                  '</div>'
+                );
+                $('.taxable_for_month').attr('value',obj[0]['total_monthly']);
+            }      
           }
         });
       }
-      $('#fy_id_view').change(function(){
-        change_emp_record();
+      $('#employee').change(employee_change);
+  
+      $('#fiscal_year').change(function(){
+        let fy = this.value;
+        $.each(employee_data, function( key, value ){
+            if(value.fiscal_id==fy){
+              $(".total_monthly").val(value.total_monthly);
+              $(".basic_salary").val(value.basic_salary);
+              $(".house_rent").val(value.house_rent);
+              $(".food").val(value.food);
+              $(".conveyance").val(value.conveyance);
+              $(".other").val(value.other);
+              $(".monthly_total").val(value.total_monthly);
+            }
+        });
+        calculate_tax_salary();
       });
+  
+      $(".annual-deduction input").keyup(calculate_tax_salary);
+
+      function calculate_tax_salary(){
+        var monthly_salary = $(".total_monthly").val();
+        
+        if($("#fiscal_year").val()!=''){
+          $.fn.calculate = function () {
+            let insurance = $(".insurance"). val();
+            let pf = $(".pf").val();
+            let cit = $(".cit").val();
+            let ss  = $(".ss"). val();
+            let pa = $('.pa').val();
+            let wd = $('.wd').val();
+            let ul = $('.ul').val();
+            var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
+            var deductions = (parseInt(monthly_salary)/parseInt(wd))*(parseInt(ul)) + parseInt(pa);
+            $('.deductions').attr('value',deductions);
+            $('.te').attr('value',total);
+            taxable_for_month = parseInt(monthly_salary)-parseInt(total);
+            $('.taxable_for_month').attr('value',taxable_for_month)
+          };
+          
+          $.fn.calculate();
+          $.ajax({
+            url: 'get_tax_amount_yearly',
+            type: 'post',
+            data : $('.salary-sheet').serialize(),
+            success: function(response){
+              let obj = JSON.parse(response);
+              let deduction = $('.deductions').val();
+              let total_payable = parseInt(monthly_salary) - parseInt(deduction) - obj;
+              $('.total_payable').attr('value',total_payable);
+            }
+          });
+        }   
+      }
     }
-    $(".annual-deduction input").keyup(function(){
-      var monthly_salary = $(".total_monthly").val();
-      $.fn.calculate = function () {
-        let insurance = $(".insurance"). val();
-        let pf = $(".pf"). val();
-        let cit = $(".cit"). val();
-        let ss  = $(".ss"). val();
-        let pa = $('.pa').val();
-        let wd = $('.wd').val();
-        let ul = $('.ul').val();
-        var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
-        var deductions = (parseInt(monthly_salary)/parseInt(wd))*(parseInt(ul)) + parseInt(pa);
-        $('.deductions').attr('value',deductions);
-        $('.te').attr('value',total);
-        taxable_for_month = parseInt(monthly_salary)-parseInt(total);
-        $('.taxable_for_month').attr('value',taxable_for_month)
-      };
-      $.fn.calculate();
-      $.ajax({
-        url: 'get_tax_amount_yearly',
-        type: 'post',
-        data : $('.salary-sheet').serialize(),
-        success: function(response){
-          let obj = JSON.parse(response);
-          let deduction = $('.deductions').val();
-          let total_payable = parseInt(monthly_salary) - parseInt(deduction) - obj;
-          $('.total_payable').attr('value',total_payable);
-        }
-      });
-    });
+  
 
     if($('#print_salary').length>0){
       $('#print_salary').on('click',function(){

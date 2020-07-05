@@ -36,7 +36,6 @@ class Salary extends CI_Controller{
         $user_role  =   $sess_data['user_role'];
         $user_dept  =   $sess_data['user_dept'];
         $user_des  =   $sess_data['user_des'];
-        $fiscal_years   =   $this->tax_model->get_fiscal_years();
         $employees = $this->salary_model->get_all_employees();
         $data = array(
             'title' 		=> 'Salary Table',
@@ -44,7 +43,6 @@ class Salary extends CI_Controller{
             'role'          =>  $user_role,
             'dept'          =>  $user_dept,
             'des'           =>  $user_des,
-            'fiscal_years'  =>  $fiscal_years,
             'employees'     =>  $employees 
         );
         $this->load->view('includes/template', $data);
@@ -61,6 +59,7 @@ class Salary extends CI_Controller{
         $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
         $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
         $this->form_validation->set_rules("employee","Employee","required",array("required"=>"Please Select Employee"));
+        $this->form_validation->set_rules("wd","Working Days","required",array("required"=>"Please Enter Working Days"));
         if($this->form_validation->run()==false){
             $this->session->set_flashdata('error',$this->form_validation->error_array());
             redirect('salary/salary_table');
@@ -79,7 +78,7 @@ class Salary extends CI_Controller{
         $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem);
         $result = $this->salary_model->salary_sheet($data);
         if($result['status'] == 'success'){
-            redirect('salary/salary_table');
+            redirect('salary/view_salary_details');
         }
         else{
             $this->session->set_flashdata('error',$result['message']);
@@ -115,14 +114,7 @@ class Salary extends CI_Controller{
     }
     public function get_tax_amount_yearly(){
         $data = $this->input->post();
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
-        $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
-        $this->form_validation->set_rules("employee","Employee","required",array("required"=>"Please Select Employee"));
-        if($this->form_validation->run()==false){
-            $this->session->set_flashdata('error',$this->form_validation->error_array());
-            redirect('salary/salary_table');
-        }
+ 
         if($data['marital_status']  == 'Married'){
             $marital_status     =   1;
         }

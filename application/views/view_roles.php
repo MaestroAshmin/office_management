@@ -19,6 +19,7 @@
                 <table class="table" id="transaction">
                     <thead>
                         <tr>
+                            <th scope="col" style="width:40px;">Sn</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Role Type</th>
@@ -26,8 +27,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($roles as $role){ ?>
+                    <?php 
+                    $i=1;
+                    foreach ($roles as $role){ ?>
                         <tr>
+                            <td><?php echo $i?></td>
                             <td><?php echo $role['name']?></td>
                             <td><?php echo $role['email']?></td>
                             <td><?php echo $role['user_type']?> <?php echo $role['designation'] ? ' - '.$role['designation'] : '' ?></td>
@@ -39,7 +43,7 @@
                                 <a href="<?php echo site_url('user/delete_user/'.$role['id']) ?>" class="delete btn btn-danger" data-confirm="Are you sure to delete this item?" style="display:inline-block"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
-                        <?php } ?>    
+                        <?php $i++; } ?>    
                     </tbody>
                 </table>       
             </div>

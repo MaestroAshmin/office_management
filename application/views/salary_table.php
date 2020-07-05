@@ -33,11 +33,8 @@
                 </div>
                 <div class="form-group col-sm">
                     <label>Select Fiscal Year</label><br>
-                    <select id= "fiscal_year" class = "form-control" name= "fiscal_year">
+                    <select id="fiscal_year" class ="form-control" name="fiscal_year">
                         <option value ="">---Select Fiscal Year---</option>
-                        <?php foreach($fiscal_years as $fy){?>   
-                            <option value="<?php echo $fy['id']?>">Fiscal Year - <?php echo $fy['fiscal_year']?></option>
-                        <?php }?>
                     </select>
                 </div>
                 <div class = "form-group col-sm">
