@@ -20,7 +20,7 @@
           ?>
           <!-- Content Row -->
         <div class="row">
-            <div class="container d-flex align-items-center">
+            <div class="col-12 container">
                 <div class="radio_date_filter1">
                     <input type="radio" name="filtertable" value="day" />Today
                     <input type="radio" name="filtertable"  value="month"/>This Month
@@ -29,11 +29,11 @@
                 </div>
             </div>
             <div class="swipe-loader"></div>
-            <div class="container table-responsive drag-scroll">
+            <div class="col-12 container table-responsive drag-scroll">
                 <table class="table" id="transaction">
                     <thead>
                         <tr>
-                            <th scope="col">S.N</th>
+                            <th scope="col" style="Width:40px;">S.N</th>
                             <th scope="col">Date (A.D)</th>
                             <th scope="col">Date (B.S)</th>
                             <th scope="col">Depositor</th>

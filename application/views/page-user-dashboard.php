@@ -5,7 +5,7 @@
       </div>
 
       <!-- Content Row -->
-      <div class="container">
+      <div class="col-12 container">
         <div class="row">
           <?php if($role==1 || $role == 2 || $dept == 1) { ?>
             <div class="col-sm-12" id="account_dashboard">

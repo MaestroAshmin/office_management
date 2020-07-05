@@ -2,7 +2,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Expense View</h1>
+            <h1 class="h3 mb-0 text-gray-800">View Salary Details</h1>
           </div>
 
             <style>
@@ -24,10 +24,11 @@
                 <button class="btn btn-primary float-right" id="print_salary">Print</button>
             </div>
             <div class="swipe-loader"></div>
-            <div class="container table-responsive drag-scroll">
+            <div class="col-12 container table-responsive drag-scroll">
                 <table class="table calculated_salary_table" width = "100%" id="transaction">
                     <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col">S.N</th>
                             <th scope="col">Date (FY Month)</th>
                             <th scope="col">Employee Name</th>
@@ -39,7 +40,6 @@
                             <th scope="col">Deductions</th>
                             <th scope="col">Total Payable</th>
                             <th scope="col">Total Paid</th>
-                            <th scope="col">Print</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +47,9 @@
                     $i = 1;
                     foreach($salary_data as $data) { ?>
                         <tr>
+                           <td>
+                                <input type="checkbox" name="print" value="<?php echo $data['id'] ?>">
+                           </td>
                            <td><?php echo $i ?></td>
                            <td><?php echo $data['fiscal_year'].' '.$data['month'] ?></td>
                            <td><?php echo $data['name'] ?></td>
@@ -58,9 +61,6 @@
                            <td><?php echo $data['deductions'] ?></td>
                            <td><?php echo $data['total_payable'] ?></td>
                            <td><?php echo $data['monthly_total'] ?></td>
-                           <td>
-                                <input type="checkbox" name="print" value="<?php echo $data['id'] ?>">
-                           </td>
                         </tr>
                     <?php $i++; } ?>   
                     </tbody>

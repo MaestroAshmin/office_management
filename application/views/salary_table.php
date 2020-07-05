@@ -19,7 +19,7 @@
             }
     ?>
     <!-- Content Row -->
-    <div class="container">       
+    <div class="col-12 container">       
         <form class="salary-sheet" action ="calculate_tax" method="post"  enctype="multipart/form-data">
         <div class="row">
                 <div class = "form-group col-sm">

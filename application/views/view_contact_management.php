@@ -17,11 +17,11 @@
         <!-- Content Row -->
         <div class="row">
             <div class="swipe-loader"></div>
-            <div class="container table-responsive drag-scroll">
+            <div class="col-12 container table-responsive drag-scroll">
                 <table class="table" id="transaction">
                     <thead>
                         <tr>
-                            <th scope="col">S.N</th>
+                            <th scope="col" style="width:40px;">S.N</th>
                             <th scope="col" style="width:250px;">Name</th>
                             <th scope="col" style="width:150px;">Company</th>
                             <th scope="col">Mobile Number</th></th>
