@@ -392,7 +392,7 @@ class User_model extends CI_Model{
        }
        public function view_activity($user_role,$user_id,$is_head,$dept){
               if($user_id==1 && $user_role==1){
-                     $this->db->select('tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
+                     $this->db->select('a.id as a_id, tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
                      $this->db->join('tbl_users','tbl_users.id = a.user_id','left')->ORDER_BY('a.created_at', 'DESC');
               }
               else{
@@ -404,22 +404,102 @@ class User_model extends CI_Model{
                      else{
                             $this->db->distinct()->select('tbl_users.name,tbl_users.dept_id, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a');
                             $this->db->join('tbl_users','tbl_users.id = a.user_id');
-                            // $this->db->join('tbl_designation','tbl_designation.department_id=tbl_users.dept_id');
+                            
                             $this->db->where('tbl_users.dept_id',$dept[0]['dept_id']);
                      }     
               }
               
+              $query = $this->db->get();
+
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function get_each_activity($id){
+              $query = $this->db->select('a.id as a_id, tbl_users.name, a.entry_date, a.task_undertaken,a .progress, a.remarks')->from('tbl_activity as a')
+                            ->join('tbl_users','tbl_users.id = a.user_id','left')
+                            ->where('a.id',$id)
+                            ->get();
+              if($query){
+                     $result = $query->row_array();
+                     return $result;
+              }
+              else{
+                     return false;
+              }
+       }
+       public function get_each_activity_target($id){
+              $query = $this->db->select('*')->from('tbl_target as t')
+                            ->join('tbl_users','tbl_users.id=t.assigned_to')
+                            ->where('t.t_id',$id)
+                            ->get();
+              if($query){
+                     $result = $query->row_array();
+                     return $result;
+              }
+              else{
+                     return false;
+              }
+       }
+       public function get_assigned_by($id){
+              $query = $this->db->select('tbl_users.name')->from('tbl_users ')
+                     ->join('tbl_target as t','tbl_users.id=t.assigned_by')
+                     ->where('t.t_id',$id)
+                     ->get();
+              if($query){
+                     $result = $query->row_array();
+                     return $result;
+              }
+              else{
+                     return false;
+              }  
+       }
+       public function get_activity($user_role,$user_id,$is_head,$dept){
+         
+              if($user_id==1){
+                     $this->db->select('*')->from('tbl_target as a')
+                     ->join('tbl_users','tbl_users.id=a.assigned_to')
+                     ->where('a.employee','other')
+                     ->order_by('a.created_at', 'DESC');
+              }
+              else{
+                     if($is_head[0]['is_head']==0){
+                            $condition = "a.assigned_to = $user_id OR a.assigned_by = $user_id && a.employee='other'";
+                            $this->db->select('*')->from('tbl_target as a');
+                            $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
+                            $this->db->where($condition)->order_by('a.created_at', 'DESC');
+                     }
+                     else{
+                            $this->db->distinct()->select('*')->from('tbl_target as a');
+                            $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
+                            $this->db->where('tbl_users.dept_id',$dept[0]['dept_id'])->order_by('a.created_at', 'DESC');
+                     }
+                     
+              }
               $query = $this->db->get();
               if ($query) {
               $result = $query->result_array();
               } else {
               $result = array("Error" => $this->db->error());
               }
-              // var_dump($result);exit;
+              // echo '<pre>';print_r($result);exit;
               return $result;
        }
        public function get_all_management_role(){
               $query = $this->db->select('id,name')->from('tbl_users')->where('dept_id',2)->get();
+              if ($query) {
+              $result = $query->result_array();
+              } else {
+              $result = array("Error" => $this->db->error());
+              }
+              return $result;
+       }
+       public function get_users(){
+              $condition = "role = 3  AND dept_id != 2";
+              $query = $this->db->select('id,name')->from('tbl_users')->where($condition)->get();
               if ($query) {
               $result = $query->result_array();
               } else {
@@ -441,13 +521,15 @@ class User_model extends CI_Model{
               if($user_id==1){
                      $this->db->select('*')->from('tbl_target as a')
                      ->join('tbl_users','tbl_users.id=a.assigned_to')
+                     ->where('a.employee','sales')
                      ->order_by('a.created_at', 'DESC');
               }
               else{
                      if($is_head[0]['is_head']==0){
+                            $condition = "a.assigned_to = $user_id OR a.assigned_by = $user_id && a.employee='sales'";
                             $this->db->select('*')->from('tbl_target as a');
                             $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
-                            $this->db->where('a.assigned_to',$user_id)->order_by('a.created_at', 'DESC');
+                            $this->db->where($condition)->order_by('a.created_at', 'DESC');
                      }
                      else{
                             $this->db->distinct()->select('*')->from('tbl_target as a');
@@ -456,6 +538,7 @@ class User_model extends CI_Model{
                      }
                      
               }
+              
               $query = $this->db->get();
               if ($query) {
               $result = $query->result_array();

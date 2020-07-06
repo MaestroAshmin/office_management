@@ -16,9 +16,15 @@
 
           <!-- Content Row -->
             <form class="add_target_form" action="<?php echo site_url();?>user/add_target" method="post" enctype="multipart/form-data">
-                <div class="row">
+            <input type="radio" id="sales-marketing" name="employee" value="sales">
+            <label for="sales&marketing">Sales & Marketing</label><br>
+            <input type="radio" id="other" name="employee" value ="other">
+            <label for="other">Other</label><br>
+                <div class="row sales-form">
                     <div class="form-group col-md-6">
+                    <input type="hidden"    name="assigned_by" value="<?php echo $user_id?>">
                         <label>Assigned To</label>
+                        
                         <div>
                             <select class="form-control" id="assigned_to" name="assigned_to">
                                 <option value="">--- Select Person ---</option>
@@ -288,6 +294,65 @@
                     </div>
 
                     <div class="form-group col-md-12 d-flex justify-content-center">
+                        <button class="btn btn-primary float-left">Add</button>
+                    </div>
+                </div>
+                <div class ="col other-form">
+                    <div class="form-group">
+                    <input type="hidden"    name="assigned_by" value="<?php echo $user_id?>">
+                        <label>Assigned To</label>
+                        
+                        <div>
+                            <select class="form-control" id="assigned_to_other" name="assigned_to_other">
+                                <option value="">--- Select Person ---</option>
+                                <?php
+                                    foreach($other as $o){
+                                ?>
+                                    <option value="<?php echo $o['id'] ?>"><?php echo $o['name'] ?></option>
+                                <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <label for ="date">Date</label>
+                            <input type="text"   autocomplete="off" class ="form-control date" name ="date" id="nepali-datepicker">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>For Month</label>
+                        <div>
+                            <select class="form-control" id="for_month2" name="for_month2">
+                                <option value="01">Baisakh</option>
+                                <option value="02">Jestha</option>
+                                <option value="03">Asar</option>
+                                <option value="04">Shrawan</option>
+                                <option value="05">Bhadra</option>
+                                <option value="06">Ashoj</option>
+                                <option value="07">Kartik</option>
+                                <option value="08">Mangsir</option>
+                                <option value="09">Poush</option>
+                                <option value="10">Magh</option>
+                                <option value="11">Falgun</option>
+                                <option value="12">Chaitra</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title2" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Task Details</label>
+                        <textarea name="task_details" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea name="remarks" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="form-group float-right">
                         <button class="btn btn-primary float-left">Add</button>
                     </div>
                 </div>

@@ -1343,13 +1343,16 @@ class User extends CI_Controller
 			$is_head = $this->user_model->is_head($user_id);
 			$dept = $this->user_model->find_dept($user_id);
 			$activity = $this->user_model->view_activity($user_role,$user_id,$is_head,$dept);
+			$activity_target = $this->user_model->get_activity($user_role,$user_id,$is_head,$dept);
 			$data = array(
 				'title' 		=> 'View Activity',
 				'main_content'	=> 'view_activity',
 				'role' 			=> $user_role,
 				'dept'			=> $user_dept,
 				'des'			=> $user_des,
-				'activity'		=> $activity
+				'activity'		=> $activity,
+				'activity_target'		=> $activity_target
+
 			);
 			$this->load->view('includes/template', $data);	
 		}else{
@@ -1483,7 +1486,7 @@ class User extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 		
-		if($user_role==1 || $user_dept==2){
+		if($user_role!=2){
 			$is_head = $this->user_model->is_head($user_id);
 			$dept = $this->user_model->find_dept($user_id);
 			$targets = $this->user_model->get_targets($user_id,$is_head,$dept);
@@ -1505,31 +1508,72 @@ class User extends CI_Controller
 	public function add_target(){
 		if($_POST){
 			$first_data = $this->input->post();
-			$this->load->library('form_validation');
-			$this->form_validation->set_rules("assigned_to","AssignedTo","required",array("required"=>"Please Select Persons"));
-			$this->form_validation->set_rules("title","Title","required",array("required"=>"Please Enter Title"));
-			
-			if($this->form_validation->run()==true){
-				$year 	= date('Y');
-				$month  = date('m');
-				$day    = date('d');
-
-				$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
-				$date['check_date'] = $nepali_year.'-'.$first_data['for_month'];
-				$data = [];
-				$data = array_merge($first_data,$date);
-				$result = $this->user_model->add_target($data);
+			if($first_data['employee']=='sales'){
+				unset($first_data['assigned_to_other']);
+				unset($first_data['task_details']);
+				unset($first_data['remarks']);
+				unset($first_data['for_month2']);
+				unset($first_data['date']);
+				$this->load->library('form_validation');
+				$this->form_validation->set_rules("assigned_to","AssignedTo","required",array("required"=>"Please Select Persons"));
+				$this->form_validation->set_rules("title","Title","required",array("required"=>"Please Enter Title"));
+				
+				if($this->form_validation->run()==true){
+					$year 	= date('Y');
+					$month  = date('m');
+					$day    = date('d');
+	
+					$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+					$date['check_date'] = $nepali_year.'-'.$first_data['for_month'];
+					$data = [];
+					$data = array_merge($first_data,$date);
+					$result = $this->user_model->add_target($data);
+				}
+				else{
+					$this->session->set_flashdata('error',$this->form_validation->error_array());
+					redirect('user/add_target');
+				}
+				if($result['status'] == 'failed'){
+					$this->session->set_flashdata('error',array('error'=>'Error while adding target'));
+					redirect('user/add_target');
+				}
+				
+				redirect('user/view_target');
 			}
 			else{
-				$this->session->set_flashdata('error',$this->form_validation->error_array());
-				redirect('user/add_target');
-			}
-			if($result['status'] == 'failed'){
-				$this->session->set_flashdata('error',array('error'=>'Error while adding target'));
-				redirect('user/add_target');
+				$first_data['assigned_to'] = $first_data['assigned_to_other'];
+				$first_data['for_month']	=	$first_data['for_month2'];
+				$first_data['title']	=	$first_data['title2'];
+				unset($first_data['title2']);
+				unset($first_data['assigned_to_other']);
+				unset($first_data['for_month2']);
+				$this->load->library('form_validation');
+				$this->form_validation->set_rules("assigned_to_other","AssignedToother","required",array("required"=>"Please Select whom you want to assign task to"));
+				$this->form_validation->set_rules("task_details","TaskDetails","required",array("required"=>"Please Enter Task Details"));
+				
+				if($this->form_validation->run()==true){
+					$year 	= date('Y');
+					$month  = date('m');
+					$day    = date('d');
+	
+					$nepali_year = $this->nepali_date->AD_to_BS($year,$month,$day)["year"];
+					$date['check_date'] = $nepali_year.'-'.$first_data['for_month'];
+					$data = [];
+					$data = array_merge($first_data,$date);
+					$result = $this->user_model->add_target($data);
+				}
+				else{
+					$this->session->set_flashdata('error',$this->form_validation->error_array());
+					redirect('user/add_target');
+				}
+				if($result['status'] == 'failed'){
+					$this->session->set_flashdata('error',array('error'=>'Error while adding target'));
+					redirect('user/add_target');
+				}
+				
+				redirect('user/view_target');
 			}
 			
-			redirect('user/view_target');
 		}
 		else{
 			if($this->session->userdata('user_logged_in') != '1'){
@@ -1541,22 +1585,21 @@ class User extends CI_Controller
 			$user_dept  = $sess_data['user_dept'];
 			$user_des  	= $sess_data['user_des'];
 
-			if($user_role==1){
-				$management_role = $this->get_all_management_role();
+		
+			$management_role = $this->get_all_management_role();
+			$other = $this->get_users();
 
-				$data = array(
-					'title' 			=> 'Add Contacts',
-					'main_content'		=> 'add_target',
-					'user_id'			=> $user_id,
-					'role' 				=> $user_role,
-					'dept'				=>	$user_dept,
-					'des'				=>	$user_des,
-					'management_role' 	=> $management_role
-				);
-				$this->load->view('includes/template', $data);
-			}else{
-				$this->load->view('includes/pagenotfound');
-			}
+			$data = array(
+				'title' 			=> 'Add Contacts',
+				'main_content'		=> 'add_target',
+				'user_id'			=> $user_id,
+				'role' 				=> $user_role,
+				'dept'				=>	$user_dept,
+				'des'				=>	$user_des,
+				'management_role' 	=> $management_role,
+				'other'				=>	$other
+			);
+			$this->load->view('includes/template', $data);
 		}			
 	}
 
@@ -1564,6 +1607,11 @@ class User extends CI_Controller
 		$result = $this->user_model->get_all_management_role();
 		return $result;
 	}
+	public function get_users(){
+		$result = $this->user_model->get_users();
+		return $result;
+	}
+	
 
 	public function get_each_target(){
 		if($this->session->userdata('user_logged_in') != '1'){
@@ -1576,7 +1624,7 @@ class User extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 		$user_des  	= $sess_data['user_des'];
 
-		if($user_role==1 || $user_dept==2){
+		if($user_role!=2){
 			$target = $this->user_model->get_each_target($post);
 			$data = array(
 				'title' 		=> 'View Target',
@@ -1587,6 +1635,62 @@ class User extends CI_Controller
 				'des'			=>	$user_des
 			);
 			// echo '<pre>';print_r($target);exit;
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
+	}
+	public function get_each_activity(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$post = $this->uri->segment(3);
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
+		if($user_role!=2){
+			$target = $this->user_model->get_each_activity($post);
+			$data = array(
+				'title' 		=> 'View Target',
+				'main_content'	=> 'view_task',
+				'role' 			=> $user_role,
+				'target'		=> $target,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des
+			);
+			$this->load->view('includes/template', $data);
+		}else{
+			$this->load->view('includes/pagenotfound');
+		}
+	}
+	public function get_each_activity_target(){
+		if($this->session->userdata('user_logged_in') != '1'){
+			redirect('user', 'refresh');
+		}
+		$post = $this->uri->segment(3);
+		$sess_data = $this->session->all_userdata();
+		$user_id   = $sess_data['user_id'];
+		$user_role = $sess_data['user_role'];
+		$user_dept  = $sess_data['user_dept'];
+		$user_des  	= $sess_data['user_des'];
+
+		if($user_role!=2){
+			$target = $this->user_model->get_each_activity_target($post);
+			$assigned_by = $this->user_model->get_assigned_by($post);
+			$data = array(
+				'title' 		=> 'View Target',
+				'main_content'	=> 'view_activity_target',
+				'role' 			=> $user_role,
+				'target'		=> $target,
+				'dept'			=>	$user_dept,
+				'des'			=>	$user_des,
+				'assigned_by'	=>	$assigned_by
+			);
+			echo '<pre>';print_r($target);
+			echo '<pre>';print_r($assigned_by);
 			$this->load->view('includes/template', $data);
 		}else{
 			$this->load->view('includes/pagenotfound');

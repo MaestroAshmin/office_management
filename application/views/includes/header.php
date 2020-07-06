@@ -96,9 +96,10 @@
       <div id="collapseEmployee" class="collapse" aria-labelledby="headingEmployee" data-parent="#accordionSidebar">
         <div class="bg-white py-1 collapse-inner rounded">
         <?php if($dept==2 || $role==1){?>
-          <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTasks">Tasks/Target</a>
             <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContact" aria-expanded="true" aria-controls="collapseContact">Contacts</a>
         <?php }?>
+        <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTarget" aria-expanded="true" aria-controls="collapseTasks">Tasks/Target</a>
+
         <a class="collapse-item nav-link-second" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivities">Activities</a>
            
         </div>
@@ -117,9 +118,7 @@
       <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionSidebar">
               <div class="bg-white py-1 collapse-inner rounded">
                 <a class="collapse-item" href="<?php echo site_url();?>user/view_target">View Target</a>
-                <?php if($role==1){ ?>
                 <a class="collapse-item" href="<?php echo site_url();?>user/add_target">Add Target</a>
-                <?php } ?>
               </div>
             </div>
         <div id="collapseContact" class="collapse" aria-labelledby="headingContent" data-parent="#accordionSidebar">

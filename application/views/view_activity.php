@@ -35,7 +35,8 @@
                                 <th scope="col">Task Undertaken</th>
                                 <th scope="col">Progress</th>
                                 <th scope="col">Remarks</th>
-                                <th scope="col">Added By</th>
+                                <th scope="col">Assigned To/By</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,11 +45,35 @@
                         foreach ($activity as $act){ ?>
                             <tr>
                             <td><?php echo $i ?></td>
+
                                 <td scope="col" style="width:150px;"><?php echo $act['entry_date']?></td>
                                 <td scope="col" style="width:250px;"><?php echo $act['task_undertaken']?></td>
                                 <td scope="col"><?php echo $act['progress']?></td>
                                 <td scope="col" style="width:150px;"><?php echo $act['remarks']?></td>
-                                <td scope="col" style="width:250px;"><?php echo $act['name']?></td>
+                                <td scope="col" style="width:250px;"><?php echo $act['name']?>(By)</td>
+                                <td>
+                                <a href="<?php echo site_url('user/get_each_activity/'.$act['a_id'])?>" class="btn btn-primary">
+                                        <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                            </tr>
+                        <?php 
+                            $i++;
+                            }
+                        foreach ($activity_target as $act_target){ ?>
+                            <tr>
+                            <td><?php echo $i ?></td>
+
+                                <td scope="col" style="width:150px;"><?php echo $act_target['date']?></td>
+                                <td scope="col" style="width:250px;"><?php echo $act_target['title']?></td>
+                                <td scope="col" style="width:250px;"><?php echo $act_target['task_details']?></td>
+                                <td scope="col" style="width:150px;"><?php echo $act_target['remarks']?></td>
+                                <td scope="col" style="width:250px;"><?php echo $act_target['name']?>(To)</td>
+                                <td>
+                                <a href="<?php echo site_url('user/get_each_activity_target/'.$act_target['t_id'])?>" class="btn btn-primary">
+                                        <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
                             </tr>
                         <?php 
                             $i++;

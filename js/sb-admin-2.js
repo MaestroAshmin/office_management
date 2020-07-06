@@ -1232,6 +1232,8 @@ function callAutocomplete(field_id){
 }
 
 $(document).ready(function(){
+  $(".other-form").hide();
+  $(".sales-form").hide();
   let site_url = $('.footer').attr('data-siteurl');
   let user_type = $('#user_type').children("option:selected").val();
 
@@ -2625,4 +2627,12 @@ if($('.drag-scroll').length>0){
       });
     }
 
+    $("#sales-marketing").on('click',function(){
+      $(".sales-form").show();
+      $(".other-form").hide();
+    });
+    $("#other").on('click',function(){
+      $(".sales-form").hide();
+      $(".other-form").show();
+    });
 });
