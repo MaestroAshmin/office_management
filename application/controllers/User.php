@@ -1764,15 +1764,20 @@ class User extends CI_Controller
 		$user_dept  = $sess_data['user_dept'];
 
 		if(isset($_POST['update_user_details'])){
-
-			$data = array(
+            if($_POST['password']==$_POST['confirm_password']){
+                $data = array(
 				'password' 			=> md5($this->input->post('password', true)),
-				'actual_password' 	=> $this->input->post('password', true),
-			);
+			    );
 
 			$this->user_model->update_user_details($data, $id);
 		   	$this->session->set_flashdata('success', 'User password updated successfully');
 			redirect('user/settings', 'refresh');
+            }
+            else{
+                	$this->session->set_flashdata('success', 'Password does not match');
+			        redirect('user/settings', 'refresh');
+            }
+			
 		}
 			
 		$data = array(

@@ -627,4 +627,18 @@ class User_model extends CI_Model{
                      return false;
               }
        }
+       public function update_user_details($data,$id){
+              try{
+                   $data = array(
+                               'password'  =>  $data['password']
+                       );
+                   $this->db->where('id', $id);
+                   $this->db->update('tbl_users',$data);
+                   $result_status = array('status' => 'success', 'message' =>"Successfully Changed Password");
+              }
+              catch(Exception $e){
+                  $result_status = array('status' => 'success', 'message' =>"Password change failed");
+              }  
+              return $result_status;
+          }
 }
