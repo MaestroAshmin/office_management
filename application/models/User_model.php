@@ -190,6 +190,19 @@ class User_model extends CI_Model{
               return $result;
        }
 
+       
+       public function get_emp_code_and_pic($id){
+              $query = $this->db->select('e.emp_code,e.profile_pic')->from('tbl_employee_info as e')
+                            ->join('tbl_users as u','u.emp_code=e.emp_code')
+                            ->where('u.id',$id)->get();
+              if ($query) {
+                     $result = $query->result_array();
+              } else {
+                     $result = array('status' => 'failed',"message" => $this->db->error());
+              }
+              return $result;
+       }
+
        public function add_employee($data){
               try{
                      $this->db->insert('tbl_employee_info',$data);

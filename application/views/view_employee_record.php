@@ -1,8 +1,11 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">View Employee Record (<?php echo $emp_code?>)</h1>
+    <div class="row">
+        <div class="col-12 float-left">
+            <h1 class="h3 mb-0 text-gray-800">View Employee Record (<?php echo $emp_code_pic['emp_code']?>)</h1>
+            <div><img src="<?php echo site_url(); ?>/images/profile_pic/<?php echo $emp_code_pic['profile_pic'] ?>"/></div>
+        </div>
     </div>
     <?php
             if($this->session->flashdata("error"))
@@ -15,18 +18,20 @@
     <!-- Content Row -->
     <div class="row">       
         <div class="row">
-            <div class="col-md-12" style="margin-bottom:10px;">
-                <label>Fiscal Year *</label>
-                <div>
-                    <input type="hidden" id="emp_code" value="<?php echo $emp_code?>"/>
-                    <input type="hidden" id="emp_id" value="<?php echo $emp_id?>"/>
-                    <select class="form-control" id="fy_id_view">
-                        <?php foreach($fiscal_years as $fy){?>   
-                            <option value="<?php echo $fy['id']?>">Fiscal Year - <?php echo $fy['fiscal_year']?></option>
-                        <?php }?>
-                    </select>
+            <div class="col-md-12" style="margin:20px 0;">
+                <div class="col-md-12">
+                    <label>Fiscal Year *</label>
+                    <div>
+                        <input type="hidden" id="emp_code" value="<?php echo $emp_code_pic['emp_code']?>"/>
+                        <input type="hidden" id="emp_id" value="<?php echo $emp_id?>"/>
+                        <select class="form-control" id="fy_id_view">
+                            <?php foreach($fiscal_years as $fy){?>   
+                                <option value="<?php echo $fy['id']?>">Fiscal Year - <?php echo $fy['fiscal_year']?></option>
+                            <?php }?>
+                        </select>
+                    </div>
                 </div>
-            </div>    
+            </div>   
             <div class="col-md-4">
                 <div class="col-12 text-center">
                     <h3>Allowances</h3>

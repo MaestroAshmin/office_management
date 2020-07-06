@@ -1,4 +1,4 @@
-<div class="container-fluid">
+    <div class="container-fluid">
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -334,14 +334,15 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">Select Profile Image</div>
                                 <div class="panel-body">
-                                    <input type="file" name="upload_image" id="upload_image" accept="image/*" />
-                                    <br />
-                                <div id="uploaded_image"></div>
+                                    <input type="text" name="profile_pic" id="profile_pic" style="display:none;"/>
+                                    <input type="file" id="upload_image" accept="image/*" />
+                                    <div id="uploaded_image" style="margin-top:10px;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-md-12 float-right">
-                        <button class="btn btn-primary float-left">Add</button>
+                            <button class="btn btn-primary float-left">Add</button>
                     </div>
                 </div>
             </form>
@@ -350,20 +351,16 @@
         <div id="uploadimageModal" class="modal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="modal-header">                    
                         <h4 class="modal-title">Upload & Crop Image</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-8 text-center">
-                                <div id="image_demo" style="width:350px; margin-top:30px"></div>
+                            <div class="col-12 text-center">
+                                <div id="image_demo" style="width:450px;margin:auto;"></div>
                             </div>
-                            <div class="col-md-4" style="padding-top:30px;">
-                                <br />
-                                <br />
-                                <br/>
-                                <button class="btn btn-success crop_image">Crop & Upload Image</button>
+                            <div class="col-12 text-center">
+                                <button type="button" class="btn btn-success crop_image">Crop & Upload Image</button>
                             </div>
                         </div>
                     </div>

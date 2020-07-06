@@ -86,7 +86,7 @@
                             $address_temp       = array('municipality_temp','ward_number_temp','tole_temp','house_number_temp','street_name_temp','district_temp','province_temp');
                             $guardian           = array('father_name','grand_father_name','mother_name','spouse_name','children_name','guardian_name','guardian_gender','guardian_relation');
                             $education          = array('last_degree','institution','edu_year','exp_field');       
-                            $emp_data           = array('emp_code','citizenship_no','pan_no','join_date','dept_id','des_id');  
+                            $emp_data           = array('emp_code','citizenship_no','pan_no','join_date','dept_id','des_id','profile_pic');  
                             $address_per        = array_fill_keys($address_per, '');      
                             $address_temp       = array_fill_keys($address_temp, '');      
                             $guardian           = array_fill_keys($guardian, '');      
@@ -352,12 +352,45 @@
                             <label>PAN Number *</label>
                             <input type="text" name="pan_no" autocomplete="off" class="form-control" style="width:100%;" value="<?php echo $emp_data['pan_no']?>">
                         </div>
+                        <div class="form-group col-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Select Profile Image</div>
+                                <div class="panel-body">
+                                    <input type="text" name="profile_pic" id="profile_pic" style="display:none;" value="<?php echo $emp_data['profile_pic']?>"/>
+                                    <input type="file" id="upload_image" accept="image/*" />
+                                    <div id="uploaded_image" style="margin-top:10px;"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group col-md-12 float-right">
                         <button class="btn btn-primary float-left">Update</button>
                     </div>
                 </div>
             </form>
-        
           <!-- Content Row -->
+
+          
+            <div id="uploadimageModal" class="modal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">                    
+                            <h4 class="modal-title">Upload & Crop Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div id="image_demo" style="width:450px;margin:auto;"></div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="button" class="btn btn-success crop_image">Crop & Upload Image</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>

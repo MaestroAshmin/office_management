@@ -1,8 +1,11 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Edit Employee Record</h1>
+    <div class="row">
+        <div class="col-12 float-left">
+            <h1 class="h3 mb-0 text-gray-800">Edit Employee Record (<?php echo $emp_code_pic['emp_code']?>)</h1>
+            <div><img src="<?php echo site_url(); ?>/images/profile_pic/<?php echo $emp_code_pic['profile_pic'] ?>"/></div>
+        </div>
     </div>
     <?php
             if($this->session->flashdata("error"))
@@ -16,7 +19,7 @@
     <div class="row">       
         <form class="update_employee_record col-sm-12" action="#" method="post" enctype="multipart/form-data">  
             <input type="hidden" name="id" id="record_id" class="form-control" value="<?php echo $emp_record['id']; ?>">
-            <input type="hidden" id="emp_code" class="form-control" value="<?php echo $emp_code; ?>">
+            <input type="hidden" id="emp_code" class="form-control" value="<?php echo $emp_code_pic['emp_code']; ?>">
             <input type="hidden" id="old_fy_id" class="form-control" value="<?php echo $emp_record['fy_id']; ?>">
             <div class="row">
                 <div class="form-group col-md-6">

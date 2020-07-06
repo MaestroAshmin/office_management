@@ -683,10 +683,21 @@ class User extends CI_Controller
         }
 	}
 
+	public function upload_profile_pic(){
+		$post = $this->input->post();
+		$data = $post['image'];	
+		$image_array_1 = explode(";", $data);
+		$image_array_2 = explode(",", $image_array_1[1]);
+		$data = base64_decode($image_array_2[1]);
+		$imageName = time() . '.png';
+		file_put_contents('./images/profile_pic/'.$imageName, $data);
+
+		echo $imageName;
+	}
+
 	public function add_user(){
 		if($_POST){
 			$post = $this->input->post();
-
 			//form validation
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules("name","Name","required",array("required"=>"Please Enter Name"));
@@ -758,6 +769,7 @@ class User extends CI_Controller
 						'address_temporary'		=> Serialize($address_temp),
 						'guardian_details'		=> Serialize($guardian_details),
 						'education_details'		=> Serialize($education_details),
+						'profile_pic'			=> $post['profile_pic'],
 						'dept_id'				=> $post['department'],
 						'des_id'				=> $post['designation']
 					);
@@ -994,9 +1006,11 @@ class User extends CI_Controller
 						'guardian_details'		=> Serialize($guardian_details),
 						'education_details'		=> Serialize($education_details),
 						'marital_status'		=> $post['married_status'],
+						'profile_pic'			=> $post['profile_pic'],
 						'dept_id'				=> $post['department'],
 						'des_id'				=> $post['designation']
 					);
+
 					if(!empty($post['old_emp_code'])){
 						$delete_emp = $this->user_model->remove_employee($post['old_emp_code']);
 						if($delete_emp['status'] == 'failed'){
@@ -1110,6 +1124,7 @@ class User extends CI_Controller
 						'guardian_details'		=> unserialize($emp_info['guardian_details']),
 						'education_details'		=> unserialize($emp_info['education_details']),
 						'marital_status'		=> $emp_info['marital_status'],
+						'profile_pic'			=> $emp_info['profile_pic'],
 						'dept_id'				=> $emp_info['dept_id'],
 						'des_id'				=> $emp_info['des_id']
 					);
@@ -1162,16 +1177,15 @@ class User extends CI_Controller
 		$user_role  		=   $sess_data['user_role'];
 		$user_dept  		=   $sess_data['user_dept'];
 		$user_des  			=   $sess_data['user_des'];
-		$emp_code	        =   $this->user_model->get_emp_code($id)[0]['emp_code'];
-		$emp_fiscal_years   =   $this->user_model->get_emp_fiscal_years($emp_code);
-		
+		$emp_code_pic	    =   $this->user_model->get_emp_code_and_pic($id)[0];
+		$emp_fiscal_years   =   $this->user_model->get_emp_fiscal_years($emp_code_pic['emp_code']);
 		$data = array(
 			'title' 		=> 'View Employee Record',
 			'main_content'	=> 'view_employee_record',
 			'role'          =>  $user_role,
 			'dept'          =>  $user_dept,
 			'des'           =>  $user_des,
-			'emp_code'		=>	$emp_code,
+			'emp_code_pic'  =>	$emp_code_pic,
 			'emp_id'		=>  $id,
 			'fiscal_years'  =>  $emp_fiscal_years
 		);
@@ -1202,7 +1216,7 @@ class User extends CI_Controller
 			$user_role  	=   $sess_data['user_role'];
 			$user_dept  	=   $sess_data['user_dept'];
 			$user_des  		=   $sess_data['user_des'];
-			$emp_code       =   $this->user_model->get_emp_code($id)[0]['emp_code'];
+			$emp_code_pic	    =   $this->user_model->get_emp_code_and_pic($id)[0];
 			$fiscal_years   =   $this->tax_model->get_fiscal_years();
 
 			$data = array(
@@ -1211,7 +1225,7 @@ class User extends CI_Controller
 				'role'          =>  $user_role,
 				'dept'          =>  $user_dept,
 				'des'           =>  $user_des,
-				'emp_code'		=>	$emp_code,
+				'emp_code_pic'  =>	$emp_code_pic,
 				'fiscal_years'  =>  $fiscal_years
 			);
 			if($user_role==1){
@@ -1242,7 +1256,7 @@ class User extends CI_Controller
 			$user_role  	=   $sess_data['user_role'];
 			$user_dept  	=   $sess_data['user_dept'];
 			$user_des  		=   $sess_data['user_des'];
-			$emp_code       =   $this->user_model->get_emp_code($eid)[0]['emp_code'];
+			$emp_code_pic	=   $this->user_model->get_emp_code_and_pic($eid)[0];
 			$emp_record     =   $this->user_model->get_emp_record_by_id($rid)[0];
 			$fiscal_years   =   $this->tax_model->get_fiscal_years();
 
@@ -1252,7 +1266,7 @@ class User extends CI_Controller
 				'role'          =>  $user_role,
 				'dept'          =>  $user_dept,
 				'des'           =>  $user_des,
-				'emp_code'		=>	$emp_code,
+				'emp_code_pic'	=>	$emp_code_pic,
 				'emp_record'	=>	$emp_record,
 				'fiscal_years'  =>  $fiscal_years
 			);

@@ -2668,15 +2668,22 @@ if($('.drag-scroll').length>0){
           size: 'viewport'
           }).then(function(response){
               $.ajax({
-                  url:"upload.php",
+                  url: site_url+"user/upload_profile_pic",
                   type: "POST",
                   data:{"image": response},
                   success:function(data)
                   {
-                  $('#uploadimageModal').modal('hide');
-                  $('#uploaded_image').html(data);
+                    $('#uploadimageModal').modal('hide');
+                    let html = "<img src='"+response+"'>";
+                    $('#uploaded_image').html(html); 
+                    $('#profile_pic').val(data);
                   }
               });
           });
       });
+
+      if($('#profile_pic').val() != ''){
+        let html = "<img src='"+site_url+"images/profile_pic/"+$('#profile_pic').val()+"'>";
+        $('#uploaded_image').html(html); 
+      }
 });
