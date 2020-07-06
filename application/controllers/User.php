@@ -823,7 +823,7 @@ class User extends CI_Controller
 						$message = "Please Use this password with your email to login to account.<br>\r\n";
 						$message .= "Password : ".$login_password."<br>\r\n";
 						$message .= "Go to <a href='".site_url()."'>Login Page</a>\r\n";
-						$this->sendmail->sendEmail("ra9havsh@gmail.com","Bonjour Management Login Information",$message);
+						$this->sendmail->sendEmail($post['email'],"Bonjour Management Login Information",$message);
 						redirect("user/view_roles",'refresh');
 					}else{
 						if($post['user_type']==3){
