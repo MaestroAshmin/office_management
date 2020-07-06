@@ -545,9 +545,13 @@ class User_model extends CI_Model{
                             $this->db->where($condition)->order_by('a.created_at', 'DESC');
                      }
                      else{
-                            $this->db->distinct()->select('*')->from('tbl_target as a');
-                            $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
-                            $this->db->where('tbl_users.dept_id',$dept[0]['dept_id'])->order_by('a.created_at', 'DESC');
+                            $condition = [
+                                   'tbl_users.dept_id'=>$dept[0]['dept_id'],
+                                   'a.employee' =>'sales'
+                                   ];
+                                  $this->db->distinct()->select('*')->from('tbl_target as a');
+                                  $this->db->join('tbl_users','tbl_users.id = a.assigned_to');
+                                  $this->db->where($condition)->order_by('a.created_at', 'DESC');
                      }
                      
               }
@@ -627,18 +631,4 @@ class User_model extends CI_Model{
                      return false;
               }
        }
-       public function update_user_details($data,$id){
-              try{
-                   $data = array(
-                               'password'  =>  $data['password']
-                       );
-                   $this->db->where('id', $id);
-                   $this->db->update('tbl_users',$data);
-                   $result_status = array('status' => 'success', 'message' =>"Successfully Changed Password");
-              }
-              catch(Exception $e){
-                  $result_status = array('status' => 'success', 'message' =>"Password change failed");
-              }  
-              return $result_status;
-          }
 }
