@@ -1689,8 +1689,8 @@ class User extends CI_Controller
 				'des'			=>	$user_des,
 				'assigned_by'	=>	$assigned_by
 			);
-			echo '<pre>';print_r($target);
-			echo '<pre>';print_r($assigned_by);
+			// echo '<pre>';print_r($target);
+			// echo '<pre>';print_r($assigned_by);
 			$this->load->view('includes/template', $data);
 		}else{
 			$this->load->view('includes/pagenotfound');

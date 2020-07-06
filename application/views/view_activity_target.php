@@ -26,7 +26,10 @@
                 <label><h5>Assigned at:</h5> </label> <?php echo $target['date']?>
                 </div>
                 <div class = "row">
-                <label><h5>Progress:</h5> </label> <?php echo $target['progress']?>
+                <label><h5>Title:</h5> </label> <?php echo $target['title']?>
+                </div>
+                <div class = "row">
+                <label><h5>Task Details:</h5> </label> <?php echo $target['task_details']?>
                 </div>
                 <div class = "row">
                 <label><h5>Remarks:</h5> </label> <?php echo $target['remarks']?>
