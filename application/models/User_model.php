@@ -614,4 +614,17 @@ class User_model extends CI_Model{
               }
               return $result;
        }
+       public function check_if_email_same($id,$email){
+              $condition = [
+                     'id'   =>     $id,
+                     'email'       =>     $email
+              ];
+              $query = $this->db->select('*')->from('tbl_users')->where($condition)->get();
+              if($query->num_rows()>0){
+                     return true;
+              }
+              else{
+                     return false;
+              }
+       }
 }

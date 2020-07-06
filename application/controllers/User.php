@@ -1023,20 +1023,42 @@ class User extends CI_Controller
 
 				if($post['user_type']!=3 || ($post['user_type']==3 && $add_emp['status']=='success'))
 				{
+					$check_if_email_same = $this->user_model->check_if_email_same($post['id'],$post['email']);
+					if(!$check_if_email_same){
+						$this->load->helper('random_password');
+						$login_password = random_password();
+						$data = array(
+							'id'				=> $post['id'],
+							'name' 				=> $post['name'],
+							'address' 			=> $post['address'],
+							'contact_person' 	=> $post['contact_person'],
+							'contact_office' 	=> $post['contact_office'],
+							'email' 			=> $post['email'],
+							'email_office'	 	=> $post['email_office'],
+							'gender'		 	=> $post['gender'],
+							'date_of_birth'		=> $post['date_of_birth'],
+							'user_type'			=> $post['user_type'],
+							'allow_approve'		=> $post['allow_approve'],
+							'password'			=> $login_password,
+						);
+					}
 					//update user
-					$data = array(
-						'id'				=> $post['id'],
-						'name' 				=> $post['name'],
-						'address' 			=> $post['address'],
-						'contact_person' 	=> $post['contact_person'],
-						'contact_office' 	=> $post['contact_office'],
-						'email' 			=> $post['email'],
-						'email_office'	 	=> $post['email_office'],
-						'gender'		 	=> $post['gender'],
-						'date_of_birth'		=> $post['date_of_birth'],
-						'user_type'			=> $post['user_type'],
-						'allow_approve'		=> $post['allow_approve']
-					);
+					else{
+						$data = array(
+							'id'				=> $post['id'],
+							'name' 				=> $post['name'],
+							'address' 			=> $post['address'],
+							'contact_person' 	=> $post['contact_person'],
+							'contact_office' 	=> $post['contact_office'],
+							'email' 			=> $post['email'],
+							'email_office'	 	=> $post['email_office'],
+							'gender'		 	=> $post['gender'],
+							'date_of_birth'		=> $post['date_of_birth'],
+							'user_type'			=> $post['user_type'],
+							'allow_approve'		=> $post['allow_approve']
+						);
+					}
+					
 					if($post['user_type']==3){
 						$data['department'] = $post['department'];
 						$data['designation'] = $post['designation'];
@@ -1071,6 +1093,13 @@ class User extends CI_Controller
 					$result = $this->user_model->update_user($data);
 
 					if($result['status'] == 'success'){
+						if(!$check_if_email_same){
+							$message = "Please Use this password with your email to login to account.<br>\r\n";
+							$message .= "Password : ".$login_password."<br>\r\n";
+							$message .= "Go to <a href='".site_url()."'>Login Page</a>\r\n";
+							$this->sendmail->sendEmail($post['email'],"Bonjour Management Login Information",$message);
+						}
+						
 						redirect("user/view_roles",'refresh');
 					}
 					if($result['status'] == 'failed'){
