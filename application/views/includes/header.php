@@ -118,7 +118,9 @@
      
       <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionSidebar">
               <div class="bg-white py-1 collapse-inner rounded">
+                  <?php if($role==1 ||$dept==2){?>
                 <a class="collapse-item" href="<?php echo site_url();?>user/view_target">View Target</a>
+                <?php }?>
                 <a class="collapse-item" href="<?php echo site_url();?>user/add_target">Add Target</a>
               </div>
             </div>
