@@ -40,18 +40,18 @@
                 <div class = "form-group col-sm">
                     <label>Select Month</label>
                     <select class="form-control" id="month" name="month">
-                        <option value="Baishak" selected>Baisakh</option>
-                        <option value="Jestha">Jestha</option>
-                        <option value="Asar">Asar</option>
-                        <option value="Shrawan">Shrawan</option>
+                        <option value="Shrawan" selected>Shrawan</option>
                         <option value="Bhadra">Bhadra</option>
-                        <option value="Ashoj">Ashoj</option>
+                        <option value="Ashok">Ashok</option>
                         <option value="Kartik">Kartik</option>
                         <option value="Mangsir">Mangsir</option>
                         <option value="Poush">Poush</option>
                         <option value="Magh">Magh</option>
                         <option value="Falgun">Falgun</option>
                         <option value="Chaitra">Chaitra</option>
+                        <option value="Baishak">Baisakh</option>
+                        <option value="Jestha">Jestha</option>
+                        <option value="Asar">Asar</option>
                     </select>
                 </div>
             </div>
