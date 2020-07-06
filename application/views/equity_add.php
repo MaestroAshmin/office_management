@@ -13,7 +13,7 @@
             }
           ?>
           <!-- Content -->
-        <div class="row container">
+        <div class="row col-12 container">
             <form class="col-sm-12 add_equity_form" action="<?php echo site_url();?>equity/equity_store" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">

@@ -47,7 +47,7 @@
   <script src="<?php echo site_url();?>js/nepali.datepicker.v2.2.min.js" ></script>
   <script src ="<?php echo site_url();?>js/calendar1.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-
+  <script src="<?php echo site_url();?>vendor/croppie/js/croppie.js"></script>
   <!-- Custom scripts for all pages-->
   <script src="<?php echo site_url();?>js/sb-admin-2.js"></script>
   

@@ -18,7 +18,7 @@ class Salary_model extends CI_model{
             'u.id'  =>  $id,
         ];
         $this->db->distinct();
-        $query = $this->db->select('u.name,e.emp_code,e.pan_no,e.marital_status, s.total_monthly,s.basic_salary,s.house_rent,s.food,s.conveyance,s.other,fy.fiscal_year,fy.id as fiscal_id')->from('tbl_employee_info as e')
+        $query = $this->db->select('u.name,e.emp_code,e.pan_no,e.marital_status,e.join_date, s.total_monthly,s.basic_salary,s.house_rent,s.food,s.conveyance,s.other,fy.fiscal_year,fy.id as fiscal_id')->from('tbl_employee_info as e')
                 ->join('tbl_users as u','u.emp_code=e.emp_code')
                 ->join('tbl_salary as s','s.emp_code=e.emp_code')
                 ->join('tbl_fiscal_year as fy','fy.id=s.fy_id')

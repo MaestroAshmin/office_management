@@ -825,15 +825,15 @@ if($('#from_date').length > 0){
     // }
   });  
 }
-if($('#join_date').length > 0){
-  $('#join_date').datepicker({
-    uiLibrary: 'bootstrap4',
-    format: 'yyyy-mm-dd', 
-    showOtherMonths: true,
-    showOnFocus: true, 
-    showRightIcon: false,
-  });    
-}
+// if($('#join_date').length > 0){
+//   $('#join_date').datepicker({
+//     uiLibrary: 'bootstrap4',
+//     format: 'yyyy-mm-dd', 
+//     showOtherMonths: true,
+//     showOnFocus: true, 
+//     showRightIcon: false,
+//   });    
+// }
 
 if($('#date_of_birth').length > 0){
   $('#date_of_birth').datepicker({
@@ -2635,4 +2635,48 @@ if($('.drag-scroll').length>0){
       $(".sales-form").hide();
       $(".other-form").show();
     });
+    
+    $image_crop = $('#image_demo').croppie({
+          enableExif: true,
+          viewport: {
+          width:200,
+          height:200,
+          type:'square' //circle
+          },
+          boundary:{
+          width:300,
+          height:300
+          }
+      });
+
+      $('#upload_image').on('change', function(){
+          var reader = new FileReader();
+          reader.onload = function (event) {
+          $image_crop.croppie('bind', {
+              url: event.target.result
+          }).then(function(){
+              console.log('jQuery bind complete');
+          });
+          }
+          reader.readAsDataURL(this.files[0]);
+          $('#uploadimageModal').modal('show');
+      });
+
+      $('.crop_image').click(function(event){
+          $image_crop.croppie('result', {
+          type: 'canvas',
+          size: 'viewport'
+          }).then(function(response){
+              $.ajax({
+                  url:"upload.php",
+                  type: "POST",
+                  data:{"image": response},
+                  success:function(data)
+                  {
+                  $('#uploadimageModal').modal('hide');
+                  $('#uploaded_image').html(data);
+                  }
+              });
+          });
+      });
 });

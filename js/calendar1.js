@@ -16,4 +16,5 @@ $(document).ready(function(){
         $('#nepali-datepicker').nepaliDatePicker();
         $('#resigned_on').nepaliDatePicker();
         $('#terminated_on').nepaliDatePicker();
+        $('#join_date').nepaliDatePicker();
 })

@@ -113,13 +113,13 @@
                 <div class="form-group col-md-6">
                     <label>Resigned on</label>
                     <div>
-                        <input type="text" id="resigned_on" name="resigned_on" class="form-control nepali_date">
+                        <input type="text" id="resigned_on" name="resigned_on" class="form-control">
                     </div>
                 </div>     
                 <div class="form-group col-md-6">
                     <label>Terminated on</label>
                     <div>
-                        <input type="text" id="terminated_on" name="terminated_on" class="form-control nepali_date">
+                        <input type="text" id="terminated_on" name="terminated_on" class="form-control">
                     </div>
                 </div>     
 

@@ -13,7 +13,7 @@
             }
           ?>
           <!-- Content -->
-        <div class="row container">
+        <div class="row col-12 container">
             <form class="col-sm-12 add_income_form" action="<?php echo site_url();?>income/income_store" method="post" enctype="multipart/form-data">
                     <div class="row">
                     <div class="form-group col-md-6">

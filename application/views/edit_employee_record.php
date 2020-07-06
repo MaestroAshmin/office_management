@@ -114,13 +114,13 @@
                 <div class="form-group col-md-6">
                     <label>Resigned on</label>
                     <div>
-                        <input type="text" id="resigned_on" name="resigned_on" class="form-control nepali_date" value="<?php echo $emp_record['resigned_on']; ?>">
+                        <input type="text" id="resigned_on" name="resigned_on" class="form-control" autocomplete="off" value="<?php echo $emp_record['resigned_on']; ?>">
                     </div>
                 </div>     
                 <div class="form-group col-md-6">
                     <label>Terminated on</label>
                     <div>
-                        <input type="text" id="terminated_on" name="terminated_on" class="form-control nepali_date" value="<?php echo $emp_record['terminated_on']; ?>">
+                        <input type="text" id="terminated_on" name="terminated_on" class="form-control" autocomplete="off" value="<?php echo $emp_record['terminated_on']; ?>">
                     </div>
                 </div>     
 

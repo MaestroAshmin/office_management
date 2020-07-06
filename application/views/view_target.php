@@ -13,11 +13,11 @@
           <!-- Content Row -->
         <div class="row">
             <div class="swipe-loader"></div>
-            <div class="container table-responsive drag-scroll">
+            <div class="col-12 container table-responsive drag-scroll">
                 <table class="table" id="transaction">
                     <thead>
                         <tr>
-                        <th>S.N</th>
+                        <th style="width:40px;">S.N</th>
                         <th style="width:500px;">Title</th>
                         <th style="width:250px;">Assigned To</th>
                         <th>For month</th>
