@@ -48,9 +48,18 @@ class Salary extends CI_Controller{
         $this->load->view('includes/template', $data);
     }
 
+    // public function compare_tax_amount(){
+    //     $data = $this->input->post();
+    //     echo '<pre>';print_r($data);exit;
+    // }
     public function get_employee_info(){
         $id = $this->input->post('id');
         $result = $this->salary_model->get_employee_info($id);
+        print_r(json_encode($result));
+    }
+    public function get_comparison_for_tax(){
+        $data = $this->input->post();
+        $result = $this->salary_model->get_comparison_for_tax($data);
         print_r(json_encode($result));
     }
     public function calculate_tax(){
@@ -74,7 +83,7 @@ class Salary extends CI_Controller{
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
         $employee = $this->salary_model->get_employee($data['employee']);
         $data['employee_name'] = $employee['name'];
-        $rem = $data['taxable_for_month'] *data['total_months'];
+        $rem = $data['taxable_for_month']*$data['total_months'];
         $month = $data['total_months'];
         $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem,$month);
         $result = $this->salary_model->salary_sheet($data);
@@ -98,6 +107,7 @@ class Salary extends CI_Controller{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
                 $remaining = $remaining -  $taxes[$i]['amount'];
                 return $monthly_tax/$month;
+                exit;
             }   
         }
         else{
@@ -106,6 +116,7 @@ class Salary extends CI_Controller{
                 return $monthly_tax/$month;
             }
             else{
+                echo($taxes[$i]['amount']) .'<br>';
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
                 $remaining = $remaining -  $taxes[$i]['amount'];
                 $i++;

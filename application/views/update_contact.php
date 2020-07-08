@@ -57,7 +57,7 @@
                     </div>
                         </div>
                            
-            <form class="update_contact_form" action="<?php echo site_url();?>contactmanagement/edit_status" method="post"  enctype="multipart/form-data">
+            <form class="update_contact_form" action="<?php echo site_url();?>contactManagement/edit_status" method="post"  enctype="multipart/form-data">
                 <input type="hidden" name="uploaded_by" class="form-control" value="<?php echo $user_id?>">
                 <input type="hidden" name="id" class="form-control" value="<?php echo $contact['id']?>">
                 

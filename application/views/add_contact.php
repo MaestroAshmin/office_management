@@ -15,7 +15,7 @@
           ?>
 
 <div class="row container col-12">
-            <form class="col-sm-12 add_contact_form" action="<?php echo site_url();?>contactmanagement/add_contact" method="post"  enctype="multipart/form-data">
+            <form class="col-sm-12 add_contact_form" action="<?php echo site_url();?>contactManagement/add_contact" method="post"  enctype="multipart/form-data">
                 <input type="hidden" name="uploaded_by" class="form-control" value="<?php echo $user_id?>">
                 <div class="row">
                     <div class="form-group col-md-6">

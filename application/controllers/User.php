@@ -1564,6 +1564,7 @@ class User extends CI_Controller
 			$first_data = $this->input->post();
 			if($first_data['employee']=='sales'){
 				unset($first_data['assigned_to_other']);
+				unset($first_data['title2']);
 				unset($first_data['task_details']);
 				unset($first_data['remarks']);
 				unset($first_data['for_month2']);

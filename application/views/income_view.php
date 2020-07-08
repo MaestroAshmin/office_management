@@ -21,17 +21,20 @@
           <!-- Content Row -->
         <div class="row">
             <div class="col-12 container">
-                <div class="radio_date_filter1">
+                <div class="col-6 radio_date_filter1">
                     <input type="radio" name="filtertable" value="day" />Today
                     <input type="radio" name="filtertable"  value="month"/>This Month
                     <input type="radio" name="filtertable"  value="year"/>This Year
                     <button class="reset_btn1">Reset</button>
                 </div>
+                <div class="float-right">
+                    <div>Total Income : <span id="total_income" class="font-weight-bold">0</span></div>
+                </div>
             </div>
          
             <div class="swipe-loader"></div>
             <div class="col-12 container table-responsive drag-scroll">
-                <table class="table" id="transaction">
+                <table class="table income_table" id="transaction"> 
                     <thead>
                         <tr>
                             <th scope="col" style="width:40px;">S.N</th>

@@ -140,7 +140,7 @@
 <?php } ?>
 
 
-<?php if($role==1 || $dept==1){?>
+<?php if($role==1|| $role==2 || $dept==1){?>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinancial" aria-expanded="true" aria-controls="collapseFinancial">
       <i class="fas fa-user"></i>

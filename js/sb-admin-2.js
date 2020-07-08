@@ -2521,7 +2521,7 @@ if($('.drag-scroll').length>0){
           url: 'get_employee_info',
           type: 'post',
           data: {
-            'id' :  $('option:selected', this).attr('value')
+            'id' :  $('#employee option:selected').attr('value')
           },
           success : function(response){
             let obj = JSON.parse(response);
@@ -2551,7 +2551,7 @@ if($('.drag-scroll').length>0){
               );
               $('.marital-status').append(
                 '<label>Marital Status</label>'+
-                '<input type="text" name="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
+                '<input type="text" name="marital_status" id="marital_status" class ="form-control" value ='+marital_status+' readonly>'+
                 '</input>'
                 );
                 $('.salary-breakup1').append(
@@ -2566,6 +2566,21 @@ if($('.drag-scroll').length>0){
                   '</div>'
                 );
                 $('.taxable_for_month').attr('value',obj[0]['total_monthly']);
+                $.ajax({
+                  url: 'get_comparison_for_tax',
+                  data:{
+                    'id' :  $('.salary-sheet #fiscal_year option:selected').attr('value'),
+                    'marital_status': obj[0]['marital_status']
+                  },
+                  type: 'post',
+                  success: function (response){
+                    let object = JSON.parse(response);
+                    $('.salary-breakup1').append(
+      
+                          '<input type = "hidden" class =" form-control" name ="tax_compare" id="tax_compare" value ='+object['amount']+' readonly>'
+                    );
+                  }
+                });
             }      
           }
         });
@@ -2585,6 +2600,21 @@ if($('.drag-scroll').length>0){
               $(".monthly_total").val(value.total_monthly);
             }
         });
+        $.ajax({
+          url: 'get_comparison_for_tax',
+          data:{
+            'id' :  fy,
+            'marital_status':  $("#marital_status").val()
+          },
+          type: 'post',
+          success: function (response){
+            let object = JSON.parse(response);
+            $('.salary-breakup1').append(
+
+                  '<input type = "hidden" class =" form-control" name ="tax_compare" id="tax_compare" value ='+object['amount']+' readonly>'
+            );
+          }
+        });
         calculate_tax_salary();
       });
   
@@ -2592,7 +2622,8 @@ if($('.drag-scroll').length>0){
 
       function calculate_tax_salary(){
         var monthly_salary = $(".total_monthly").val();
-        
+        var tax_compare = parseInt($("#tax_compare"). val());
+
         if($("#fiscal_year").val()!=''){
           $.fn.calculate = function () {
             let insurance = $(".insurance"). val();
@@ -2602,12 +2633,21 @@ if($('.drag-scroll').length>0){
             let pa = $('.pa').val();
             let wd = $('.wd').val();
             let ul = $('.ul').val();
-            var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
+            let total_months = $(".total_months").val();
+            let gross_monthly = parseInt(total_months)*parseInt(monthly_salary);
             var deductions = (parseInt(monthly_salary)/parseInt(wd))*(parseInt(ul)) + parseInt(pa);
             $('.deductions').attr('value',deductions);
-            $('.te').attr('value',total);
-            taxable_for_month = parseInt(monthly_salary)-parseInt(total);
-            $('.taxable_for_month').attr('value',taxable_for_month)
+            if(gross_monthly > tax_compare){
+              var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
+              $('.te').attr('value',total);
+              taxable_for_month = parseInt(monthly_salary)-parseInt(total);
+              $('.taxable_for_month').attr('value',taxable_for_month)
+            }
+            else{
+              $('.te').val(0);
+              taxable_for_month = parseInt(monthly_salary);
+              $('.taxable_for_month').attr('value',taxable_for_month)
+            }
           };
           
           $.fn.calculate();
@@ -2698,5 +2738,25 @@ if($('.drag-scroll').length>0){
       if($('#profile_pic').val() != ''){
         let html = "<img src='"+site_url+"images/profile_pic/"+$('#profile_pic').val()+"'>";
         $('#uploaded_image').html(html); 
+      }
+
+      if($('#total_income').length > 0){
+        $('.income_table tbody').on( 'click', 'tr', function () {
+          let amount = 0;
+          $('.income_table tbody tr.selected td:nth-child(8)').each(function(i,obj){
+            amount += parseFloat($(this).html());
+          });
+          $('#total_income').html(amount);
+        });
+      }
+
+      if($('#total_expense').length > 0){
+        $('.expense_table tbody').on( 'click', 'tr', function () {
+          let amount = 0;
+          $('.expense_table tbody tr.selected td:nth-child(8)').each(function(i,obj){
+            amount += parseFloat($(this).html());
+          });
+          $('#total_expense').html(amount);
+        });
       }
 });
