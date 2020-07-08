@@ -212,13 +212,18 @@ class User extends CI_Controller
 		$nepali_date = $nepali_year.'-'.$nepali_month;
 		$result 	 =  $this->dashboard_model->get_monthly_target($nepali_date, $user_id);
 		$target = [];
-		$target['new_contact_target'] 	=  $result['nc_seat_seller_monthly'] + $result['nc_bus_company_monthly'] + $result['nc_merchant_monthly'];
+		if(!empty($result)){
+			$target['new_contact_target'] 	=  $result['nc_seat_seller_monthly'] + $result['nc_bus_company_monthly'] + $result['nc_merchant_monthly'];
 				
-		$target['follow_up_target']		=  $result['fu_seat_seller_monthly'] + $result['fu_bus_company_monthly'] + $result['fu_merchant_monthly'];
-				
-		$target['new_live_target'] 		=  $result['nl_seat_seller_monthly'] + $result['nl_no_of_seats_monthly'] + $result['nl_merchant_monthly'];
-		$target['new_contract_target'] 	=  $result['m_seat_seller_monthly'] + $result['m_bus_company_monthly'] + $result['m_merchant_monthly'];
-		return $target;
+			$target['follow_up_target']		=  $result['fu_seat_seller_monthly'] + $result['fu_bus_company_monthly'] + $result['fu_merchant_monthly'];
+					
+			$target['new_live_target'] 		=  $result['nl_seat_seller_monthly'] + $result['nl_no_of_seats_monthly'] + $result['nl_merchant_monthly'];
+			$target['new_contract_target'] 	=  $result['m_seat_seller_monthly'] + $result['m_bus_company_monthly'] + $result['m_merchant_monthly'];
+			return $target;
+		}
+		else{
+			return false;
+		}	
 	}
 	public function calculate_performance(){
 		$user_id   =  $this->input->post('user_id');
@@ -233,43 +238,49 @@ class User extends CI_Controller
 		}
 		$nepali_date = $nepali_year.'-'.$nepali_month;
 		$target = $this->get_monthly_target($user_id);
-
-		$live_seat = $this->dashboard_model->get_live_seats($nepali_date,$user_id);
-		$data['live'] = $live_seat;
-		$total_percentage = 0;
-		if($live_seat >= $target['new_live_target']){
-			$total_percentage = $total_percentage + 50;
+		if(!empty($target)){
+			$live_seat = $this->dashboard_model->get_live_seats($nepali_date,$user_id);
+			$data['live'] = $live_seat;
+			$total_percentage = 0;
+			if($live_seat >= $target['new_live_target']){
+				$total_percentage = $total_percentage + 50;
+			}
+			else{
+				$total_percentage = $total_percentage + (0.5)*($live_seat/$target['new_live_target'])*100;
+			}
+			$follow_up = $this->dashboard_model->get_follow_ups($nepali_date,$user_id);
+			$data['follow_up']	= $follow_up;
+			if($follow_up >= $target['follow_up_target']){
+				$total_percentage = $total_percentage + 5;
+			}
+			else{
+				$total_percentage = $total_percentage +  (0.05)*($follow_up/$target['follow_up_target'])*100;
+			}
+			$contracts_signed = $this->dashboard_model->get_signed_contracts($nepali_date,$user_id);
+			$data['contract_signed'] = $contracts_signed;
+			if($contracts_signed >= $target['new_contract_target']){
+				$total_percentage = $total_percentage + 40;
+			}
+			else{
+				$total_percentage  = $total_percentage + (0.4)*($contracts_signed/$target['new_contract_target'])*100;
+			}
+			$new_contacts = $this->dashboard_model->get_new_contacts($nepali_date,$user_id);
+			$data['new_contact']	=	$new_contacts;
+			if($new_contacts >= $target['new_contact_target']){
+				$total_percentage  = $total_percentage + 5;
+			}
+			else{
+				$total_percentage  = $total_percentage + (0.05)*($new_contacts/$target['new_contact_target'])*100;
+			}
+			
+			echo json_encode(array('performance'=>$data,'target'=>$target, 'total'=>$total_percentage));
+			exit;
 		}
 		else{
-			$total_percentage = $total_percentage + (0.5)*($live_seat/$target['new_live_target'])*100;
-		}
-		$follow_up = $this->dashboard_model->get_follow_ups($nepali_date,$user_id);
-		$data['follow_up']	= $follow_up;
-		if($follow_up >= $target['follow_up_target']){
-			$total_percentage = $total_percentage + 5;
-		}
-		else{
-			$total_percentage = $total_percentage +  (0.05)*($follow_up/$target['follow_up_target'])*100;
-		}
-		$contracts_signed = $this->dashboard_model->get_signed_contracts($nepali_date,$user_id);
-		$data['contract_signed'] = $contracts_signed;
-		if($contracts_signed >= $target['new_contract_target']){
-			$total_percentage = $total_percentage + 40;
-		}
-		else{
-			$total_percentage  = $total_percentage + (0.4)*($contracts_signed/$target['new_contract_target'])*100;
-		}
-		$new_contacts = $this->dashboard_model->get_new_contacts($nepali_date,$user_id);
-		$data['new_contact']	=	$new_contacts;
-		if($new_contacts >= $target['new_contact_target']){
-			$total_percentage  = $total_percentage + 5;
-		}
-		else{
-			$total_percentage  = $total_percentage + (0.05)*($new_contacts/$target['new_contact_target'])*100;
+			echo json_encode(false);
+			exit;
 		}
 		
-		echo json_encode(array('performance'=>$data,'target'=>$target, 'total'=>$total_percentage));
-		exit;
 	}
 	
 	public function dashboard(){

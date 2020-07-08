@@ -76,6 +76,9 @@
                         <label class = "control-label" >Previous Advance<input type = "number" class ="form-control pa" name = "pa" value = "0"></label><br>
                     </div>
                     <div class = "form-group col-md-3">
+                        <label class = "control-label" >Total Months<input type = "number" class ="form-control total_months" name = "total_months" value = "12"></label><br>
+                    </div>
+                    <div class = "form-group col-md-3">
                         <label class = "control-label" >Insurance<input type = "number" class ="form-control insurance" name="insurance" value = "0"></label><br>
                     </div>
                     <div class = "form-group col-md-3">
@@ -109,25 +112,4 @@
         </form>
     </div>
 </div>
-
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tax Sheet</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="tax-data form-row">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div> -->
         

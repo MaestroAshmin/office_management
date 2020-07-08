@@ -2288,7 +2288,8 @@ if($('.drag-scroll').length>0){
         },
         success: function(response){
           let obj = JSON.parse(response);
-          for(x in obj['performance']){
+          if(obj != false){
+            for(x in obj['performance']){
               let label = x;
               //change underscore to space
               label = label.replace('_',' ');
@@ -2371,6 +2372,18 @@ if($('.drag-scroll').length>0){
           $('#achievement_comment').html(comment);
           $('#achievement_comment').css({'color': color, 'font-size': '20px','font-weight':'bold'});
 
+          }
+          else{
+           
+            barChartData.labels = bar_labels;
+            barChartData.datasets[0].data = 0;
+            barChartData.datasets[1].data = 0;
+            $('#total_achievement').html('0 %');
+            comment = 'Target Not Assigned';
+            $('#achievement_comment').html(comment);
+            $('#achievement_comment').css({'color': color, 'font-size': '20px','font-weight':'bold'});
+          }
+          
           let barChart = new Chart(barChartCanvas, {
             type: 'bar',
             data: barChartData,

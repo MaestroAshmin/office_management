@@ -74,8 +74,9 @@ class Salary extends CI_Controller{
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
         $employee = $this->salary_model->get_employee($data['employee']);
         $data['employee_name'] = $employee['name'];
-        $rem = $data['taxable_for_month'] *12;
-        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem);
+        $rem = $data['taxable_for_month'] *data['total_months'];
+        $month = $data['total_months'];
+        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem,$month);
         $result = $this->salary_model->salary_sheet($data);
         if($result['status'] == 'success'){
             redirect('salary/view_salary_details');
@@ -86,35 +87,34 @@ class Salary extends CI_Controller{
         }
     }
 
-    public function calculate_tax_by_recursion($monthly_tax, $i, $taxes,$remaining){
+    public function calculate_tax_by_recursion($monthly_tax, $i, $taxes,$remaining,$month){
         $length = $i+1;
         if($length ==  count($taxes)){
             if($remaining <= $taxes[$i]['amount']){
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $monthly_tax/12;
+                return $monthly_tax/$month;
             }
             else{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
                 $remaining = $remaining -  $taxes[$i]['amount'];
-                return $monthly_tax/12;
+                return $monthly_tax/$month;
             }   
         }
         else{
             if($remaining <= $taxes[$i]['amount']){
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $monthly_tax/12;
+                return $monthly_tax/$month;
             }
             else{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
                 $remaining = $remaining -  $taxes[$i]['amount'];
                 $i++;
-                return $this->calculate_tax_by_recursion($monthly_tax,$i,$taxes,$remaining);
+                return $this->calculate_tax_by_recursion($monthly_tax,$i,$taxes,$remaining,$month);
             }   
         }
     }
     public function get_tax_amount_yearly(){
         $data = $this->input->post();
- 
         if($data['marital_status']  == 'Married'){
             $marital_status     =   1;
         }
@@ -123,8 +123,9 @@ class Salary extends CI_Controller{
         }
         $data['marital']    =   $marital_status;
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
-        $rem = $data['taxable_for_month'] *12;
-        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem);
+        $rem = $data['taxable_for_month'] *$data['total_months'];
+        $month = $data['total_months'];
+        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem,$month);
         print_r(json_encode($data['monthly_tax']));
     }
     public function view_salary_details(){
