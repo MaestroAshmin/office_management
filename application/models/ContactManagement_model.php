@@ -23,7 +23,7 @@ class ContactManagement_model extends CI_model{
                     'new_contact'   =>  $data['new_contact'],
                     'Status'        =>  $data['Status'],
                     'number_of_bus' => $data['number_of_bus'],
-                    'number_of_seat'    => $data['number_of_bus'],
+                    'number_of_seat'    => $data['number_of_seat'],
                     'live_seat'       =>$data['live_seat']
                 ];
                 $this->db->where('id',$data['id']);
@@ -47,7 +47,7 @@ class ContactManagement_model extends CI_model{
                     'new_contact'   =>  $data['new_contact'],
                     'Status'        =>  $data['Status'],
                     'number_of_bus' => $data['number_of_bus'],
-                    'number_of_seat'    => $data['number_of_bus'],
+                    'number_of_seat'    => $data['number_of_seat'],
                     'live_seat'       =>$data['live_seat']
                 ];
                 $this->db->where('id',$data['id']);
