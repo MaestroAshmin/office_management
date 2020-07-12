@@ -1,6 +1,6 @@
 (function($) {
   "use strict"; // Start of use strict
-  let site_url = $('.footer').attr('data-siteurl')+'/acc';
+  let site_url = $('.footer').attr('data-siteurl')+'/office_management';
 
   $('.delete').on("click", function (e) {
     e.preventDefault();
@@ -2638,16 +2638,15 @@ if($('.drag-scroll').length>0){
             var deductions = (parseInt(monthly_salary)/parseInt(wd))*(parseInt(ul)) + parseInt(pa);
             $('.deductions').attr('value',deductions);
             if(gross_monthly > tax_compare){
-              var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss);
-              $('.te').attr('value',total);
+              var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss); 
               taxable_for_month = parseInt(monthly_salary)-parseInt(total);
-              $('.taxable_for_month').attr('value',taxable_for_month)
             }
             else{
-              $('.te').val(0);
+              $('.te').attr('value',0);
               taxable_for_month = parseInt(monthly_salary);
-              $('.taxable_for_month').attr('value',taxable_for_month)
             }
+            $('.te').attr('value',total);
+            $('.taxable_for_month').attr('value',taxable_for_month);
           };
           
           $.fn.calculate();

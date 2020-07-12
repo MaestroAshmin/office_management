@@ -116,7 +116,6 @@ class Salary extends CI_Controller{
                 return $monthly_tax/$month;
             }
             else{
-                echo($taxes[$i]['amount']) .'<br>';
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
                 $remaining = $remaining -  $taxes[$i]['amount'];
                 $i++;
