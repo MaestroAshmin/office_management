@@ -2640,11 +2640,15 @@ if($('.drag-scroll').length>0){
             if(gross_monthly > tax_compare){
               var total =  parseInt(insurance) +  parseInt(pf) +  parseInt(cit) +  parseInt(ss); 
               taxable_for_month = parseInt(monthly_salary)-parseInt(total);
+              var annual_taxable = parseInt(gross_monthly)- parseInt(total)*12;
             }
             else{
               $('.te').attr('value',0);
               taxable_for_month = parseInt(monthly_salary);
+              var annual_taxable = parseInt(gross_monthly);
             }
+            
+            $('.annual_taxable').attr('value',annual_taxable);
             $('.te').attr('value',total);
             $('.taxable_for_month').attr('value',taxable_for_month);
           };

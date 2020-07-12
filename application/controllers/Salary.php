@@ -83,7 +83,8 @@ class Salary extends CI_Controller{
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
         $employee = $this->salary_model->get_employee($data['employee']);
         $data['employee_name'] = $employee['name'];
-        $rem = $data['taxable_for_month']*$data['total_months'];
+        $rem = $data['annual_taxable'];
+        // $rem = $data['taxable_for_month']*$data['total_months'];
         $month = $data['total_months'];
         $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem,$month);
         $result = $this->salary_model->salary_sheet($data);
@@ -101,19 +102,19 @@ class Salary extends CI_Controller{
         if($length ==  count($taxes)){
             if($remaining <= $taxes[$i]['amount']){
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $monthly_tax/$month;
+                return round($monthly_tax/$month);
             }
             else{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
                 $remaining = $remaining -  $taxes[$i]['amount'];
-                return $monthly_tax/$month;
+                return round($monthly_tax/$month);
                 exit;
             }   
         }
         else{
             if($remaining <= $taxes[$i]['amount']){
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $remaining);
-                return $monthly_tax/$month;
+                return round($monthly_tax/$month);
             }
             else{
                 $monthly_tax = $monthly_tax + (($taxes[$i]['tax_percent']/100)* $taxes[$i]['amount']);
@@ -133,7 +134,8 @@ class Salary extends CI_Controller{
         }
         $data['marital']    =   $marital_status;
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
-        $rem = $data['taxable_for_month'] *$data['total_months'];
+        $rem = $data['annual_taxable'];
+        // $rem = $data['taxable_for_month'] *$data['total_months'];
         $month = $data['total_months'];
         $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem,$month);
         print_r(json_encode($data['monthly_tax']));

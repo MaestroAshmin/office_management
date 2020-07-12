@@ -66,6 +66,8 @@
             <div class = "row salary-breakup">
                 <div class ="row col-12 annual-deduction">
                     <h3  class ="col-12">Monthly Deductions</h3>
+                    <input type = "hidden" class ="form-control annual_taxable" name = "annual_taxable"></label><br>
+    
                     <div class = "form-group col-md-3">
                         <label class = "control-label" >Working Days<input type = "number" class ="form-control wd" name = "wd" value = "0"></label><br>
                     </div>
