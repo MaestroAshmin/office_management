@@ -75,39 +75,59 @@ class Salary_model extends CI_model{
         }
     }
     public function salary_sheet($data){
-        $insertData = [
-            'user_id'   =>  $data['employee'],
-            'fiscal_year_id'    =>   $data['fiscal_year'],
-            'month'      =>   $data['month'],
-            'pan_no'            =>   $data['pan_no'],
-            'emp_code'          =>   $data['emp_code'],
-            'marital_status'    =>   $data['marital'],
-            'insurance'         =>   $data['insurance'],
-            'cit'               =>   $data['cit'],
-            'pf'                =>   $data['pf'],
-            'ss'                =>   $data['ss'],
-            'total_exemption'             =>   $data['te'],
-            'taxable_for_month' =>   $data['taxable_for_month'],
-            'basic_salary'      =>   $data['basic_salary'],
-            'house_rent'        =>   $data['house_rent'],
-            'food'              =>   $data['food'],
-            'conveyance'        =>   $data['conveyance'],
-            'other'             =>   $data['other'],
-            'monthly_total'     =>   $data['monthly_total'],
-            'monthly_tax'        =>   $data['monthly_tax'],
-            'total_payable'     => $data['total_payable'],
-            'working_days'      =>  $data['wd'],
-            'unpaid_leaves'     =>  $data['ul'],
-            'previous_advance'  =>  $data['pa'],
-            'deductions'        =>  $data['deductions']
-        ];
-        $query = $this->db->insert('tbl_salary_sheet',$insertData);
-        if ($query) {
-            $result_status = array('status' => 'success', 'message' =>"Successfully Created Salary Sheet");
-        } else {
-                $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+        $salary_sheet_exists = $this->salary_sheet_exists($data['employee'],$data['fiscal_year'],$data['month']);
+        if(!$salary_sheet_exists){
+            $insertData = [
+                'user_id'   =>  $data['employee'],
+                'fiscal_year_id'    =>   $data['fiscal_year'],
+                'month'      =>   $data['month'],
+                'pan_no'            =>   $data['pan_no'],
+                'emp_code'          =>   $data['emp_code'],
+                'marital_status'    =>   $data['marital'],
+                'insurance'         =>   $data['insurance'],
+                'cit'               =>   $data['cit'],
+                'pf'                =>   $data['pf'],
+                'ss'                =>   $data['ss'],
+                'total_exemption'             =>   $data['te'],
+                'taxable_for_month' =>   $data['taxable_for_month'],
+                'basic_salary'      =>   $data['basic_salary'],
+                'house_rent'        =>   $data['house_rent'],
+                'food'              =>   $data['food'],
+                'conveyance'        =>   $data['conveyance'],
+                'other'             =>   $data['other'],
+                'monthly_total'     =>   $data['monthly_total'],
+                'monthly_tax'        =>   $data['monthly_tax'],
+                'total_payable'     => $data['total_payable'],
+                'working_days'      =>  $data['wd'],
+                'unpaid_leaves'     =>  $data['ul'],
+                'previous_advance'  =>  $data['pa'],
+                'deductions'        =>  $data['deductions']
+            ];
+            $query = $this->db->insert('tbl_salary_sheet',$insertData);
+            if ($query) {
+                $result_status = array('status' => 'success', 'message' =>"Successfully Created Salary Sheet");
+            } else {
+                    $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+            }
+        }
+        else{
+            $result_status = array('status' => 'failed', 'message' => 'Salary Sheet already exists for the user for the selected month');
         }
         return $result_status;
+    }
+    public function salary_sheet_exists($user_id,$fiscal_year,$month){
+        $condition = [
+            'user_id' => $user_id,
+            'fiscal_year_id' => $fiscal_year,
+            'month' => $month
+        ];
+        $query = $this->db->select('*')->from('tbl_salary_sheet')->where($condition)->get();
+        if($query->num_rows()>0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     public function get_salary_details(){
         $query = $this->db->select('ss.id,fy.fiscal_year,ss.month,u.name,d.Designation,ss.monthly_total,ss.total_exemption,ss.monthly_tax,ss.previous_advance,ss.deductions,ss.total_payable')->from('tbl_salary_sheet as ss')
