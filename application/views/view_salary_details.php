@@ -40,6 +40,9 @@
                             <th scope="col">Deductions</th>
                             <th scope="col">Total Payable</th>
                             <th scope="col">Total Paid</th>
+                            <?php if($role ==1){?>
+                                <th scope="col">Action</th>
+                            <?php } ?>    
                         </tr>
                     </thead>
                     <tbody>
@@ -61,6 +64,9 @@
                            <td><?php echo $data['deductions'] ?></td>
                            <td><?php echo $data['total_payable'] ?></td>
                            <td><?php echo $data['monthly_total'] ?></td>
+                           <?php if($role ==1){?>
+                            <td><a href= "<?php echo site_url('salary/edit_salary_sheet/'.$data['id']) ?>" class= "btn btn-primary"><i class= "fas fa-edit"></i></a></td>
+                            <?php } ?>
                         </tr>
                     <?php $i++; } ?>   
                     </tbody>

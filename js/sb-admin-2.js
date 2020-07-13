@@ -1,6 +1,6 @@
 (function($) {
   "use strict"; // Start of use strict
-  let site_url = $('.footer').attr('data-siteurl')+'/office_management';
+  let site_url = $('.footer').attr('data-siteurl')+'/acc';
 
   $('.delete').on("click", function (e) {
     e.preventDefault();
@@ -2619,7 +2619,7 @@ if($('.drag-scroll').length>0){
       });
   
       $(".annual-deduction input").keyup(calculate_tax_salary);
-
+      $(".annual-deduction-edit input").keyup(calculate_tax_salary);
       function calculate_tax_salary(){
         var monthly_salary = $(".total_monthly").val();
         var tax_compare = parseInt($("#tax_compare"). val());
@@ -2655,7 +2655,7 @@ if($('.drag-scroll').length>0){
           
           $.fn.calculate();
           $.ajax({
-            url: 'get_tax_amount_yearly',
+            url: site_url +'salary/get_tax_amount_yearly',
             type: 'post',
             data : $('.salary-sheet').serialize(),
             success: function(response){

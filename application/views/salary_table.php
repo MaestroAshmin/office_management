@@ -42,7 +42,7 @@
                     <select class="form-control" id="month" name="month">
                         <option value="Shrawan" selected>Shrawan</option>
                         <option value="Bhadra">Bhadra</option>
-                        <option value="Ashok">Ashok</option>
+                        <option value="Ashoj">Ashoj</option>
                         <option value="Kartik">Kartik</option>
                         <option value="Mangsir">Mangsir</option>
                         <option value="Poush">Poush</option>
@@ -66,7 +66,7 @@
             <div class = "row salary-breakup">
                 <div class ="row col-12 annual-deduction">
                     <h3  class ="col-12">Monthly Deductions</h3>
-                    <input type = "hidden" class ="form-control annual_taxable" name = "annual_taxable"></label><br>
+                    <input type = "hidden" class ="form-control annual_taxable" name = "annual_taxable" value ="0"></label><br>
     
                     <div class = "form-group col-md-3">
                         <label class = "control-label" >Working Days<input type = "number" class ="form-control wd" name = "wd" value = "0"></label><br>

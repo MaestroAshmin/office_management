@@ -75,6 +75,7 @@ class Salary_model extends CI_model{
         }
     }
     public function salary_sheet($data){
+        // echo '<pre>';print_r($data);exit;
         $salary_sheet_exists = $this->salary_sheet_exists($data['employee'],$data['fiscal_year'],$data['month']);
         if(!$salary_sheet_exists){
             $insertData = [
@@ -101,7 +102,10 @@ class Salary_model extends CI_model{
                 'working_days'      =>  $data['wd'],
                 'unpaid_leaves'     =>  $data['ul'],
                 'previous_advance'  =>  $data['pa'],
-                'deductions'        =>  $data['deductions']
+                'deductions'        =>  $data['deductions'],
+                'total_months'      =>  $data['total_months'],
+                'annual_taxable'    =>  $data['annual_taxable'],
+                'tax_compare'       =>  $data['tax_compare']
             ];
             $query = $this->db->insert('tbl_salary_sheet',$insertData);
             if ($query) {
@@ -128,6 +132,61 @@ class Salary_model extends CI_model{
         else{
             return false;
         }
+    }
+    public function get_single_salary($id){
+        $query = $this->db->select('s.id,fy.fiscal_year,e.marital_status,s.annual_taxable,e.emp_code,e.pan_no,u.emp_code,s.tax_compare, s.fiscal_year_id,u.id as user_id, s.month,s.working_days,s.unpaid_leaves,s.previous_advance,s.insurance,s.cit,s.pf,s.ss,u.name,d.Designation,s.monthly_total,s.total_exemption,s.total_months,s.monthly_tax,s.previous_advance,s.deductions,s.total_payable,s.taxable_for_month,s.basic_salary,s.house_rent,s.food,s.conveyance,s.other,s.pan_no,s.emp_code,s.marital_status')->from('tbl_salary_sheet as s')
+                            ->join('tbl_fiscal_year as fy','fy.id=s.fiscal_year_id')
+                            ->join('tbl_users as u','u.id=s.user_id')
+                            ->join('tbl_employee_info as e','u.emp_code=e.emp_code')
+                            ->join('tbl_designation as d', 'd.id=u.des_id')
+                            ->where('s.id',$id)->get();
+        if($query){
+            $result = $query->row_array();
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+    public function update_salary_sheet($data){
+        // echo '<pre>';print_r($data);exit;
+        try{
+            $updateData = [
+                'month'      =>   $data['month'],
+                'pan_no'            =>   $data['pan_no'],
+                'emp_code'          =>   $data['emp_code'],
+                'marital_status'    =>   $data['marital'],
+                'insurance'         =>   $data['insurance'],
+                'cit'               =>   $data['cit'],
+                'pf'                =>   $data['pf'],
+                'ss'                =>   $data['ss'],
+                'total_exemption'             =>   $data['te'],
+                'taxable_for_month' =>   $data['taxable_for_month'],
+                'basic_salary'      =>   $data['basic_salary'],
+                'house_rent'        =>   $data['house_rent'],
+                'food'              =>   $data['food'],
+                'conveyance'        =>   $data['conveyance'],
+                'other'             =>   $data['other'],
+                'monthly_total'     =>   $data['monthly_total'],
+                'monthly_tax'        =>   $data['monthly_tax'],
+                'total_payable'     => $data['total_payable'],
+                'working_days'      =>  $data['wd'],
+                'unpaid_leaves'     =>  $data['ul'],
+                'previous_advance'  =>  $data['pa'],
+                'deductions'        =>  $data['deductions'],
+                'total_months'      =>  $data['total_months'],
+                'annual_taxable'    =>  $data['annual_taxable'],
+                'tax_compare'       =>  $data['tax_compare']
+            ];
+            $this->db->where('id',$data['id']);
+            $this->db->update('tbl_salary_sheet',$updateData);
+            $result_status = array('status' => 'success', 'message' =>"Successfully Edited Salary Sheet");
+
+        }
+        catch (Exception $e){
+            $result_status = array('status' => 'failed', 'message' => $e->getMessage());
+        }
+        return $result_status;
     }
     public function get_salary_details(){
         $query = $this->db->select('ss.id,fy.fiscal_year,ss.month,u.name,d.Designation,ss.monthly_total,ss.total_exemption,ss.monthly_tax,ss.previous_advance,ss.deductions,ss.total_payable')->from('tbl_salary_sheet as ss')

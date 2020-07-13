@@ -126,6 +126,7 @@ class Salary extends CI_Controller{
     }
     public function get_tax_amount_yearly(){
         $data = $this->input->post();
+        // echo '<pre>';print_r($data);exit;
         if($data['marital_status']  == 'Married'){
             $marital_status     =   1;
         }
@@ -134,6 +135,7 @@ class Salary extends CI_Controller{
         }
         $data['marital']    =   $marital_status;
         $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
+
         $rem = $data['annual_taxable'];
         // $rem = $data['taxable_for_month'] *$data['total_months'];
         $month = $data['total_months'];
@@ -159,6 +161,68 @@ class Salary extends CI_Controller{
             'salary_data'   =>  $salary_data
         );
         $this->load->view('includes/template', $data);
+    }
+    public function edit_salary_sheet(){
+        if($_POST){
+            $data = $this->input->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("fiscal_year","Fiscal_Year","required",array("required"=>"Please Enter Fiscal Year"));
+        $this->form_validation->set_rules("month","Month","required",array("required"=>"Please Select Month"));
+        $this->form_validation->set_rules("employee","Employee","required",array("required"=>"Please Select Employee"));
+        $this->form_validation->set_rules("wd","Working Days","required",array("required"=>"Please Enter Working Days"));
+        if($this->form_validation->run()==false){
+            $this->session->set_flashdata('error',$this->form_validation->error_array());
+            redirect('salary/salary_table');
+        }
+        if($data['marital_status']  == 'Married'){
+            $marital_status     =   1;
+        }
+        else{
+            $marital_status     =   0;
+        }
+        $data['marital']    =   $marital_status;
+        $taxes = $this->salary_model->get_tax_structure($data['fiscal_year'],$marital_status);
+        $employee = $this->salary_model->get_employee($data['employee']);
+        $data['employee_name'] = $employee['name'];
+        $rem = $data['annual_taxable'];
+        // $rem = $data['taxable_for_month']*$data['total_months'];
+        $month = $data['total_months'];
+        $data['monthly_tax'] = $this->calculate_tax_by_recursion($monthly_tax = 0, $i = 0, $taxes, $rem,$month);
+        $result = $this->salary_model->update_salary_sheet($data);
+        if($result['status'] == 'success'){
+            redirect('salary/view_salary_details');
+        }
+        else{
+            $this->session->set_flashdata('error',$result['message']);
+            redirect('salary/salary_table');
+        }
+        }
+        else{
+            if($this->session->userdata('user_logged_in') != '1'){
+                redirect('user', 'refresh');
+            }
+            $id = $this->uri->segment(3);
+            $sess_data = $this->session->all_userdata();
+            $user_id   = $sess_data['user_id'];
+            $user_role  =   $sess_data['user_role'];
+            $user_dept  =   $sess_data['user_dept'];
+            $user_des  =   $sess_data['user_des'];
+            $salary_data    =   $this->salary_model->get_single_salary($id);
+            $employees = $this->salary_model->get_all_employees();
+            // echo '<pre>';print_r($employees);exit;
+            // echo '<pre>';print_r($salary_data);exit;
+            $data = array(
+                'title' 		=> 'Edit Salary Details',
+                'main_content'	=> 'edit_salary_details',
+                'role'          =>  $user_role,
+                'dept'          =>  $user_dept,
+                'des'           =>  $user_des,
+                'salary_data'   =>  $salary_data,
+                'employees'     =>  $employees
+            );
+            $this->load->view('includes/template', $data);
+        }
+        
     }
     public function get_salary_details_by_id(){
         $get = $this->input->get();
